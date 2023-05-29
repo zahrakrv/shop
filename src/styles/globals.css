@@ -17,6 +17,7 @@
 }
 
 body {
+  direction: rtl;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -24,4 +25,14 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+.dropdown-menu {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.dropdown-menu.open {
+  opacity: 1;
+  visibility: visible;
 }
