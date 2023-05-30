@@ -6,11 +6,9 @@ export const GlobalContext = createContext({});
 
 /////check for window is not server side
 const ISSERVER = typeof window === 'undefined';
-
 const GlobalProvider = ({ children }) => {
   ///router
   const router = useRouter();
-
   ///////admin auth token state
   const [adminToken, setAdminToken] = useState(
     !ISSERVER ? localStorage.getItem('adminToken') || false : ''

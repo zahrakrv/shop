@@ -13,7 +13,7 @@ const SlideShow = () => {
     infinite: true,
     transition: 'slide',
     prevArrow: (
-      <div className="w-8 -mr-8 cursor-pointer">
+      <div className="w-8 -ml-5 cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"
@@ -24,7 +24,7 @@ const SlideShow = () => {
       </div>
     ),
     nextArrow: (
-      <div className="w-8 -mr-8 cursor-pointer">
+      <div className="w-8 -mr-6 cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 interface SideBarAdminProps {
   sidebar: boolean;
 }
@@ -61,7 +63,11 @@ const SideBarAdmin = ({ sidebar }: SideBarAdminProps) => {
               </svg>
               <span className="text-white mr-3 font-semibold"> سفارش ها </span>
             </li>
-            <li className="flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition">
+            {/* <Link href="/"> */}
+            <li
+              className="flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition"
+              onClick={() => window.location.replace('/')}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 576 512"
@@ -74,6 +80,7 @@ const SideBarAdmin = ({ sidebar }: SideBarAdminProps) => {
                 بازگشت به سایت{' '}
               </span>
             </li>
+            {/* </Link> */}
           </ul>
         </div>
       </div>
