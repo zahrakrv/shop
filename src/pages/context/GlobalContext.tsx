@@ -6,7 +6,7 @@ export const GlobalContext = createContext({});
 
 /////check for window is not server side
 const ISSERVER = typeof window === 'undefined';
-const GlobalProvider = ({ children }) => {
+const GlobalProvider = ({ children }: any) => {
   ///router
   const router = useRouter();
   ///////admin auth token state
@@ -14,7 +14,7 @@ const GlobalProvider = ({ children }) => {
     !ISSERVER ? localStorage.getItem('adminToken') || false : ''
   );
 
-  const adminLogin = (data) => {
+  const adminLogin = (data: any) => {
     const { username, password } = data;
     axios
       .post('http://localhost:8000/api/auth/login', { username, password })
