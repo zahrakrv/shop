@@ -9,10 +9,10 @@ const AdminLogin = () => {
     username: '',
     password: '',
   });
-  const onChangeHndler = (e) => {
+  const onChangeHndler = (e: any) => {
     setAdmins({ ...admins, [e.target.name]: e.target.value });
   };
-  const submit = (e) => {
+  const submit = (e: any) => {
     e.preventDefault();
     const data = { username: admins.username, password: admins.password };
     adminLogin(data);

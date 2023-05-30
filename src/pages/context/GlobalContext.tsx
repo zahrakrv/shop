@@ -36,8 +36,26 @@ const GlobalProvider = ({ children }: any) => {
       });
   };
 
+  ////product
+  const fetchCategories = async () => {
+    try {
+      //localhost:8000/api/categories
+      const response = await axios.get(
+        'http://localhost:8000/api/products?page=1&limit=4&fields=-rating,-createdAt,-updatedAt,-__v&sort=price&quantity[gte]=8',
+        {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
+  };
+
   return (
-    <GlobalContext.Provider value={{ adminToken, adminLogin }}>
+    <GlobalContext.Provider value={{ adminToken, adminLogin, fetchCategories }}>
       {children}
     </GlobalContext.Provider>
   );

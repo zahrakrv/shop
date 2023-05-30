@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'iransans';
+  src: url('../../public/font/IRANSansWeb_Black.woff2');
+}
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,6 +21,7 @@
 }
 
 body {
+  font-family: 'iransans';
   direction: rtl;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
