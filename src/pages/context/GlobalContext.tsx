@@ -34,16 +34,17 @@ const GlobalProvider = ({ children }: any) => {
           );
           router.push('/admins/dashboard');
         } else {
-          alert(res.data.message);
+          alert('fff');
         }
       })
       .catch((error) => {
         console.log(error);
+        alert('connection failed');
       });
   };
 
   ////product
-  const fetchCategories = async () => {
+  const fetchProducts = async () => {
     try {
       //localhost:8000/api/categories
       const response = await axios.get(
@@ -52,7 +53,22 @@ const GlobalProvider = ({ children }: any) => {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
+      console.log(response.data.data.products);
+
+      const categoriiii = response.data.data.products.map(async (item) => {
+        const categoryName = await axios.get(
+          `http://localhost:8000/api/categories/${item.category}`,
+          {
+            headers: { Authorization: `Bearer ${adminToken}` },
+          }
+        );
+        console.log(categoryName);
+        const x = categoryName.data.data.category.name;
+        return categoryName;
+      });
+      console.log(categoriiii);
+
       return response.data;
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -61,7 +77,7 @@ const GlobalProvider = ({ children }: any) => {
   };
 
   return (
-    <GlobalContext.Provider value={{ adminToken, adminLogin, fetchCategories }}>
+    <GlobalContext.Provider value={{ adminToken, adminLogin, fetchProducts }}>
       {children}
     </GlobalContext.Provider>
   );
