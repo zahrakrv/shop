@@ -13,6 +13,7 @@ export default function Home() {
       <main>
         <Layout>
           <NavBar />
+          <Slider />
         </Layout>
       </main>
     </>

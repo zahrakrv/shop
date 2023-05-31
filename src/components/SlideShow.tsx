@@ -43,7 +43,10 @@ const SlideShow = () => {
     <div className="m-10">
       <Zoom {...zoomInproperties}>
         {images.map((each, index) => (
-          <div key={index} className="flex justify-center w-full h-full">
+          <div
+            key={index}
+            className="flex justify-center w-full h-full object-cover object-fill"
+          >
             <img
               alt="slider"
               src={each}

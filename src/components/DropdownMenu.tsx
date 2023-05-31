@@ -69,7 +69,7 @@ const DropdownMenu = () => {
       </div>
 
       {/* //////////sm menu */}
-      <div className="h-16 p-2 hidden sm:flex justify-evenly items-center gap-6 text-xl font-bold ">
+      <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl font-bold ">
         <div className="flex justify-start items-center self-start gap-8">
           <span className="bg-blue-800 text-white rounded p-2 hover:bg-blue-900 hover:text-white">
             گروه کالای 1
