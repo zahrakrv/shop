@@ -1,10 +1,17 @@
 import Link from 'next/link';
+import { useContext } from 'react';
+import { GlobalContext } from './../pages/context/GlobalContext';
 
 interface SideBarAdminProps {
   sidebar: boolean;
 }
 
 const SideBarAdmin = ({ sidebar }: SideBarAdminProps) => {
+  const { fetchCategories } = useContext(GlobalContext);
+
+  const handleFetchCategories = () => {
+    fetchCategories();
+  };
   return (
     <div>
       <div
@@ -28,7 +35,10 @@ const SideBarAdmin = ({ sidebar }: SideBarAdminProps) => {
               </span>
             </li> */}
             {/* //// */}
-            <li className="flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition ">
+            <li
+              className="flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition "
+              onClick={handleFetchCategories}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
