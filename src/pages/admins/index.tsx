@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React, { useContext, useState } from 'react';
 import { GlobalContext } from './../context/GlobalContext';
+import Button from './../../components/Button';
 const AdminLogin = () => {
   ////marboot be authentication admin
   const { adminLogin } = useContext(GlobalContext);
@@ -59,9 +60,7 @@ const AdminLogin = () => {
                 className="rounded w-full my-3 px-2 py-1 text-md outline-teal-500"
               ></input>
             </div>
-            <button className="flex items-center rounded my-3 px-6 py-1 text-md text-teal-900 font-semibold mx-auto  bg-teal-200 hover:bg-teal-900">
-              ورود
-            </button>
+            <Button>ورود</Button>
           </form>
         </div>
       </div>
