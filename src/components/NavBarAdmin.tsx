@@ -8,7 +8,7 @@ interface NavBarAdminProps {
 const NavBarAdmin = ({ updateSideBar, sidebar }: NavBarAdminProps) => {
   const toggle = () => {
     updateSideBar(!sidebar);
-    console.log('ddd');
+    // console.log('ddd');
   };
   return (
     <div>

@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'iransans';
-  src: url('../../public/font/IRANSansWeb_Black.woff2');
+  src: url('../../public/font/IRANSansWebRegular.woff');
 }
 :root {
   --foreground-rgb: 0, 0, 0;
