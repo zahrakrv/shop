@@ -11,12 +11,9 @@ export default function Home() {
   return (
     <>
       <main>
-
-=======
         <Layout>
           <NavBar />
         </Layout>
->>>>>>> structure
       </main>
     </>
   );
