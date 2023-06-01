@@ -12,9 +12,9 @@ const NavBarAdmin = ({ updateSideBar, sidebar }: NavBarAdminProps) => {
   };
   return (
     <div>
-      <div className="bg-teal-500 py-2 px-4">
+      <div className="bg-teal-500 py-2 ">
         <div className="flex justify-between container mx-auto ">
-          <h2 className="text-xl text-white pr-12">پنل مدیریت فروشگاه</h2>
+          <h2 className="text-xl text-white pr-60">پنل مدیریت فروشگاه</h2>
           <h2 className="text-xl text-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"

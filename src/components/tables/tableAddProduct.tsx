@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 const TableAddProduct = ({ setCategories, categories }) => {
   return (
     <>
-      <table>
-        <thead>
+      <table className="mr-20 bg-white rounded-xl p-4">
+        <thead className="mx-auto border-gray-400 border-b">
           <tr>
-            <th>تصویر</th>
-            <th>نام کالاها</th>
-            <th>قیمت</th>
-            <th>تعداد موجود</th>
-            <th>ویرایش / حذف</th>
+            <th className="p-6 shadow">تصویر</th>
+            <th className="p-6 shadow">نام کالاها</th>
+            <th className="p-6 shadow">قیمت</th>
+            <th className="p-6 shadow">تعداد موجود</th>
+            <th className="p-6 shadow">ویرایش / حذف</th>
           </tr>
         </thead>
         <tbody>
@@ -19,15 +19,15 @@ const TableAddProduct = ({ setCategories, categories }) => {
               console.log(category),
               (
                 <tr key={category.id}>
-                  <td>
+                  <td className="p-6 shadow">
                     <img
-                      className="w-20"
+                      className="w-24 rounded"
                       src={`http://localhost:8000/images/products/images/${category.images[0]}`}
                     />
                   </td>
-                  <td>`${category.name}`</td>
-                  <td>`${category.price}`</td>
-                  <td>`${category.quantity}`</td>
+                  <td className="p-6 shadow">`${category.name}`</td>
+                  <td className="p-6 shadow">`${category.price}`</td>
+                  <td className="p-6 shadow">`${category.quantity}`</td>
                 </tr>
               )
             )
