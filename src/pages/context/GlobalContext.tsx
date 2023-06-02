@@ -54,20 +54,20 @@ const GlobalProvider = ({ children }: any) => {
         }
       );
       // console.log(response.data);
-      console.log(response.data.data.products);
+      // console.log(response.data.data.products);
 
-      const categoriiii = response.data.data.products.map(async (item) => {
-        const categoryName = await axios.get(
-          `http://localhost:8000/api/categories/${item.category}`,
-          {
-            headers: { Authorization: `Bearer ${adminToken}` },
-          }
-        );
-        console.log(categoryName);
-        const x = categoryName.data.data.category.name;
-        return categoryName;
-      });
-      console.log(categoriiii);
+      // const categoriiii = response.data.data.products.map(async (item) => {
+      // const categoryName = await axios.get(
+      // `http://localhost:8000/api/categories`,
+      // {
+      // headers: { Authorization: `Bearer ${adminToken}` },
+      // }
+      // );
+      // console.log(categoryName);
+      // const x = categoryName.data.data.category.name;
+      // return categoryName;
+      // });
+      // console.log(categoriiii);
 
       return response.data;
     } catch (error) {
@@ -76,8 +76,23 @@ const GlobalProvider = ({ children }: any) => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await axios
+        .get('http://localhost:8000/api/categories')
+        .then((res) => {
+          return res;
+        });
+      // return res.data.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+    // console.log(res.data.data);
+  };
   return (
-    <GlobalContext.Provider value={{ adminToken, adminLogin, fetchProducts }}>
+    <GlobalContext.Provider
+      value={{ adminToken, adminLogin, fetchProducts, fetchCategories }}
+    >
       {children}
     </GlobalContext.Provider>
   );
