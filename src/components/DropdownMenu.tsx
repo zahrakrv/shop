@@ -71,19 +71,19 @@ const DropdownMenu = () => {
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl font-bold ">
         <div className="flex justify-start items-center self-start gap-8">
-          <span className="bg-blue-800 text-white rounded p-2 hover:bg-blue-900 hover:text-white">
+          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
             گروه کالای 1
           </span>
-          <span className="bg-blue-800 text-white rounded p-2 hover:bg-blue-900 hover:text-white">
+          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
             گروه کالای 2
           </span>
-          <span className="bg-blue-800 text-white rounded p-2 hover:bg-blue-900 hover:text-white">
+          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
             گروه کالای 3
           </span>
         </div>
         <div className="flex justify-start items-center gap-8">
-          <span className="text-blue-950">درباره ما</span>
-          <span className="text-blue-950">تماس با ما</span>
+          <span className="text-slate-500 text-sm">درباره ما</span>
+          <span className="text-slate-500 text-sm">تماس با ما</span>
         </div>
       </div>
     </>
