@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { GlobalContext } from './../../pages/context/GlobalContext';
+import { Pagination } from '@mui/material';
 
 const TableAddProduct = ({ setCategories, categories }) => {
   const { fetchCategories } = useContext(GlobalContext);
