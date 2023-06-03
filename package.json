@@ -9,7 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.14",
+    "@mui/material": "^5.13.3",
+    "@mui/x-data-grid": "^6.6.0",
+    "@mui/x-data-grid-generator": "^6.6.0",
     "@next/font": "^13.4.4",
     "@types/node": "20.2.3",
     "@types/react": "18.2.6",
