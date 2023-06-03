@@ -7,7 +7,7 @@ const HeaderSite = () => {
       <div>
         <img src="banner.gif"></img>
       </div>
-      <div className="flex items-center justify-between p-4 w-full h-28 ">
+      <div className="flex items-center justify-between p-8 w-full h-28 ">
         <div className="flex justify-center items-center gap-4">
           <img src="logo.png" className="w-52"></img>
           <div className="relative">
@@ -40,28 +40,29 @@ const HeaderSite = () => {
           </h1>
         </div> */}
 
-        <div className="mr-5 sm:flex sm:gap-4">
-          <div className="flex items-center gap-2 text-blue-950 cursor-pointer">
+        <div className="sm:flex sm:gap-4">
+          <div className="flex items-center gap-4 pr-3 text-blue-950 cursor-pointer border border-slate-300 rounded py-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              height="1em"
               viewBox="0 0 512 512"
-              className="h-4 fill-blue-950"
+              className="h-6 fill-blue-950"
             >
-              <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zm64 64V416H224V160H64zm384 0H288V416H448V160z" />
+              <path d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
             </svg>
             <Link href="/admins">
-              <span className="font-semibold sm:text-xl ">مدیریت</span>
+              <span className="font-semibold sm:text-xl pl-2">مدیریت</span>
             </Link>
           </div>
-          <div className="flex items-center gap-2 text-blue-950 cursor-pointer">
+          <div className="flex items-center text-blue-950 cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 576 512"
-              className="h-4 fill-blue-950"
+              className="w-8 fill-blue-950 border-r-slate-300"
             >
               <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
             </svg>
-            <a className="font-semibold sm:text-xl ">سبد خرید</a>
+            {/* <a className="font-semibold sm:text-xl ">سبد خرید</a> */}
           </div>
         </div>
       </div>
