@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <div className="w-max p-4">
+    <div className="p-4">
       <hr className="my-10"></hr>
       <div className="flex justify-between items-center">
         <div>
@@ -50,8 +50,8 @@ const Footer = () => {
           <p>ضمانت اصل بودن کالا</p>
         </div>
       </div>
-      <div className="w-max sm:flex sm:justify-between sm:items-start sm:p-3 sm:mt-6">
-        <div className="flex mr-14 gap-8 justify-between w-max">
+      <div className="sm:flex sm:justify-between sm:items-start sm:p-3 sm:mt-6">
+        <div className="flex gap-8 justify-between">
           <div className="flex flex-col gap-6">
             <p className="text-blue-950 text-xl">با مگامارکت</p>
             <Link href="">

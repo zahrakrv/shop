@@ -4,7 +4,8 @@ import Footer from './../components/footer';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div>
+    // min-[320px]:w-max max-[600px]:w-max
+    <div className="w-max ">
       <HeaderSite />
       {children}
       <Footer />

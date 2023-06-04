@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React, { useContext, useState } from 'react';
 import { GlobalContext } from '../api/context/GlobalContext';
-import Button from './../../components/Button';
+import Button from '../../kit/Button';
 const AdminLogin = () => {
   ////marboot be authentication admin
   const { adminLogin } = useContext(GlobalContext);
