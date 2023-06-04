@@ -4,7 +4,7 @@ import { GlobalContext } from '../pages/api/context/GlobalContext';
 const AllCategories = () => {
   const { fetchProducts } = useContext(GlobalContext);
   const [products, setProducts] = useState([]);
-
+//
   useEffect(() => {
     const getProducts = async () => {
       try {
