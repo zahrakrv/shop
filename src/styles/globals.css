@@ -42,3 +42,10 @@ body {
   opacity: 1;
   visibility: visible;
 }
+.slider-container {
+  width: 100% !important;
+}
+.slider-container.dropdown-open {
+  z-index: 10;
+  position: relative;
+}

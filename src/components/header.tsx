@@ -4,11 +4,14 @@ import Link from 'next/link';
 const HeaderSite = () => {
   return (
     <>
-      <div className="hidden sm:block">
+      <div
+        className="hidden sm:flex
+      "
+      >
         <img src="banner.gif"></img>
       </div>
-      <div className="sm:flex sm:items-center sm:justify-between sm:p-8 sm:w-full sm:h-28 ">
-        <div className="sm:flex sm:justify-center sm:items-center sm:gap-4">
+      <div className="">
+        <div className="mr-14 sm:flex sm:justify-between sm:items-center sm:gap-4">
           <div className="flex items-center justify-center">
             <img src="logo.png" className="sm:w-52 w-44"></img>
           </div>

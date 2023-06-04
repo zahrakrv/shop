@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { GlobalContext } from './../../pages/context/GlobalContext';
+import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { TablePagination } from '@mui/material';
 
 const TableAddProduct = () => {

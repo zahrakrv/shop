@@ -3,7 +3,7 @@ import SideBarAdmin from '../../components/SideBarAdmin';
 import { useState, useEffect, useContext } from 'react';
 import AllCategories from './../../components/allCategories';
 import TableAddProduct from './../../components/tables/tableAddProduct';
-import { GlobalContext } from './../context/GlobalContext';
+import { GlobalContext } from '../api/context/GlobalContext';
 
 const Dashboard = () => {
   const [sidebar, setSideBar] = useState(false);

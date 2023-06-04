@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React, { useContext, useState } from 'react';
-import { GlobalContext } from './../context/GlobalContext';
+import { GlobalContext } from '../api/context/GlobalContext';
 import Button from './../../components/Button';
 const AdminLogin = () => {
   ////marboot be authentication admin

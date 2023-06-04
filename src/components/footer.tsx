@@ -2,20 +2,21 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <div className="border border-t-slate-300 p-6">
+    <div className="w-max p-4">
+      <hr className="my-10"></hr>
       <div className="flex justify-between items-center">
         <div>
           <img src="logo.png" className="sm:w-44 w-44"></img>
-          {/* <div className="flex items-center gap-6"> */}
-          <span className="ml-6 text-sm">تلفن پشتیبانی : 021 - 76767000</span>
-          <span className="ml-6 text-xl"> | </span>
-          <span className="boreder border-r-slate-300 text-sm">
-            {' '}
-            7 روز هفته، 24 ساعته پاسخگوی شما هستیم
-          </span>
-          {/* </div> */}
+          <div className="sm:flex">
+            <p className="ml-6 text-sm p-3">تلفن پشتیبانی : 021 - 76767000</p>
+            <p className="hidden sm:ml-6 sm:text-xl"> | </p>
+            <p className="boreder border-r-slate-300 text-sm p-3">
+              {' '}
+              7 روز هفته، 24 ساعته پاسخگوی شما هستیم
+            </p>
+          </div>
         </div>
-        <div className="flex items-center gap-2 rounded border border-slate-300 px-6 py-3 cursor-pointer text-slate-500">
+        <div className="flex items-center gap-2 rounded border border-slate-300 cursor-pointer w-44 py-3 px-2 text-slate-500">
           <span>بازگشت به بالا</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,59 +50,64 @@ const Footer = () => {
           <p>ضمانت اصل بودن کالا</p>
         </div>
       </div>
-      <div className="flex justify-between items-start p-3 mt-6">
-        <div className="flex flex-col gap-6">
-          <p className="text-blue-950 text-xl">با مگامارکت</p>
-          <Link href="">
-            <span className="text-slate-500 text-sm"> اتاق خبر مگامگ </span>
-          </Link>
-          <Link href="">
-            <span className="text-slate-500 text-sm"> فروش در مگامگ </span>
-          </Link>
+      <div className="w-max sm:flex sm:justify-between sm:items-start sm:p-3 sm:mt-6">
+        <div className="flex mr-14 gap-8 justify-between w-max">
+          <div className="flex flex-col gap-6">
+            <p className="text-blue-950 text-xl">با مگامارکت</p>
+            <Link href="">
+              <span className="text-slate-500 text-sm"> اتاق خبر مگامگ </span>
+            </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm"> فروش در مگامگ </span>
+            </Link>
 
-          <Link href="">
-            <span className="text-slate-500 text-sm">فرصت های شغلی</span>
-          </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm">فرصت های شغلی</span>
+            </Link>
 
-          <Link href="">
-            <span className="text-slate-500 text-sm"> گزارش تخلف در مگامگ</span>
-          </Link>
-          <Link href="">
-            <span className="text-slate-500 text-sm"> تماس با مگامگ</span>
-          </Link>
-          <Link href="">
-            <span className="text-slate-500 text-sm"> درباره مگامگ</span>
-          </Link>
-        </div>
-        {/* //////// */}
-        <div className="flex flex-col gap-6">
-          <p className="text-blue-950 text-xl">خدمات مشتریان</p>
-          <Link href="">
-            <span className="text-slate-500 text-sm">
-              {' '}
-              پاسخ به پرسش های متداول
-            </span>
-          </Link>
-          <Link href="">
-            <span className="text-slate-500 text-sm">
-              {' '}
-              رویه های بازگرداندن کالا
-            </span>
-          </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm">
+                {' '}
+                گزارش تخلف در مگامگ
+              </span>
+            </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm"> تماس با مگامگ</span>
+            </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm"> درباره مگامگ</span>
+            </Link>
+          </div>
+          {/* //////// */}
+          <div className="flex mr-8 flex-col gap-6">
+            <p className="text-blue-950 text-xl">خدمات مشتریان</p>
+            <Link href="">
+              <span className="text-slate-500 text-sm">
+                {' '}
+                پاسخ به پرسش های متداول
+              </span>
+            </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm">
+                {' '}
+                رویه های بازگرداندن کالا
+              </span>
+            </Link>
 
-          <Link href="">
-            <span className="text-slate-500 text-sm">شرایط استفاده </span>
-          </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm">شرایط استفاده </span>
+            </Link>
 
-          <Link href="">
-            <span className="text-slate-500 text-sm"> حریم خصوصی</span>
-          </Link>
-          <Link href="">
-            <span className="text-slate-500 text-sm"> گزارش باگ</span>
-          </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm"> حریم خصوصی</span>
+            </Link>
+            <Link href="">
+              <span className="text-slate-500 text-sm"> گزارش باگ</span>
+            </Link>
+          </div>
         </div>
         {/* ////// */}
-        <div className="flex flex-col gap-6">
+        <div className="hidden sm:flex sm:flex-col sm:gap-6">
           <Link href="">
             <span className="text-blue-950 text-xl">
               راهنمای خرید از مگامارکت
@@ -118,7 +124,7 @@ const Footer = () => {
           </Link>
         </div>
         {/* /////// */}
-        <div className="flex flex-col gap-6">
+        <div className="flex mr-14 mt-8 flex-col gap-6">
           <span className="text-blue-950 text-xl">همراه ما باشید!</span>
           <div className="flex gap-8">
             <svg
@@ -168,20 +174,20 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="flex">
-        <div className="border-t-2 border-t-slate-300 mb-12">
-          <div className="overflow-hidden">
-            <h1 className="font-bold text-xl text-blue-900 mb-6">
-              فروشگاه اینترنتی مگامگ، بررسی، انتخاب و خرید آنلاین.
-            </h1>
-            <p className="text-slate-400 text-sm mb-6">
+      <div className="flex-col sm:flex">
+        <hr
+          className="my-10
+        "
+        ></hr>
+        <div className=" mb-12">
+          <h1 className="font-bold text-xl text-blue-900 mb-6">
+            فروشگاه اینترنتی مگامگ، بررسی، انتخاب و خرید آنلاین.
+          </h1>
+          <div className="w-52 whitespace-normal break-words flex flex-wrap">
+            <p className=" text-slate-400 text-sm mb-6">
               یک خرید اینترنتی مطمئن، نیازمند فروشگاهی است که بتواند کالاهایی
-              متنوع، باکیفیت و دارای قیمت مناسب را در مدت زمانی کوتاه به دست
-              مشتریان خود برساند و ضمانت بازگشت کالا هم داشته باشد؛ ویژگی‌هایی
-              که فروشگاه اینترنتی دیجی‌کالا سال‌هاست بر روی آن‌ها کار کرده و
-              توانسته از این طریق مشتریان ثابت خود را داشته باشد.
             </p>
-            <h1 className="font-bold text-slate-400 mb-6">
+            {/* <h1 className="font-bold text-slate-400 mb-6">
               کدام محصولات در دیجی‌کالا قابل سفارش هستند؟
             </h1>
             <p className="text-slate-400 text-sm mb-6">
@@ -222,10 +228,10 @@ const Footer = () => {
               و... جزو مواردی هستند که می‌توانید آن‌ها را از برندهای مطرح ایرانی
               و خارجی موجود در دیجی کالا مثل آدیداس، نایکی، دبنهامز، آلدو، درسا
               و... خریداری کنید.
-            </p>
+            </p> */}
           </div>
         </div>
-        <div className="flex">
+        <div className="flex justify-center">
           <div className="border border-2 border-slate-300 rounded w-28 h-28 p-2">
             <img src="rasane.webp"></img>
           </div>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { GlobalContext } from './../pages/context/GlobalContext';
+import { GlobalContext } from '../pages/api/context/GlobalContext';
 
 const AllCategories = () => {
   const { fetchProducts } = useContext(GlobalContext);
