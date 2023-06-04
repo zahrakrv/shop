@@ -1,7 +1,7 @@
 import TableAddProduct from '@/components/tables/tableAddProduct';
 import LayoutAdmin from './../../layout/layoutAdmin';
 import { useState, useContext, useEffect } from 'react';
-import { GlobalContext } from './../context/GlobalContext';
+import { GlobalContext } from '../api/context/GlobalContext';
 
 const Products = () => {
   // const [products, setProducts] = useState([]);

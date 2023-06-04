@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useContext, useState } from 'react';
-import { GlobalContext } from './../pages/context/GlobalContext';
+import { GlobalContext } from '../pages/api/context/GlobalContext';
 import DashboardContent from './allCategories';
 import TableAddProduct from './tables/tableAddProduct';
 import LayoutAdmin from './../layout/layoutAdmin';

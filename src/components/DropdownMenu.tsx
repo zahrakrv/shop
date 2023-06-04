@@ -1,16 +1,25 @@
 import { useState } from 'react';
+import React from 'react';
 
-const DropdownMenu = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [subMenuOpen, setSubMenuOpen] = useState(true);
+const DropdownMenu = ({
+  isOpen,
+  setIsOpen,
+  subMenuOpen,
+  setSubMenuOpe,
+  toggleMenu,
+  toggleSubMenu,
+}) => {
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [subMenuOpen, setSubMenuOpen] = useState(true);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleMenu = () => {
+  //   setIsOpen(!isOpen);
+  //   setSubMenuOpen(true);
+  // };
 
-  const toggleSubMenu = () => {
-    setSubMenuOpen(!subMenuOpen);
-  };
+  // const toggleSubMenu = () => {
+  //   setSubMenuOpen(!subMenuOpen);
+  // };
 
   return (
     <>
@@ -26,7 +35,9 @@ const DropdownMenu = () => {
           >
             <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
           </svg>
-          <span className="text-2xl font-semibold">همه ی دسته بندی ها</span>
+          <span className="mt-3 text-xl sm:text-2xl sm:font-semibold">
+            همه ی دسته بندی ها
+          </span>
         </button>
 
         <div
@@ -45,7 +56,11 @@ const DropdownMenu = () => {
                   subMenuOpen ? 'open' : ''
                 }`}
               >
-                <ul className={`${subMenuOpen ? 'block' : 'hidden'}`}>
+                <ul
+                  className={`z-40 bg-white ${
+                    subMenuOpen ? 'block' : 'hidden'
+                  }`}
+                >
                   <li className="mb-4 font-semibold px-2">
                     <a href="#">گروه 1</a>
                   </li>
@@ -71,19 +86,19 @@ const DropdownMenu = () => {
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl font-bold ">
         <div className="flex justify-start items-center self-start gap-8">
-          <span className="bg-blue-800 text-white rounded p-2 hover:bg-blue-900 hover:text-white">
+          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
             گروه کالای 1
           </span>
-          <span className="bg-blue-800 text-white rounded p-2 hover:bg-blue-900 hover:text-white">
+          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
             گروه کالای 2
           </span>
-          <span className="bg-blue-800 text-white rounded p-2 hover:bg-blue-900 hover:text-white">
+          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
             گروه کالای 3
           </span>
         </div>
         <div className="flex justify-start items-center gap-8">
-          <span className="text-blue-950">درباره ما</span>
-          <span className="text-blue-950">تماس با ما</span>
+          <span className="text-slate-500 text-sm">درباره ما</span>
+          <span className="text-slate-500 text-sm">تماس با ما</span>
         </div>
       </div>
     </>
