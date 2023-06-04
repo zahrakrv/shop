@@ -19,12 +19,16 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+/* html,
+body {
+  width: 100%;
+} */
 body {
   font-family: 'iransans';
   direction: rtl;
   color: rgb(var(--foreground-rgb));
   background: white;
+  overflow-x: hidden;
   /* linear-gradient(
       to bottom,
       transparent,
@@ -42,9 +46,9 @@ body {
   opacity: 1;
   visibility: visible;
 }
-.slider-container {
+/* .slider-container {
   width: 100% !important;
-}
+} */
 .slider-container.dropdown-open {
   z-index: 10;
   position: relative;
