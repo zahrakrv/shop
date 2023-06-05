@@ -18,22 +18,22 @@ const TableAddProduct = () => {
   const admintoken = cookies.get('adminToken');
   console.log(products);
 
-  // fetchCategories().then((res) => {
-  //   console.log(res);
-  // });
-
   useEffect(() => {
     const getProducts = async () => {
       try {
         const productsData = await fetchProducts(page + 1, rowsPerPage);
         // console.log(productsData);
-        console.log(productsData);
-        console.log(productsData.total_pages);
-        console.log(productsData.data.total);
+        // console.log(productsData);
+        // console.log(productsData.total_pages);
+        // console.log(productsData.data.total);
+        console.log(productsData.data.products);
 
         setTotalPage(productsData.total_pages);
         setProducts(productsData.data.products);
         setTotalProducts(productsData.total);
+        // fetchCategories().then((res) => {
+        //   console.log(res);
+        // });
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -92,7 +92,16 @@ const TableAddProduct = () => {
                 setCategories(res.data.data.category.name);
                 // console.log(res.data);
               }); */}
-          {products.map(async (product: any) => {
+          {products.map((product: any) => {
+            axios
+              .get(`http://localhost:8000/api/categories/${product.category}`, {
+                headers: { Authorization: `Bearer ${admintoken}` },
+              })
+              .then((res) => {
+                // setCategories(res.data.data.category.name);
+                // console.log(res.data);
+              });
+            console.log(product);
             return (
               <tr key={product.id}>
                 <td className="p-3 shadow">
@@ -102,7 +111,7 @@ const TableAddProduct = () => {
                   />
                 </td>
                 <td className="p-3 shadow">{product.name}</td>
-                {/* <td className="p-3 shadow">{categories}</td> */}
+                <td className="p-3 shadow">{categories}</td>
 
                 <td>
                   <svg

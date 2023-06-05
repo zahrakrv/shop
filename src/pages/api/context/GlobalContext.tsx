@@ -53,6 +53,7 @@ const GlobalProvider = ({ children }: any) => {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
+
       // console.log(response.data);
       // console.log(response.data.data.products);
 
@@ -76,10 +77,10 @@ const GlobalProvider = ({ children }: any) => {
     }
   };
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (id) => {
     try {
       const res = await axios
-        .get('http://localhost:8000/api/categories')
+        .get(`http://localhost:8000/api/categories/${id}`)
         .then((res) => {
           return res;
         });
@@ -89,9 +90,50 @@ const GlobalProvider = ({ children }: any) => {
     }
     // console.log(res.data.data);
   };
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios
+        .get('http://localhost:8000/api/orders')
+        .then((res) => {
+          console.log(res.data);
+
+          return res;
+        });
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+    // console.log(res.data.data);
+  };
+
+  const fetchSortPrice = async (page, limit, sortOrder) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/products?page=${page}&limit=${limit}&fields=-rating,-createdAt,-updatedAt,-__v&sort=${
+          sortOrder ? 'price' : '-price'
+        }&quantity[gte]=8`
+        // {
+        //   headers: { Authorization: `Bearer ${adminToken}` },
+        // }
+      );
+      console.log(response.data);
+      // setSortOrder((prev) => !prev);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
+  };
   return (
     <GlobalContext.Provider
-      value={{ adminToken, adminLogin, fetchProducts, fetchCategories }}
+      value={{
+        adminToken,
+        adminLogin,
+        fetchProducts,
+        fetchCategories,
+        fetchOrders,
+        fetchSortPrice,
+      }}
     >
       {children}
     </GlobalContext.Provider>
