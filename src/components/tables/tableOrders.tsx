@@ -4,7 +4,7 @@ import { TablePagination } from '@mui/material';
 import Button from './../../kit/Button';
 
 const TableOrders = () => {
-  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   const { fetchCategories, fetchProducts, fetchOrders } =
     useContext(GlobalContext);
 
@@ -12,30 +12,45 @@ const TableOrders = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalPage, setTotalPage] = useState();
-  const [totalProducts, setTotalProducts] = useState();
+  const [totalOrders, setTotalOrders] = useState();
 
   ////about sorting
-  const [sortOrder, setSortOrder] = useState('asc');
+  // const [sortOrder, setSortOrder] = useState('asc');
   const [isRotated, setIsRotated] = useState(false);
 
+  // useEffect(() => {
+  //   const getOrders = async () => {
+  //     try {
+  //       const ordersData = await fetchOrders(page + 1, rowsPerPage);
+  //       console.log(ordersData);
+  //       console.log(ordersData.data.data.total_pages);
+  // console.log(ordersData.data.total);
+
+  // setTotalPage(ordersData.data.data.total_pages);
+  //     setOrders(ordersData.data.orders);
+  //     setTotalOrders(ordersData.total);
+  //   } catch (error) {
+  //     console.error('Error fetching products:', error);
+  //   }
+  // };
+  //   getOrders();
+  // }, [fetchOrders, rowsPerPage, page, totalOrders]);
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const ordersData = await fetchOrders(page + 1, rowsPerPage);
-        // console.log(productsData);
+        const ordersData = await fetchOrders();
+        // if (Array.isArray(categoriesData)) {
         console.log(ordersData);
-        // console.log(ordersData.total_pages);
-        // console.log(ordersData.data.total);
 
-        setTotalPage(ordersData.total_pages);
-        setProducts(ordersData.data.orders);
-        setTotalProducts(ordersData.total);
+        setOrders(ordersData.data.orders);
+        // }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching categories:', error);
       }
     };
+
     getOrders();
-  }, [fetchOrders, rowsPerPage, page, totalProducts]);
+  }, [fetchOrders]);
   //////////////pagination
   interface paginationProps {
     event: React.MouseEvent<HTMLButtonElement> | null;
@@ -57,20 +72,20 @@ const TableOrders = () => {
   // const emptyRows =
   //   rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage);
 
-  ////////sort price
-  const handleSort = () => {
-    const sortedProducts = [...products];
+  ////////sort
+  // const handleSort = () => {
+  //   const sortedProducts = [...products];
 
-    if (sortOrder === 'asc') {
-      sortedProducts.sort((a, b) => a.price - b.price);
-      setSortOrder('desc');
-    } else {
-      sortedProducts.sort((a, b) => b.price - a.price);
-      setSortOrder('asc');
-    }
+  //   if (sortOrder === 'asc') {
+  //     sortedProducts.sort((a, b) => a.price - b.price);
+  //     setSortOrder('desc');
+  //   } else {
+  //     sortedProducts.sort((a, b) => b.price - a.price);
+  //     setSortOrder('asc');
+  //   }
 
-    setProducts(sortedProducts);
-  };
+  //   setProducts(sortedProducts);
+  // };
 
   return (
     <div className="flex-col justify-center">
@@ -80,7 +95,10 @@ const TableOrders = () => {
       <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border rounded items-center">
         <thead className="mx-auto border-gray-400 border-b">
           <tr>
-            <th className="p-6 shadow" onClick={handleSort}>
+            <th
+              className="p-6 shadow"
+              // onClick={handleSort}
+            >
               <div
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={() => setIsRotated(!isRotated)}
@@ -98,7 +116,7 @@ const TableOrders = () => {
             </th>
             <th
               className="flex items-center gap-2 p-6 shadow cursor-pointer"
-              onClick={handleSort}
+              // onClick={handleSort}
             >
               <div
                 className="flex items-center gap-2 cursor-pointer"
@@ -115,7 +133,10 @@ const TableOrders = () => {
                 مجموع مبلغ
               </div>
             </th>
-            <th className="p-6 shadow" onClick={handleSort}>
+            <th
+              className="p-6 shadow"
+              // onClick={handleSort}
+            >
               <div
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={() => setIsRotated(!isRotated)}
@@ -135,12 +156,12 @@ const TableOrders = () => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {products.map((category: any) => (
+          {orders.map((item: any) => (
             // console.log(category),
-            <tr key={category.id}>
-              <td className="p-3 shadow">{category.name}</td>
-              <td className="p-3 shadow">{category.price}</td>
-              <td className="p-3 shadow">{category.quantity}</td>
+            <tr key={item.id}>
+              <td className="p-3 shadow">{item.name}</td>
+              <td className="p-3 shadow">{item.totalPrice}</td>
+              <td className="p-3 shadow">{item.orders[0].createdAt}</td>
             </tr>
           ))}
         </tbody>
@@ -150,7 +171,7 @@ const TableOrders = () => {
         dir="ltr"
         className="mr-16 mt-12"
         component="div"
-        count={totalProducts}
+        count={totalOrders}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}

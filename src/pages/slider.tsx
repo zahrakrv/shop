@@ -4,17 +4,17 @@ import DropdownMenu from './../components/DropdownMenu';
 import { useState } from 'react';
 
 const Slider = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [subMenuOpen, setSubMenuOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [subMenuOpen, setSubMenuOpen] = useState(true);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-    setSubMenuOpen(true);
-  };
+  // const toggleMenu = () => {
+  //   setIsOpen(!isOpen);
+  //   setSubMenuOpen(true);
+  // };
 
-  const toggleSubMenu = () => {
-    setSubMenuOpen(!subMenuOpen);
-  };
+  // const toggleSubMenu = () => {
+  //   setSubMenuOpen(!subMenuOpen);
+  // };
   return (
     <div className="relative">
       <DropdownMenu

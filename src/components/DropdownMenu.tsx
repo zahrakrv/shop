@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import React from 'react';
+import { GlobalContext } from './../pages/api/context/GlobalContext';
 
 const DropdownMenu = ({
   isOpen,
@@ -9,6 +10,8 @@ const DropdownMenu = ({
   toggleMenu,
   toggleSubMenu,
 }) => {
+  const { fetchCategories } = useContext(GlobalContext);
+  const [categories, setCategories] = useState([]);
   // const [isOpen, setIsOpen] = useState(false);
   // const [subMenuOpen, setSubMenuOpen] = useState(true);
 
@@ -20,6 +23,20 @@ const DropdownMenu = ({
   // const toggleSubMenu = () => {
   //   setSubMenuOpen(!subMenuOpen);
   // };
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const response = await fetchCategories();
+        console.log(response);
+
+        setCategories(response);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    getCategories();
+  }, [fetchCategories]);
 
   return (
     <>
@@ -61,14 +78,13 @@ const DropdownMenu = ({
                     subMenuOpen ? 'block' : 'hidden'
                   }`}
                 >
+                  {/* {categories.map((category) => (
+                    <li className="mb-4 font-semibold px-2" key={category.id}>
+                      <a href="#">{category.name}</a>
+                    </li>
+                  ))} */}
                   <li className="mb-4 font-semibold px-2">
-                    <a href="#">گروه 1</a>
-                  </li>
-                  <li className="mb-4 font-semibold px-2">
-                    <a href="#">گروه 2</a>
-                  </li>
-                  <li className="mb-4 font-semibold px-2">
-                    <a href="#">گروه 3</a>
+                    <a href="#">sdsfsd</a>
                   </li>
                 </ul>
               </div>
@@ -86,14 +102,19 @@ const DropdownMenu = ({
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl font-bold ">
         <div className="flex justify-start items-center self-start gap-8">
-          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
-            گروه کالای 1
-          </span>
-          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
-            گروه کالای 2
-          </span>
-          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
-            گروه کالای 3
+          {/* {categories.map((category) => (
+            <span
+              className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
+              key={category.id}
+            >
+              {category.name}
+            </span>
+          ))} */}
+          <span
+            className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
+            // key={category.id}
+          >
+            srfdgfg
           </span>
         </div>
         <div className="flex justify-start items-center gap-8">

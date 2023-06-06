@@ -77,12 +77,14 @@ const GlobalProvider = ({ children }: any) => {
     }
   };
 
-  const fetchCategories = async (id) => {
+  const fetchCategories = async () => {
     try {
-      const res = await axios
-        .get(`http://localhost:8000/api/categories/${id}`)
-        .then((res) => {
-          return res;
+      const response = await axios
+        .get(`http://localhost:8000/api/categories/`)
+        .then((response) => {
+          console.log(response);
+
+          return response;
         });
       // return res.data.data;
     } catch (error) {
@@ -94,7 +96,7 @@ const GlobalProvider = ({ children }: any) => {
   const fetchOrders = async () => {
     try {
       const res = await axios
-        .get('http://localhost:8000/api/orders')
+        .get(`http://localhost:8000/api/orders`)
         .then((res) => {
           console.log(res.data);
 

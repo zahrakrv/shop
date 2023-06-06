@@ -108,8 +108,12 @@ const TableInventory = () => {
             <th className="flex items-center gap-2 p-6 shadow cursor-pointer">
               <div
                 className="flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                  setIsRotated(!isRotated);
+                  setSortOrder((prev) => !prev);
+                }}
                 // onClick={() => setIsRotated(!isRotated)}
-                onClick={() => setSortOrder((prev) => !prev)}
+                // onClick={() => setSortOrder((prev) => !prev)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,12 +148,12 @@ const TableInventory = () => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {products.map((category: any) => (
-            // console.log(category),
-            <tr key={category.id}>
-              <td className="p-3 shadow">{category.name}</td>
-              <td className="p-3 shadow">{category.price}</td>
-              <td className="p-3 shadow">{category.quantity}</td>
+          {products.map((item: any) => (
+            // console.log(item),
+            <tr key={item.id}>
+              <td className="p-3 shadow">{item.name}</td>
+              <td className="p-3 shadow">{item.price}</td>
+              <td className="p-3 shadow">{item.quantity}</td>
             </tr>
           ))}
         </tbody>

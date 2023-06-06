@@ -107,7 +107,7 @@ const Footer = () => {
           </div>
         </div>
         {/* ////// */}
-        <div className="hidden sm:flex sm:flex-col sm:gap-6">
+        <div className="hidden md:flex md:flex-col md:gap-6">
           <Link href="">
             <span className="text-blue-950 text-xl">
               راهنمای خرید از مگامارکت
@@ -124,7 +124,7 @@ const Footer = () => {
           </Link>
         </div>
         {/* /////// */}
-        <div className="flex mr-14 mt-8 flex-col gap-6">
+        <div className="flex items-center mt-8 flex-col gap-6">
           <span className="text-blue-950 text-xl">همراه ما باشید!</span>
           <div className="flex gap-8">
             <svg
@@ -183,9 +183,13 @@ const Footer = () => {
           <h1 className="font-bold text-xl text-blue-900 mb-6">
             فروشگاه اینترنتی مگامگ، بررسی، انتخاب و خرید آنلاین.
           </h1>
-          <div className="w-52 whitespace-normal break-words flex flex-wrap">
+          <div className="whitespace-normal w-full break-words flex flex-wrap">
             <p className=" text-slate-400 text-sm mb-6">
               یک خرید اینترنتی مطمئن، نیازمند فروشگاهی است که بتواند کالاهایی
+              متنوع، باکیفیت و دارای قیمت مناسب را در مدت زمانی کوتاه به دست
+              مشتریان خود برساند و ضمانت بازگشت کالا هم داشته باشد؛ ویژگی‌هایی
+              که فروشگاه اینترنتی دیجی‌کالا سال‌هاست بر روی آن‌ها کار کرده و
+              توانسته از این طریق مشتریان ثابت خود را داشته باشد.{' '}
             </p>
             {/* <h1 className="font-bold text-slate-400 mb-6">
               کدام محصولات در دیجی‌کالا قابل سفارش هستند؟
@@ -232,13 +236,13 @@ const Footer = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="border border-2 border-slate-300 rounded w-28 h-28 p-2">
+          <div className="border border-2 border-slate-300 rounded w-28 h-32 p-2">
             <img src="rasane.webp"></img>
           </div>
-          <div className="border border-2 border-slate-300 rounded w-24 h-24 p-2">
+          <div className="border border-2 border-slate-300 rounded w-24 h-32 p-2">
             <img src="kasbokar.webp"></img>
           </div>
-          <div className="border border-2 border-slate-300 rounded w-28 h-28 p-2">
+          <div className="border border-2 border-slate-300 rounded w-28 h-32 p-2">
             <img src="enamad.webp"></img>
           </div>
         </div>
