@@ -51,6 +51,15 @@ const TableOrders = () => {
 
     getOrders();
   }, [fetchOrders]);
+  useEffect(() => {
+    fetchOrders().then((res) => {
+      console.log(res.data);
+
+      setTotalOrders(res.data.data.orders);
+    });
+  }, []);
+  console.log(totalOrders);
+
   //////////////pagination
   interface paginationProps {
     event: React.MouseEvent<HTMLButtonElement> | null;
@@ -156,7 +165,7 @@ const TableOrders = () => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {orders.map((item: any) => (
+          {totalOrders.map((item: any) => (
             // console.log(category),
             <tr key={item.id}>
               <td className="p-3 shadow">{item.name}</td>

@@ -79,13 +79,28 @@ const GlobalProvider = ({ children }: any) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios
-        .get(`http://localhost:8000/api/categories/`)
-        .then((response) => {
-          console.log(response);
+      const response = await axios.get(`http://localhost:8000/api/categories/`);
+      // .then((response) => {
+      //   console.log(response);
 
-          return response;
-        });
+      return response;
+      // });
+      // return res.data.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+    // console.log(res.data.data);
+  };
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/subcategories?limit=all`
+      );
+      // .then((response) => {
+      //   console.log(response);
+
+      return response;
+      // });
       // return res.data.data;
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -93,15 +108,13 @@ const GlobalProvider = ({ children }: any) => {
     // console.log(res.data.data);
   };
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (page, limit, sortDelivery) => {
     try {
-      const res = await axios
-        .get(`http://localhost:8000/api/orders`)
-        .then((res) => {
-          console.log(res.data);
-
-          return res;
-        });
+      const res = await axios.get(
+        `http://localhost:8000/api/orders?page=${page}&sort=${sortDelivery}&limit=${limit}`
+      );
+      console.log(res.data);
+      return res;
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -135,6 +148,7 @@ const GlobalProvider = ({ children }: any) => {
         fetchCategories,
         fetchOrders,
         fetchSortPrice,
+        fetchSubCategories,
       }}
     >
       {children}

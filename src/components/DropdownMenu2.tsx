@@ -2,11 +2,11 @@ import { useState, useContext, useEffect } from 'react';
 import React from 'react';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
 
-const DropdownMenu = ({
+const DropdownMenu2 = ({
   isOpen,
   setIsOpen,
   subMenuOpen,
-  setSubMenuOpe,
+  setSubMenuOpen,
   toggleMenu,
   toggleSubMenu,
 }) => {
@@ -14,43 +14,17 @@ const DropdownMenu = ({
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [subMenuOpen, setSubMenuOpen] = useState(true);
-
-  // const toggleMenu = () => {
-  //   setIsOpen(!isOpen);
-  //   setSubMenuOpen(true);
-  // };
-
-  // const toggleSubMenu = () => {
-  //   setSubMenuOpen(!subMenuOpen);
-  // };
-  // useEffect(() => {
-  //   const getCategories = async () => {
-  //     try {
-  //       const response = await fetchCategories().then((response) => {
-  //         console.log(response);
-  //         setCategories(response);
-  //       });
-  //     } catch (error) {
-  //       console.error('Error fetching categories:', error);
-  //     }
-  //   };
-
-  //   getCategories();
-  // }, [fetchCategories]);
-
   useEffect(() => {
     fetchCategories().then((res) => {
       setCategories(res.data.data.categories);
     });
   }, []);
+
   useEffect(() => {
     fetchSubCategories().then((response) => {
       setSubCategory(response.data.data.subcategories);
     });
   }, []);
-  // console.log('subCategory', subCategory);
 
   return (
     <>
@@ -84,32 +58,40 @@ const DropdownMenu = ({
 
               <div
                 className={`"dropdown-menu absolute top-12 left-0 w-full bg-white border text-xl border-gray-300 shadow-md py-2"${
-                  subMenuOpen ? 'open' : ''
-                }`}
+                  subMenuOpen ? 'open' : 'hidden'
+                }`} ////hidden add be jaye ''
               >
                 <ul
                   className={`z-40 bg-white ${
                     subMenuOpen ? 'block' : 'hidden'
                   }`}
                 >
-                  {categories.map((item) => (
-                    <li className="mb-4 font-semibold px-2" key={item.id}>
-                      {item.name}
+                  {categories.map((category) => {
+                    const subCategories = subCategory.filter(
+                      (sub) => sub.category === category._id
+                    );
 
-                      <ul>
-                        {subCategory.map((sub) => {
-                          return (
-                            item._id === sub.category && (
-                              <li key={sub._id}>{sub.name}</li>
-                            )
-                          );
-                        })}
-                      </ul>
-                    </li>
-                  ))}
-                  {/* <li className="mb-4 font-semibold px-2">
-                    <a href="#">sdsfsd</a>
-                  </li> */}
+                    return (
+                      <li
+                        className="mb-4 font-semibold px-2"
+                        key={category._id}
+                      >
+                        <a href="#" onClick={() => toggleSubMenu(category._id)}>
+                          {category.name}
+                        </a>
+
+                        <ul
+                          className={`z-40 bg-white ${
+                            subMenuOpen === category._id ? 'block' : 'hidden'
+                          }`}
+                        >
+                          {subCategories.map((sub) => (
+                            <li key={sub._id}>{sub.name}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </li>
@@ -126,25 +108,31 @@ const DropdownMenu = ({
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl font-bold ">
         <div className="flex justify-start items-center self-start gap-8">
-          {categories.map((item) => (
-            <span
-              className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
-              key={item.id}
-              className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
-              key={item.id}
-            >
-              {item.name}
-              <ul>
-                {subCategory.map((sub) => {
-                  return (
-                    item._id === sub.category && (
-                      <li key={sub._id}>{sub.name}</li>
-                    )
-                  );
-                })}
-              </ul>
-            </span>
-          ))}
+          {categories.map((category) => {
+            const subCategories = subCategory.filter(
+              (sub) => sub.category === category._id
+            );
+
+            return (
+              <span
+                className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
+                key={category._id}
+              >
+                <a href="#" onClick={() => toggleSubMenu(category._id)}>
+                  {category.name}
+                </a>
+                <ul
+                  className={`z-40 bg-white ${
+                    subMenuOpen === category._id ? 'block' : 'hidden'
+                  }`}
+                >
+                  {subCategories.map((sub) => (
+                    <li key={sub._id}>{sub.name}</li>
+                  ))}
+                </ul>
+              </span>
+            );
+          })}
         </div>
         <div className="flex justify-start items-center gap-8">
           <span className="text-slate-500 text-sm">درباره ما</span>
@@ -155,4 +143,4 @@ const DropdownMenu = ({
   );
 };
 
-export default DropdownMenu;
+export default DropdownMenu2;

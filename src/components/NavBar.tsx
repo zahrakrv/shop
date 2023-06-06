@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import DropdownMenu from '../components/DropdownMenu';
+import DropdownMenu2 from '../components/DropdownMenu2';
 import { useState } from 'react';
 
 const NavBar = () => {
@@ -17,7 +17,7 @@ const NavBar = () => {
   return (
     <>
       {/* /////////////////////Menu */}
-      <DropdownMenu
+      <DropdownMenu2
         isOpen={isOpen}
         subMenuOpen={subMenuOpen}
         toggleMenu={toggleMenu}
