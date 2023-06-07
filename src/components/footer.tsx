@@ -3,7 +3,7 @@ import Link from 'next/link';
 const Footer = () => {
   return (
     <div className="p-4">
-      <hr className="my-10"></hr>
+      <hr className="my-28"></hr>
       <div className="flex justify-between items-center">
         <div>
           <img src="logo.png" className="sm:w-44 w-44"></img>

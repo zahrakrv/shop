@@ -13,7 +13,7 @@ const DropdownMenu2 = ({
   const { fetchCategories, fetchSubCategories } = useContext(GlobalContext);
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
-
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     fetchCategories().then((res) => {
       setCategories(res.data.data.categories);
@@ -76,13 +76,20 @@ const DropdownMenu2 = ({
                         className="mb-4 font-semibold px-2"
                         key={category._id}
                       >
-                        <a href="#" onClick={() => toggleSubMenu(category._id)}>
+                        {/* toggleSubMenu(category._id) */}
+                        <button
+                          //   href="#"
+                          onClick={() => {
+                            console.log('hhhh');
+                            setMenuOpen(!menuOpen);
+                          }}
+                        >
                           {category.name}
-                        </a>
+                        </button>
 
                         <ul
-                          className={`z-40 bg-white ${
-                            subMenuOpen === category._id ? 'block' : 'hidden'
+                          className={`z-40 mt-6 bg-white ${
+                            menuOpen === true ? 'block' : 'hidden'
                           }`}
                         >
                           {subCategories.map((sub) => (
@@ -106,7 +113,7 @@ const DropdownMenu2 = ({
       </div>
 
       {/* //////////sm menu */}
-      <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl font-bold ">
+      <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl ">
         <div className="flex justify-start items-center self-start gap-8">
           {categories.map((category) => {
             const subCategories = subCategory.filter(
@@ -115,15 +122,22 @@ const DropdownMenu2 = ({
 
             return (
               <span
-                className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
+                className=" text-slate-500 text-sm rounded p-2 mb-10"
                 key={category._id}
               >
-                <a href="#" onClick={() => toggleSubMenu(category._id)}>
+                <a
+                  className="mb-8"
+                  href="#"
+                  onClick={() => {
+                    // console.log('hhhh');
+                    setMenuOpen(!menuOpen);
+                  }}
+                >
                   {category.name}
                 </a>
                 <ul
-                  className={`z-40 bg-white ${
-                    subMenuOpen === category._id ? 'block' : 'hidden'
+                  className={`z-40 mt-8 ${
+                    menuOpen === true ? 'block' : 'hidden'
                   }`}
                 >
                   {subCategories.map((sub) => (
@@ -135,8 +149,8 @@ const DropdownMenu2 = ({
           })}
         </div>
         <div className="flex justify-start items-center gap-8">
-          <span className="text-slate-500 text-sm">درباره ما</span>
-          <span className="text-slate-500 text-sm">تماس با ما</span>
+          <span className="text-slate-500 text-xl">درباره ما</span>
+          <span className="text-slate-500 text-xl">تماس با ما</span>
         </div>
       </div>
     </>
