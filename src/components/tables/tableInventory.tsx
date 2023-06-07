@@ -28,9 +28,9 @@ const TableInventory = () => {
           sortOrder
         );
         // console.log(productsData);
-        console.log(productsData);
-        console.log(productsData.total_pages);
-        console.log(productsData.data.total);
+        // console.log(productsData);
+        // console.log(productsData.total_pages);
+        // console.log(productsData.data.total);
 
         setTotalPage(productsData.total_pages);
         setProducts(productsData.data.products);
@@ -51,7 +51,7 @@ const TableInventory = () => {
   }
 
   const handleChangePage = (event, newPage) => {
-    console.log(newPage);
+    // console.log(newPage);
 
     setPage(newPage);
   };

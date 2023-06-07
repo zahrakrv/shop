@@ -80,7 +80,7 @@ const DropdownMenu2 = ({
                         <button
                           //   href="#"
                           onClick={() => {
-                            console.log('hhhh');
+                            // console.log('hhhh');
                             setMenuOpen(!menuOpen);
                           }}
                         >

@@ -113,7 +113,7 @@ const GlobalProvider = ({ children }: any) => {
       const res = await axios.get(
         `http://localhost:8000/api/orders?page=${page}&sort=${sortDelivery}&limit=${limit}`
       );
-      console.log(res.data);
+      // console.log(res.data);
       return res;
     } catch (error) {
       console.error('Error fetching categories:', error);

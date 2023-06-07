@@ -12,7 +12,7 @@ const Products = () => {
       <LayoutAdmin>
         <div className="py-2 container mx-auto">
           <TableAddProduct />
-          <TableAddProduct2 />
+          {/* <TableAddProduct2 /> */}
         </div>
       </LayoutAdmin>
     </>

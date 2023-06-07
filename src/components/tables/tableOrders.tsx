@@ -12,7 +12,7 @@ const TableOrders = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalPage, setTotalPage] = useState();
-  const [totalOrders, setTotalOrders] = useState();
+  const [totalOrders, setTotalOrders] = useState([]);
 
   ////about sorting
   // const [sortOrder, setSortOrder] = useState('asc');
@@ -35,30 +35,30 @@ const TableOrders = () => {
   // };
   //   getOrders();
   // }, [fetchOrders, rowsPerPage, page, totalOrders]);
-  useEffect(() => {
-    const getOrders = async () => {
-      try {
-        const ordersData = await fetchOrders();
-        // if (Array.isArray(categoriesData)) {
-        console.log(ordersData);
+  // useEffect(() => {
+  //   const getOrders = async () => {
+  //     try {
+  //       const ordersData = await fetchOrders();
+  // if (Array.isArray(categoriesData)) {
+  //       console.log(ordersData);
 
-        setOrders(ordersData.data.orders);
-        // }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
+  //       setOrders(ordersData.data.orders);
+  //       // }
+  //     } catch (error) {
+  //       console.error('Error fetching categories:', error);
+  //     }
+  //   };
 
-    getOrders();
-  }, [fetchOrders]);
+  //   getOrders();
+  // }, [fetchOrders]);
   useEffect(() => {
     fetchOrders().then((res) => {
-      console.log(res.data);
+      // console.log(res.data.data.orders);
 
       setTotalOrders(res.data.data.orders);
     });
   }, []);
-  console.log(totalOrders);
+  // console.log(totalOrders);
 
   //////////////pagination
   interface paginationProps {
@@ -168,9 +168,9 @@ const TableOrders = () => {
           {totalOrders.map((item: any) => (
             // console.log(category),
             <tr key={item.id}>
-              <td className="p-3 shadow">{item.name}</td>
+              <td className="p-3 shadow">{item.user}</td>
               <td className="p-3 shadow">{item.totalPrice}</td>
-              <td className="p-3 shadow">{item.orders[0].createdAt}</td>
+              <td className="p-3 shadow">{item.createdAt}</td>
             </tr>
           ))}
         </tbody>
