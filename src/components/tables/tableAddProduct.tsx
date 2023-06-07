@@ -3,7 +3,7 @@ import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { ListItem, TablePagination } from '@mui/material';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import Button from './../../kit/Button';
+import Button from './../../kit/button';
 
 const TableAddProduct = () => {
   const [products, setProducts] = useState([]);
@@ -39,7 +39,7 @@ const TableAddProduct = () => {
       }
     };
     getProducts();
-  }, [fetchProducts, rowsPerPage, page, totalProducts]);
+  }, [fetchProducts, rowsPerPage, page]);
 
   useEffect(() => {
     fetchCategories().then((res) => {

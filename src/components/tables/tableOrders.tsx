@@ -2,64 +2,79 @@ import React, { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { TablePagination } from '@mui/material';
 import Button from './../../kit/Button';
-
+import { request } from '@/utils/request';
 const TableOrders = () => {
-  const [orders, setOrders] = useState([]);
-  const { fetchCategories, fetchProducts, fetchOrders } =
+  // const [orders, setOrders] = useState([]);
+  const { fetchCategories, fetchProducts, fetchOrders, fetchUsers } =
     useContext(GlobalContext);
 
   ////about pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalPage, setTotalPage] = useState();
+  const [allOrders, setAllOrders] = useState();
+  const [userName, setUserName] = useState([]);
+  ////
   const [totalOrders, setTotalOrders] = useState([]);
+  ////////
 
   ////about sorting
-  // const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState(true);
   const [isRotated, setIsRotated] = useState(false);
 
-  // useEffect(() => {
-  //   const getOrders = async () => {
-  //     try {
-  //       const ordersData = await fetchOrders(page + 1, rowsPerPage);
-  //       console.log(ordersData);
-  //       console.log(ordersData.data.data.total_pages);
-  // console.log(ordersData.data.total);
-
-  // setTotalPage(ordersData.data.data.total_pages);
-  //     setOrders(ordersData.data.orders);
-  //     setTotalOrders(ordersData.total);
-  //   } catch (error) {
-  //     console.error('Error fetching products:', error);
-  //   }
-  // };
-  //   getOrders();
-  // }, [fetchOrders, rowsPerPage, page, totalOrders]);
-  // useEffect(() => {
-  //   const getOrders = async () => {
-  //     try {
-  //       const ordersData = await fetchOrders();
-  // if (Array.isArray(categoriesData)) {
-  //       console.log(ordersData);
-
-  //       setOrders(ordersData.data.orders);
-  //       // }
-  //     } catch (error) {
-  //       console.error('Error fetching categories:', error);
-  //     }
-  //   };
-
-  //   getOrders();
-  // }, [fetchOrders]);
   useEffect(() => {
-    fetchOrders().then((res) => {
-      // console.log(res.data.data.orders);
+    const getProducts = async () => {
+      try {
+        const productsData = await fetchOrders(
+          page + 1,
+          rowsPerPage,
+          sortOrder
+        );
+        // console.log(productsData);
+        // console.log(productsData);
+        // console.log(productsData.total_pages);
+        // console.log(productsData.data.total);
 
-      setTotalOrders(res.data.data.orders);
-    });
+        setTotalPage(productsData.data.total_pages);
+        setTotalOrders(productsData.data.data.orders);
+        // setProducts(productsData.data.products);
+        setAllOrders(productsData.data.total);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    getProducts();
+  }, [sortOrder, rowsPerPage, page, fetchOrders]);
+
+  useEffect(() => {
+    try {
+      const getUser = request
+        .get(`/users`)
+        .then((res) => setUserName(res.data.data.users));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
   }, []);
-  // console.log(totalOrders);
+  // useEffect(() => {
+  //   fetchUsers().then((res) => {
 
+  //     setUserName(res.data.data.users);
+  //   });
+  // }, []);
+  // useEffect(() => {
+  //   fetchOrders().then((res) => {
+  // console.log(res.data.data.orders);
+  // setTotalOrders(res.data.data.orders);
+  //   });
+  // }, []);
+  // console.log(totalOrders);
+  // useEffect(() => {
+  //   fetchUsers().then((res) => {
+  //     console.log(res);
+
+  // setCategories(res.data.data.categories);
+  //   });
+  // }, []);
   //////////////pagination
   interface paginationProps {
     event: React.MouseEvent<HTMLButtonElement> | null;
@@ -70,7 +85,7 @@ const TableOrders = () => {
   }
 
   const handleChangePage = (event, newPage) => {
-    console.log(newPage);
+    // console.log(newPage);
 
     setPage(newPage);
   };
@@ -99,7 +114,22 @@ const TableOrders = () => {
   return (
     <div className="flex-col justify-center">
       <div className="flex justify-start mb-12">
-        <Button>افزودن کالا</Button>
+        <div className="flex gap-4 mr-16 mt-6">
+          <input
+            type="radio"
+            id="html"
+            name="order_filter"
+            value="سفارش های تحویل شده "
+          />
+          سفارش های تحویل شده
+          <input
+            type="radio"
+            id="html"
+            name="order_filter"
+            value="سفارش های در انتظار ارسال"
+          />
+          سفارش های در انتظار ارسال
+        </div>
       </div>
       <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border rounded items-center">
         <thead className="mx-auto border-gray-400 border-b">
@@ -165,12 +195,20 @@ const TableOrders = () => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {totalOrders.map((item: any) => (
+          {console.log('sdfd', userName)}
+          {totalOrders?.map((item: any) => (
             // console.log(category),
             <tr key={item.id}>
-              <td className="p-3 shadow">{item.user}</td>
+              <td className="p-3 shadow">
+                {userName?.map((i) => {
+                  return i?._id === item?.user && <span>{i?.username}</span>;
+                })}
+              </td>
               <td className="p-3 shadow">{item.totalPrice}</td>
               <td className="p-3 shadow">{item.createdAt}</td>
+              <td>
+                <a>بررسی سفارش ها</a>
+              </td>
             </tr>
           ))}
         </tbody>

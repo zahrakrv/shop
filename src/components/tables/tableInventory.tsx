@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const TableInventory = () => {
   const [products, setProducts] = useState([]);
-  const { fetchCategories, fetchProducts, fetchSortPrice } =
+  const { fetchCategories, fetchProducts, fetchSortPrice, fetchUsers } =
     useContext(GlobalContext);
   const [page, setPage] = useState(0);
 
@@ -14,6 +14,7 @@ const TableInventory = () => {
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalPage, setTotalPage] = useState();
   const [totalProducts, setTotalProducts] = useState();
+  const [users, setUsers] = useState([]);
 
   ////about sorting
   const [sortOrder, setSortOrder] = useState(true);
@@ -41,6 +42,15 @@ const TableInventory = () => {
     };
     getProducts();
   }, [sortOrder, rowsPerPage, page, totalProducts]);
+
+  // useEffect(() => {
+  //   fetchUsers().then((res) => {
+  //     console.log(res.data);
+
+  // setUsers(res.data.data.categories);
+  //   });
+  // }, []);
+
   //////////////pagination
   interface paginationProps {
     event: React.MouseEvent<HTMLButtonElement> | null;
@@ -81,7 +91,7 @@ const TableInventory = () => {
   return (
     <div className="flex-col justify-center">
       <div className="flex justify-start mb-12">
-        <Button>افزودن کالا</Button>
+        <Button>ذخیره</Button>
       </div>
       <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border rounded items-center">
         <thead className="mx-auto border-gray-400 border-b">
@@ -151,7 +161,12 @@ const TableInventory = () => {
           {products.map((item: any) => (
             // console.log(item),
             <tr key={item.id}>
-              <td className="p-3 shadow">{item.name}</td>
+              <td className="p-3 shadow">
+                {/* {users.map((i) => {
+                  return item.name === i._id && <span>{i.name}</span>;
+                })} */}
+                {item.name}
+              </td>
               <td className="p-3 shadow">{item.price}</td>
               <td className="p-3 shadow">{item.quantity}</td>
             </tr>

@@ -139,6 +139,18 @@ const GlobalProvider = ({ children }: any) => {
       return [];
     }
   };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/users`);
+      console.log(response);
+
+      return response;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -149,6 +161,7 @@ const GlobalProvider = ({ children }: any) => {
         fetchOrders,
         fetchSortPrice,
         fetchSubCategories,
+        fetchUsers,
       }}
     >
       {children}
