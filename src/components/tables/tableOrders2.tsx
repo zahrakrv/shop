@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { GlobalContext } from '../../pages/api/context/GlobalContext';
 
-function TableAddProduct2() {
+function TableOrder2() {
   const { fetchProducts, fetchCategories } = useContext(GlobalContext);
   const [records, setRecords] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -20,22 +20,22 @@ function TableAddProduct2() {
   }, []);
   const columns = [
     {
-      name: 'تصویر کالا',
+      name: 'نام کاربر',
       selector: (row) => row.img,
       sortable: true,
     },
     {
-      name: 'نام کالا',
+      name: 'مجموع مبلغ',
       selector: (row) => row.name,
       sortable: true,
     },
     {
-      name: 'دسته بندی',
+      name: 'زمان سفارش',
       selector: (row) => getCategoryName(row.category),
       sortable: true,
     },
     {
-      name: 'ویرایش/حذف',
+      name: 'بررسی سفارش',
       selector: (row) => row.edit,
       sortable: true,
     },
@@ -47,16 +47,11 @@ function TableAddProduct2() {
   }
   const data = records.map((product) => ({
     id: product.id,
-    img: (
-      <img
-        // className="w-24 rounded"
-        src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-        alt={product.name}
-      />
-    ),
     name: product.name,
+    price: product.price,
+    date: product.quantity,
     // category: {product.price},
-    edit: 'svg',
+    order: 'بررسی سفارش',
   }));
 
   function handleFilter(e) {
@@ -84,4 +79,4 @@ function TableAddProduct2() {
     </div>
   );
 }
-export default TableAddProduct2;
+export default TableOrder2;
