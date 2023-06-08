@@ -9,9 +9,11 @@ const HeaderSite = () => {
       </div>
       <div className="">
         <div className="w-full sm:w-full md:w-full sm:flex sm:justify-between sm:items-center sm:gap-4">
-          <div className="flex items-center justify-center">
-            <img src="logo.png" className="sm:w-52 w-44"></img>
-          </div>
+          <Link href="/">
+            <div className="flex items-center justify-center">
+              <img src="logo.png" className="sm:w-52 w-44"></img>
+            </div>
+          </Link>
           {/* ////div search & cart */}
           <div className="flex gap-3 justify-between sm:justify-between items-center px-2">
             <div className="relative">

@@ -102,10 +102,10 @@ const DropdownMenu2 = ({
                 </ul>
               </div>
             </li>
-            <li className="mb-4 font-semibold px-2">
+            <li className="mb-4 font-semibold px-2 text-sm">
               <a href="#">درباره ما</a>
             </li>
-            <li className="mb-4 font-semibold px-2">
+            <li className="mb-4 font-semibold px-2 text-sm">
               <a href="#">تماس با ما</a>
             </li>
           </ul>
@@ -148,7 +148,7 @@ const DropdownMenu2 = ({
             );
           })}
         </div>
-        <div className="flex justify-start items-center gap-8">
+        <div className="flex justify-start items-center gap-8 text-sm">
           <span className="text-slate-500 text-xl">درباره ما</span>
           <span className="text-slate-500 text-xl">تماس با ما</span>
         </div>

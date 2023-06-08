@@ -14,7 +14,7 @@ const TableInventory = () => {
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalPage, setTotalPage] = useState();
   const [totalProducts, setTotalProducts] = useState();
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
 
   ////about sorting
   const [sortOrder, setSortOrder] = useState(true);
@@ -41,7 +41,7 @@ const TableInventory = () => {
       }
     };
     getProducts();
-  }, [sortOrder, rowsPerPage, page, totalProducts]);
+  }, [sortOrder, rowsPerPage, page, fetchSortPrice]);
 
   // useEffect(() => {
   //   fetchUsers().then((res) => {

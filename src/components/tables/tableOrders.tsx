@@ -30,12 +30,13 @@ const TableOrders = () => {
           rowsPerPage,
           sortOrder
         );
-        // console.log(productsData);
+        console.log(productsData);
         // console.log(productsData);
         // console.log(productsData.total_pages);
         // console.log(productsData.data.total);
+        console.log(productsData.data.total);
 
-        setTotalPage(productsData.data.total_pages);
+        setTotalPage(productsData.total_pages);
         setTotalOrders(productsData.data.data.orders);
         // setProducts(productsData.data.products);
         setAllOrders(productsData.data.total);
@@ -140,7 +141,10 @@ const TableOrders = () => {
             >
               <div
                 className="flex items-center gap-2 cursor-pointer"
-                onClick={() => setIsRotated(!isRotated)}
+                onClick={() => {
+                  setIsRotated(!isRotated);
+                  setSortOrder((prev) => !prev);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +199,7 @@ const TableOrders = () => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {console.log('sdfd', userName)}
+          {/* {console.log('sdfd', userName)} */}
           {totalOrders?.map((item: any) => (
             // console.log(category),
             <tr key={item.id}>
@@ -218,7 +222,7 @@ const TableOrders = () => {
         dir="ltr"
         className="mr-16 mt-12"
         component="div"
-        count={totalOrders}
+        count={allOrders}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
