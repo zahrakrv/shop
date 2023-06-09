@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <Layout>
         <main>
-          <NavBar />
+          {/* <NavBar /> */}
           {/* <Slider /> */}
         </main>
       </Layout>

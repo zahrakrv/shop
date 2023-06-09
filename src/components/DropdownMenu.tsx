@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import React from 'react';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
+import Link from 'next/link';
 
 const DropdownMenu = ({
   isOpen,
@@ -128,9 +129,9 @@ const DropdownMenu = ({
         <div className="flex justify-start items-center self-start gap-8">
           {categories.map((item) => (
             <span
-              className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
+              className=" text-slate-500 text-sm rounded p-2 hover:text-blue-900 cursor-pointer"
               key={item.id}
-              className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white"
+              className=" text-slate-500 text-sm rounded p-2 hover:text-blue-900 cursor-pointer"
               key={item.id}
             >
               {item.name}
@@ -147,8 +148,16 @@ const DropdownMenu = ({
           ))}
         </div>
         <div className="flex justify-start items-center gap-8">
-          <span className="text-slate-500 text-sm">درباره ما</span>
-          <span className="text-slate-500 text-sm">تماس با ما</span>
+          <Link href="/about">
+            <span className="text-slate-500 text-sm hover:text-blue-900 cursor-pointer">
+              درباره ما
+            </span>
+          </Link>
+          <Link href="/contact">
+            <span className="text-slate-500 text-sm hover:text-blue-900 cursor-pointer">
+              تماس با ما
+            </span>
+          </Link>
         </div>
       </div>
     </>
