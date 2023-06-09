@@ -1,12 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { TablePagination } from '@mui/material';
 import Button from './../../kit/Button';
 import { request } from '@/utils/request';
+import { all } from 'axios';
+
 const TableOrders = () => {
+  ////radio button
+  const [value, setValue] = useState('all');
+  // const [orders, setOrders] = useState<Order[]>([]);
+
   // const [orders, setOrders] = useState([]);
-  const { fetchCategories, fetchProducts, fetchOrders, fetchUsers } =
-    useContext(GlobalContext);
+  const { fetchOrders } = useContext(GlobalContext);
 
   ////about pagination
   const [page, setPage] = useState(0);
@@ -14,6 +19,8 @@ const TableOrders = () => {
   const [totalPage, setTotalPage] = useState();
   const [allOrders, setAllOrders] = useState();
   const [userName, setUserName] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [deliveryStatus, setDeliveryStatus] = useState();
   ////
   const [totalOrders, setTotalOrders] = useState([]);
   ////////
@@ -28,24 +35,36 @@ const TableOrders = () => {
         const productsData = await fetchOrders(
           page + 1,
           rowsPerPage,
-          sortOrder
+          sortOrder,
+          deliveryStatus
         );
         console.log(productsData);
         // console.log(productsData);
         // console.log(productsData.total_pages);
         // console.log(productsData.data.total);
         console.log(productsData.data.total);
-
         setTotalPage(productsData.total_pages);
         setTotalOrders(productsData.data.data.orders);
         // setProducts(productsData.data.products);
         setAllOrders(productsData.data.total);
+        // const OrdersFilter = productsData.data.data.orders.filter((order) => {
+        //   // console.log(order.deliveryStatus);
+        //   if (value === 'waiting') {
+        //     return order.deliveryStatus === false;
+        //   } else if (value === 'done') {
+        //     return order.deliveryStatus === true;
+        //   } else {
+        //     return true;
+        //   }
+        // });
+        // setFilteredOrders(OrdersFilter);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
     getProducts();
-  }, [sortOrder, rowsPerPage, page, fetchOrders]);
+  }, [sortOrder, rowsPerPage, page, fetchOrders, deliveryStatus]);
+  console.log(allOrders);
 
   useEffect(() => {
     try {
@@ -56,26 +75,31 @@ const TableOrders = () => {
       console.error('Error fetching products:', error);
     }
   }, []);
-  // useEffect(() => {
-  //   fetchUsers().then((res) => {
 
-  //     setUserName(res.data.data.users);
-  //   });
-  // }, []);
-  // useEffect(() => {
-  //   fetchOrders().then((res) => {
-  // console.log(res.data.data.orders);
-  // setTotalOrders(res.data.data.orders);
-  //   });
-  // }, []);
+  //////وضضعیت تحویل
   // console.log(totalOrders);
-  // useEffect(() => {
-  //   fetchUsers().then((res) => {
-  //     console.log(res);
+  // const OrdersFilter = totalOrders.filter((order) => {
+  //   // console.log(order.deliveryStatus);
+  //   if (value === 'waiting') {
+  //     return order.deliveryStatus === false;
+  //   } else if (value === 'done') {
+  //     return order.deliveryStatus === true;
+  //   } else {
+  //     return true;
+  //   }
+  // });
 
-  // setCategories(res.data.data.categories);
-  //   });
-  // }, []);
+  ////how to show date of order
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-US');
+    return formattedDate;
+  };
+
+  ///to show first name and last name of user
+  // const formatUserName=(user:string)=>{
+  //   return `${user.firstName} ${user.lastName}`;
+  // }
   //////////////pagination
   interface paginationProps {
     event: React.MouseEvent<HTMLButtonElement> | null;
@@ -87,7 +111,6 @@ const TableOrders = () => {
 
   const handleChangePage = (event, newPage) => {
     // console.log(newPage);
-
     setPage(newPage);
   };
   const handleChangeRowsPerPage = (event) => {
@@ -115,24 +138,63 @@ const TableOrders = () => {
   return (
     <div className="flex-col justify-center">
       <div className="flex justify-start mb-12">
-        <div className="flex gap-4 mr-16 mt-6">
-          <input
-            type="radio"
-            id="html"
-            name="order_filter"
-            value="سفارش های تحویل شده "
-          />
+        {/* <div className="flex gap-4 mr-16 mt-6">
+          <input type="radio" id="html" name="order_filter" value="done" />
           سفارش های تحویل شده
-          <input
-            type="radio"
-            id="html"
-            name="order_filter"
-            value="سفارش های در انتظار ارسال"
-          />
+          <input type="radio" id="html" name="order_filter" value="waiting" />
           سفارش های در انتظار ارسال
+          <input type="radio" id="html" name="order_filter" value="all" />
+          همه ی سفارش ها
+        </div> */}
+        <div className="flex flex-row gap-4 mr-16 mt-6">
+          <label className="bg-teal-400 rounded-lg p-2">
+            <input
+              type="radio"
+              value="all"
+              checked={value === 'all'}
+              onChange={(e) => {
+                setValue(e.target.value);
+                e.target.value === 'all'
+                  ? setDeliveryStatus(undefined)
+                  : setDeliveryStatus((prev) => prev);
+              }}
+              className="mr-2"
+            />
+            همه
+          </label>
+          <label className="bg-teal-400 rounded-lg p-2">
+            <input
+              type="radio"
+              value="waiting"
+              checked={value === 'waiting'}
+              onChange={(e) => {
+                setValue(e.target.value);
+                e.target.value === 'waiting'
+                  ? setDeliveryStatus(false)
+                  : setDeliveryStatus((prev) => prev);
+              }}
+              className="mr-2"
+            />
+            در انتظار تحویل
+          </label>
+          <label className="bg-teal-400 rounded-lg p-2">
+            <input
+              type="radio"
+              value="done"
+              checked={value === 'done'}
+              onChange={(e) => {
+                setValue(e.target.value);
+                e.target.value === 'done'
+                  ? setDeliveryStatus(true)
+                  : setDeliveryStatus((prev) => prev);
+              }}
+              className="mr-2"
+            />
+            تحویل داده شده
+          </label>
         </div>
       </div>
-      <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border rounded items-center">
+      <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border items-center">
         <thead className="mx-auto border-gray-400 border-b">
           <tr>
             <th
@@ -195,7 +257,8 @@ const TableOrders = () => {
                 زمان ثبت سفارش
               </div>
             </th>
-            <th>ویرایش</th>
+            <th>وضعیت سفارش</th>
+            <th>بررسی سفارش</th>
           </tr>
         </thead>
         <tbody className="text-center">
@@ -209,8 +272,11 @@ const TableOrders = () => {
                 })}
               </td>
               <td className="p-3 shadow">{item.totalPrice}</td>
-              <td className="p-3 shadow">{item.createdAt}</td>
-              <td>
+              <td className="p-3 shadow">{formatDate(item.createdAt)}</td>
+              <td className="p-6 shadow">
+                {item.deliveryStatus ? 'تحویل داده شده' : 'در انتظار تحویل'}
+              </td>
+              <td className="p-6 shadow">
                 <a>بررسی سفارش ها</a>
               </td>
             </tr>

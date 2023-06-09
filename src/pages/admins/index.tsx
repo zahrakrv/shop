@@ -50,7 +50,7 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-teal-400">
+      <div className="max-w-md w-full space-y-8 bg-teal-400 rounded-xl p-2">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
             ورود به پنل ادمین
@@ -72,7 +72,7 @@ const AdminLogin = () => {
                 {...register('username', {
                   required: 'نام کاربری الزامی است',
                 })}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
+                className={`bg-teal-200 mb-4 rounded-none relative block w-full px-3 py-2 border ${
                   formState.errors.username
                     ? 'border-red-500 focus:outline-none focus:ring-red-500 focus:border-red-500'
                     : 'border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
@@ -80,7 +80,7 @@ const AdminLogin = () => {
                 placeholder="نام کاربری خود را وارد کنید"
               />
               {formState.errors.username && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-red-600 mb-4">
                   {formState.errors.username?.message}
                 </p>
               )}
@@ -98,7 +98,7 @@ const AdminLogin = () => {
                 {...register('password', {
                   required: 'رمز عبور الزامی است',
                 })}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
+                className={`bg-teal-200 mb-6 rounded-none relative block w-full px-3 py-2 border ${
                   formState.errors.password
                     ? 'border-red-500 focus:outline-none focus:ring-red-500 focus:border-red-500'
                     : 'border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
@@ -106,7 +106,7 @@ const AdminLogin = () => {
                 placeholder="رمز عبور خود را وارد کنید"
               />
               {formState.errors.password && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-red-600 mb-4">
                   {formState.errors.password?.message}
                 </p>
               )}
@@ -126,7 +126,7 @@ const AdminLogin = () => {
           <div className="flex items-center justify-center mt-4">
             <button
               type="submit"
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
+              className={`group relative flex justify-center py-2 px-4 mb-6 text-sm font-medium rounded-md text-white ${
                 formState.isValid
                   ? 'bg-teal-800 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-400'
                   : 'bg-gray-400 cursor-not-allowed'

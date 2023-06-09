@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import React from 'react';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
+import Link from 'next/link';
 
 const DropdownMenu2 = ({
   isOpen,
@@ -57,7 +58,7 @@ const DropdownMenu2 = ({
               </a>
 
               <div
-                className={`"dropdown-menu absolute top-12 left-0 w-full bg-white border text-xl border-gray-300 shadow-md py-2"${
+                className={`"dropdown-menu absolute top-12 left-0 w-full bg-white border text-xl border-gray-300 shadow-md py-2 "${
                   subMenuOpen ? 'open' : 'hidden'
                 }`} ////hidden add be jaye ''
               >
@@ -114,7 +115,7 @@ const DropdownMenu2 = ({
 
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl ">
-        <div className="flex justify-start items-center self-start gap-8">
+        <div className="flex justify-start items-center self-start gap-8 hover:text-blue-950 hover:font-bold">
           {categories.map((category) => {
             const subCategories = subCategory.filter(
               (sub) => sub.category === category._id
@@ -149,8 +150,16 @@ const DropdownMenu2 = ({
           })}
         </div>
         <div className="flex justify-start items-center gap-8 text-sm">
-          <span className="text-slate-500 text-xl">درباره ما</span>
-          <span className="text-slate-500 text-xl">تماس با ما</span>
+          <Link href="/about">
+            <span className="text-slate-500 hover:text-blue-950 hover:font-bold">
+              درباره ما
+            </span>
+          </Link>
+          <Link href="/contact">
+            <span className="text-slate-500 hover:text-blue-950 hover:font-bold">
+              تماس با ما
+            </span>
+          </Link>
         </div>
       </div>
     </>

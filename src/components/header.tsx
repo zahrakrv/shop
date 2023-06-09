@@ -5,7 +5,7 @@ const HeaderSite = () => {
   return (
     <>
       <div className="hidden md:flex">
-        <img src="banner.gif"></img>
+        <img src="/banner.gif"></img>
       </div>
       <div className="">
         <div className="w-full sm:w-full md:w-full sm:flex sm:justify-between sm:items-center sm:gap-4">

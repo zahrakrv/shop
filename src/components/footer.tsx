@@ -71,10 +71,10 @@ const Footer = () => {
                 گزارش تخلف در مگامگ
               </span>
             </Link>
-            <Link href="">
+            <Link href="/contact">
               <span className="text-slate-500 text-sm"> تماس با مگامگ</span>
             </Link>
-            <Link href="">
+            <Link href="/about">
               <span className="text-slate-500 text-sm"> درباره مگامگ</span>
             </Link>
           </div>

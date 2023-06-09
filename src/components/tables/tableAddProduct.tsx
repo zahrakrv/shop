@@ -162,7 +162,7 @@ const TableAddProduct = () => {
       {/* ///////pagination */}
       <TablePagination
         dir="ltr"
-        className="absolute right-1/2 mt-12"
+        className="mr-16 mt-12"
         component="div"
         count={totalProducts}
         page={page}

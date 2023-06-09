@@ -108,10 +108,14 @@ const GlobalProvider = ({ children }: any) => {
     // console.log(res.data.data);
   };
 
-  const fetchOrders = async (page, limit, sortDelivery) => {
+  const fetchOrders = async (page, limit, sortDelivery, deliveryStatus) => {
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/orders?page=${page}&sort=${sortDelivery}&limit=${limit}`
+        `http://localhost:8000/api/orders?page=${page}&sort=${sortDelivery}&limit=${limit}${
+          deliveryStatus !== undefined
+            ? '&deliveryStatus=' + deliveryStatus
+            : ''
+        }`
       );
       // console.log(res.data);
       return res;
