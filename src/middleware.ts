@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admins/dashboard'],
+  // matcher: ['/admins/dashboard'],
   //////
-  // matcher: ['/admins/:path*'],
+  matcher: ['/admins/:path*'],
 };
