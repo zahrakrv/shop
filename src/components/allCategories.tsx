@@ -1,28 +1,28 @@
 import { useContext, useEffect, useState } from 'react';
-import { GlobalContext } from './../pages/context/GlobalContext';
+import { GlobalContext } from '../pages/api/context/GlobalContext';
 
 const AllCategories = () => {
   const { fetchProducts } = useContext(GlobalContext);
-  const [categories, setCategories] = useState([]);
-
+  const [products, setProducts] = useState([]);
+//
   useEffect(() => {
-    const getCategories = async () => {
+    const getProducts = async () => {
       try {
-        const categoriesData = await fetchProducts();
+        const productsData = await fetchProducts();
         // if (Array.isArray(categoriesData)) {
-        console.log(categoriesData);
+        // console.log(productsData);
 
-        setCategories(categoriesData.data.products);
+        setProducts(productsData.data.products);
         // }
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
     };
 
-    getCategories();
+    getProducts();
   }, [fetchProducts]);
   //   [fetchProducts]
-  if (categories.length === 0) {
+  if (products.length === 0) {
     return <div>No categories available.</div>;
   }
 

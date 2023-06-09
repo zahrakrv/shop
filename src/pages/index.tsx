@@ -10,12 +10,12 @@ import Slider from './slider';
 export default function Home() {
   return (
     <>
-      <main>
-        <Layout>
-          <NavBar />
-          <Slider />
-        </Layout>
-      </main>
+      <Layout>
+        <main>
+          {/* <NavBar /> */}
+          {/* <Slider /> */}
+        </main>
+      </Layout>
     </>
   );
 }

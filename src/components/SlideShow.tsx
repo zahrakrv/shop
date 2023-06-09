@@ -40,7 +40,7 @@ const SlideShow = () => {
     transitionTimingFunction: 'ease-in-out',
   };
   return (
-    <div className="m-10">
+    <div className="m-16 w-full">
       <Zoom {...zoomInproperties}>
         {images.map((each, index) => (
           <div
