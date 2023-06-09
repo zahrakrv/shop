@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import React from 'react';
+import { GlobalContext } from './../pages/api/context/GlobalContext';
+import Link from 'next/link';
 
 const DropdownMenu = ({
   isOpen,
@@ -9,6 +11,10 @@ const DropdownMenu = ({
   toggleMenu,
   toggleSubMenu,
 }) => {
+  const { fetchCategories, fetchSubCategories } = useContext(GlobalContext);
+  const [categories, setCategories] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+
   // const [isOpen, setIsOpen] = useState(false);
   // const [subMenuOpen, setSubMenuOpen] = useState(true);
 
@@ -20,6 +26,32 @@ const DropdownMenu = ({
   // const toggleSubMenu = () => {
   //   setSubMenuOpen(!subMenuOpen);
   // };
+  // useEffect(() => {
+  //   const getCategories = async () => {
+  //     try {
+  //       const response = await fetchCategories().then((response) => {
+  //         console.log(response);
+  //         setCategories(response);
+  //       });
+  //     } catch (error) {
+  //       console.error('Error fetching categories:', error);
+  //     }
+  //   };
+
+  //   getCategories();
+  // }, [fetchCategories]);
+
+  useEffect(() => {
+    fetchCategories().then((res) => {
+      setCategories(res.data.data.categories);
+    });
+  }, []);
+  useEffect(() => {
+    fetchSubCategories().then((response) => {
+      setSubCategory(response.data.data.subcategories);
+    });
+  }, []);
+  // console.log('subCategory', subCategory);
 
   return (
     <>
@@ -61,15 +93,24 @@ const DropdownMenu = ({
                     subMenuOpen ? 'block' : 'hidden'
                   }`}
                 >
-                  <li className="mb-4 font-semibold px-2">
-                    <a href="#">گروه 1</a>
-                  </li>
-                  <li className="mb-4 font-semibold px-2">
-                    <a href="#">گروه 2</a>
-                  </li>
-                  <li className="mb-4 font-semibold px-2">
-                    <a href="#">گروه 3</a>
-                  </li>
+                  {categories.map((item) => (
+                    <li className="mb-4 font-semibold px-2" key={item.id}>
+                      {item.name}
+
+                      <ul>
+                        {subCategory.map((sub) => {
+                          return (
+                            item._id === sub.category && (
+                              <li key={sub._id}>{sub.name}</li>
+                            )
+                          );
+                        })}
+                      </ul>
+                    </li>
+                  ))}
+                  {/* <li className="mb-4 font-semibold px-2">
+                    <a href="#">sdsfsd</a>
+                  </li> */}
                 </ul>
               </div>
             </li>
@@ -86,19 +127,37 @@ const DropdownMenu = ({
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl font-bold ">
         <div className="flex justify-start items-center self-start gap-8">
-          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
-            گروه کالای 1
-          </span>
-          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
-            گروه کالای 2
-          </span>
-          <span className=" text-slate-500 text-sm rounded p-2 hover:bg-blue-900 hover:text-white">
-            گروه کالای 3
-          </span>
+          {categories.map((item) => (
+            <span
+              className=" text-slate-500 text-sm rounded p-2 hover:text-blue-900 cursor-pointer"
+              key={item.id}
+              className=" text-slate-500 text-sm rounded p-2 hover:text-blue-900 cursor-pointer"
+              key={item.id}
+            >
+              {item.name}
+              <ul>
+                {subCategory.map((sub) => {
+                  return (
+                    item._id === sub.category && (
+                      <li key={sub._id}>{sub.name}</li>
+                    )
+                  );
+                })}
+              </ul>
+            </span>
+          ))}
         </div>
         <div className="flex justify-start items-center gap-8">
-          <span className="text-slate-500 text-sm">درباره ما</span>
-          <span className="text-slate-500 text-sm">تماس با ما</span>
+          <Link href="/about">
+            <span className="text-slate-500 text-sm hover:text-blue-900 cursor-pointer">
+              درباره ما
+            </span>
+          </Link>
+          <Link href="/contact">
+            <span className="text-slate-500 text-sm hover:text-blue-900 cursor-pointer">
+              تماس با ما
+            </span>
+          </Link>
         </div>
       </div>
     </>

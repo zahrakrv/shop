@@ -53,6 +53,7 @@ const GlobalProvider = ({ children }: any) => {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
+
       // console.log(response.data);
       // console.log(response.data.data.products);
 
@@ -78,20 +79,94 @@ const GlobalProvider = ({ children }: any) => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios
-        .get('http://localhost:8000/api/categories')
-        .then((res) => {
-          return res;
-        });
+      const response = await axios.get(`http://localhost:8000/api/categories/`);
+      // .then((response) => {
+      //   console.log(response);
+
+      return response;
+      // });
       // return res.data.data;
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
     // console.log(res.data.data);
   };
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/subcategories?limit=all`
+      );
+      // .then((response) => {
+      //   console.log(response);
+
+      return response;
+      // });
+      // return res.data.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+    // console.log(res.data.data);
+  };
+
+  const fetchOrders = async (page, limit, sortDelivery, deliveryStatus) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8000/api/orders?page=${page}&sort=${sortDelivery}&limit=${limit}${
+          deliveryStatus !== undefined
+            ? '&deliveryStatus=' + deliveryStatus
+            : ''
+        }`
+      );
+      // console.log(res.data);
+      return res;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+    // console.log(res.data.data);
+  };
+
+  const fetchSortPrice = async (page, limit, sortOrder) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/products?page=${page}&limit=${limit}&fields=-rating,-createdAt,-updatedAt,-__v&sort=${
+          sortOrder ? 'price' : '-price'
+        }&quantity[gte]=8`
+        // {
+        //   headers: { Authorization: `Bearer ${adminToken}` },
+        // }
+      );
+      console.log(response.data);
+      // setSortOrder((prev) => !prev);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/users`);
+      console.log(response);
+
+      return response;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
   return (
     <GlobalContext.Provider
-      value={{ adminToken, adminLogin, fetchProducts, fetchCategories }}
+      value={{
+        adminToken,
+        adminLogin,
+        fetchProducts,
+        fetchCategories,
+        fetchOrders,
+        fetchSortPrice,
+        fetchSubCategories,
+        fetchUsers,
+      }}
     >
       {children}
     </GlobalContext.Provider>

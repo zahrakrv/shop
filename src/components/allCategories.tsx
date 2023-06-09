@@ -10,7 +10,7 @@ const AllCategories = () => {
       try {
         const productsData = await fetchProducts();
         // if (Array.isArray(categoriesData)) {
-        console.log(productsData);
+        // console.log(productsData);
 
         setProducts(productsData.data.products);
         // }

@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 const LayoutAdmin = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="relative ">
+    <div className="container relative">
       <NavBarAdmin />
       {/* <div className="flex flex-col"> */}
       <div className="md:mr-52 flex">

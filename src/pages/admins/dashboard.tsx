@@ -1,9 +1,10 @@
-import NavBarAdmin from '@/components/NavBarAdmin';
+// import NavBarAdmin from '@/components/NavBarAdmin';
 import SideBarAdmin from '../../components/SideBarAdmin';
 import { useState, useEffect, useContext } from 'react';
 import AllCategories from './../../components/allCategories';
 import TableAddProduct from './../../components/tables/tableAddProduct';
 import { GlobalContext } from '../api/context/GlobalContext';
+import NavBarAdmin from './../../components/NavBarAdmin';
 
 const Dashboard = () => {
   const [sidebar, setSideBar] = useState(false);
