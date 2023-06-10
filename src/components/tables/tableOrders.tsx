@@ -92,7 +92,7 @@ const TableOrders = () => {
   ////how to show date of order
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString('en-US');
+    const formattedDate = date.toLocaleDateString('fa-IR');
     return formattedDate;
   };
 
