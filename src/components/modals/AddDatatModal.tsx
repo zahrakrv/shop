@@ -8,6 +8,7 @@ import { Context } from '@ckeditor/ckeditor5-core';
 import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import dynamic from 'next/dynamic';
 
 const AddDataModal = ({ isOpenAdding, onClose }) => {
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
@@ -16,6 +17,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
   // useEffect(() => {
   //   setEditorLoaded(true);
   // }, []);
+  const Editor = dynamic(() => import('../Editor'), { ssr: false });
 
   return (
     <>
@@ -56,38 +58,16 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                 <label> تصویر کالا </label>
                 <input type="file"></input>
               </div>
-
               {/* /////////////////////////////////////////text editor */}
-              {/* <div className="App">
-                <CKEditorContext context={Context}>
-                  <h2>Using the CKeditor 5 context feature in React</h2>
-                  <CKEditor
-                    editor={ClassicEditor}
-                    config={{
-                      plugins: [Paragraph, Bold, Italic, Essentials],
-                      toolbar: ['bold', 'italic'],
-                    }}
-                    data="<p>Hello from the first editor working with the context!</p>"
-                    onReady={(editor) => {
-                      // You can store the "editor" and use when it is needed.
-                      console.log('Editor1 is ready to use!', editor);
-                    }}
-                  />
-
-                  <CKEditor
-                    editor={ClassicEditor}
-                    config={{
-                      plugins: [Paragraph, Bold, Italic, Essentials],
-                      toolbar: ['bold', 'italic'],
-                    }}
-                    data="<p>Hello from the second editor working with the context!</p>"
-                    onReady={(editor) => {
-                      // You can store the "editor" and use when it is needed.
-                      console.log('Editor2 is ready to use!', editor);
-                    }}
-                  />
-                </CKEditorContext>
-              </div> */}
+              <Editor
+                value={'توضیحات'}
+                editor={ClassicEditor}
+                data={value}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  onchange(data);
+                }}
+              />
             </form>
             <div className="flex justify-center gap-4">
               <button className="mb-3 p-3 rounded bg-teal-400" type="submit">
