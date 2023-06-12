@@ -30,7 +30,7 @@ const TableAddProduct = () => {
         // console.log(productsData);
         // console.log(productsData.total_pages);
         // console.log(productsData.data.total);
-        console.log(productsData.data.products);
+        // console.log(productsData.data.products);
 
         setTotalPage(productsData.total_pages);
         setProducts(productsData.data.products);

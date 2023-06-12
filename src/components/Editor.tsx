@@ -12,7 +12,7 @@ const Editor = ({ value, onChange }: EditorType) => {
       data={value}
       onChange={(event, editor) => {
         const data = editor.getData();
-        onChange(data.value);
+        onChange(data);
       }}
     />
   );
