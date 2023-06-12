@@ -4,8 +4,12 @@ import { ListItem, TablePagination } from '@mui/material';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Button from './../../kit/button';
+import AddDataModal from '../modals/AddDatatModal';
 
 const TableAddProduct = () => {
+  ////////opening adding modal
+  const [isOpenAdding, setIsOpenAdding] = useState(false);
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -72,7 +76,7 @@ const TableAddProduct = () => {
   return (
     <>
       <div className="flex justify-start mb-12">
-        <Button>افزودن کالا</Button>
+        <Button onClick={() => setIsOpenAdding(true)}>افزودن کالا</Button>
       </div>
       <table className="mr-20 bg-white p-4 border rounded">
         <thead className="mx-auto border-gray-400 border-b">
@@ -159,6 +163,12 @@ const TableAddProduct = () => {
           )} */}
         </tbody>
       </table>
+      {/* ///modal */}
+      <AddDataModal
+        isOpenAdding={isOpenAdding}
+        onClose={() => setIsOpenAdding(false)}
+      />
+
       {/* ///////pagination */}
       <TablePagination
         dir="ltr"
