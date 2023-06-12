@@ -1,15 +1,31 @@
 import { Dialog } from '@headlessui/react';
 import { useEffect, useState } from 'react';
 import React, { Component } from 'react';
-import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+} from 'react-query';
 
-import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
-import { Context } from '@ckeditor/ckeditor5-core';
-import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
-import { Essentials } from '@ckeditor/ckeditor5-essentials';
-import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import dynamic from 'next/dynamic';
+import Cookies from 'universal-cookie';
+import { request } from '@/utils/request';
 
+const createProduct = async (productData) => {
+  const cookie = new Cookies();
+  const response = await request.post(
+    'http://localhost:8000/api/products',
+    productData,
+    {
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${productData._boundary}`,
+        Authorization: `Bearer ${cookie.get('adminToken')}`,
+      },
+    }
+  );
+  return response.data;
+};
 const AddDataModal = ({ isOpenAdding, onClose }) => {
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
   // const [data, setData] = useState<string>('');
@@ -18,17 +34,22 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
   //   setEditorLoaded(true);
   // }, []);
   /////mutate (send) data to database
-  const mutation = useMutation([]);
-  const [productAdded, setProductAdded] = useState({
-    nameProduct: '',
-    priceProduct: 0,
-    quantityProduct: 0,
-    brand: '',
-    category: '',
-    subCategory: '',
-    image: [],
-  });
+  const mutation = useMutation(createProduct);
+  // const [productAdded, setProductAdded] = useState({
+  //   name: '',
+  //   price: 0,
+  //   quantity: 0,
+  //   brand: '',
+  //   category: '',
+  //   subcategory: '',
+  //   image: [],
+  // });
 
+  const [category, setCategory] = useState([]);
+
+  // const handleInputChange = (e) => {
+  //   setCategory(e.target.value);
+  // };
   ////show added images
   const handleImageSelect = (e: React.ChangeEvent<HTMLFormElement>) => {
     if (e.target.files) {
@@ -43,12 +64,12 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
     e.preventDefault();
     // console.log(e.currentTarget.elements);
     // const {
-    //   nameProduct,
-    //   priceProduct,
-    //   quantityProduct,
+    //   name,
+    //   price,
+    //   quantity,
     //   brand,
     //   category,
-    //   subCategory,
+    //   subcategory,
     // } = e.currentTarget.elements;
     const image = e.currentTarget.elements.image.files;
     const productData = new FormData();
@@ -64,6 +85,34 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
     console.log(Object.fromEntries(productData));
     MutationObserver.mutate(productData);
   };
+  const fetchData = async (url: string) => {
+    const response = await request.get(url);
+    return response.data.data;
+  };
+
+  const {
+    data: data1,
+    isLoading: isLoading1,
+    isError: isError1,
+    error: error1,
+  } = useQuery(['data1'], () => fetchData('/categories'));
+
+  const {
+    data: data2,
+    isLoading: isLoading2,
+    isError: isError2,
+    error: error2,
+  } = useQuery(
+    ['data2', category],
+    () => fetchData(`/categories?category=${category}`),
+    { enabled: !!category }
+  );
+
+  if (isLoading1) {
+    return <div>Loading...</div>;
+  }
+
+  //////textEditor
   const Editor = dynamic(() => import('../Editor'), { ssr: false });
   return (
     <>
@@ -92,7 +141,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                   <input
                     className="border border-teal-950 rounded bg-teal-50 p-2"
                     type="text"
-                    name="nameProduct"
+                    name="name"
                   ></input>
                 </div>
                 <div className="my-4 flex flex-col gap-3 justify-start">
@@ -100,7 +149,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                   <input
                     className="border border-teal-950 rounded bg-teal-50 p-2"
                     type="text"
-                    name="priceProduct"
+                    name="price"
                   ></input>
                 </div>
               </div>
@@ -111,7 +160,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                   <input
                     className="border border-teal-950 rounded bg-teal-50 p-2"
                     type="text"
-                    name="quantityProduct"
+                    name="quantity"
                   ></input>
                 </div>
                 <div className="my-4 flex flex-col gap-3 justify-start">
@@ -127,17 +176,32 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
               <div className="my-4">
                 <label> دسته بندی </label>
                 <br></br>
-                <select name="category">
-                  <option> adff </option>
-                  <option> aref </option>
+                <select
+                  name="category"
+                  //  onChange={handleInputChange}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option> انتخاب دسته بندی </option>
+                  {data1?.categories.map((item) => {
+                    <option key={item._id} value={item._id}>
+                      {item.name}
+                    </option>;
+                  })}
                 </select>
               </div>
               <div className="my-4">
                 <label> زیرگروه</label>
                 <br></br>
-                <select name="subCategory">
-                  <option> rrrrr </option>
-                  <option> ttttt </option>
+                <select
+                  name="subcategory"
+                  // onChange={handleInputChange}
+                >
+                  <option> انتخاب زیر گروه </option>
+                  {data2?.subcategories.map((isub) => {
+                    <option key={isub._id} value={isub._id}>
+                      {isub.name}
+                    </option>;
+                  })}
                 </select>
               </div>
               <div className="my-4">
