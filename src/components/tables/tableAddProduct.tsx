@@ -75,8 +75,14 @@ const TableAddProduct = () => {
 
   return (
     <>
-      <div className="flex justify-start mb-12">
-        <Button onClick={() => setIsOpenAdding(true)}>افزودن کالا</Button>
+      <div className="flex justify-center items-center gap-24 mb-12 mt-5">
+        {/* <span className="font-semibold"> جدول کالاها </span> */}
+        <button
+          className="bg-teal-400 rounded-lg p-2"
+          onClick={() => setIsOpenAdding(true)}
+        >
+          افزودن کالا
+        </button>
       </div>
       <table className="mr-20 bg-white p-4 border rounded">
         <thead className="mx-auto border-gray-400 border-b">

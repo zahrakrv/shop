@@ -16,7 +16,7 @@ const CheckingOrderModal = ({
   // };
   // const selectedOrder = getSelectedOrder(selectedOrderId);
 
-  console.log(modalData.products);
+  console.log(modalData);
 
   return (
     <>
@@ -89,7 +89,7 @@ const CheckingOrderModal = ({
                 <tbody>
                   <tr>
                     <td className="shadow py-2">
-                      {modalData.products[0].product}
+                      {modalData.products[0].product.name}
                     </td>
                     <td className="shadow py-2">{modalData.totalPrice}</td>
                     <td className="shadow py-2">
