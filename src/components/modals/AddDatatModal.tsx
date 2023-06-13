@@ -41,6 +41,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
   // });
 
   const [category, setCategory] = useState([]);
+  const [subcategory, setSubcategory] = useState([]);
 
   // const handleInputChange = (e) => {
   //   setCategory(e.target.value);
@@ -78,13 +79,14 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
       productData.append('images', image[i]);
     }
     console.log(Object.fromEntries(productData));
-    MutationObserver.mutate(productData);
+    mutation.mutate(productData);
   };
   const fetchData = async (url: string) => {
     const response = await request.get(url);
     return response.data.data;
   };
 
+  //category
   const {
     data: data1,
     isLoading: isLoading1,
@@ -93,6 +95,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
   } = useQuery(['data1'], () => fetchData('/categories'));
   console.log(data1);
 
+  ////subcategory
   const {
     data: data2,
     isLoading: isLoading2,
@@ -101,13 +104,28 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
   } = useQuery(
     ['data2', category],
     () => fetchData(`/categories?category=${category}`),
+    /////تا زمانی که کتگوری enable نیست، ساب کتگوری رو نگیر
     { enabled: !!category }
   );
   console.log(data2);
 
-  if (isLoading1) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (category && subcategory) {
+      setSubcategory('');
+    }
+  }, [category]);
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
+
+  const handleSubcategoryChange = (e) => {
+    setSubcategory(e.target.value);
+  };
+
+  // if (isLoading1) {
+  //   return <div>Loading...</div>;
+  // }
 
   //////textEditor
   const Editor = dynamic(() => import('../Editor'), { ssr: false });
@@ -178,12 +196,28 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                   //  onChange={handleInputChange}
                   onChange={(e) => setCategory(e.target.value)}
                 >
-                  <option> انتخاب دسته بندی </option>
-                  {data1?.categories.map((item) => {
-                    <option key={item._id} value={item._id}>
-                      {item.name}
-                    </option>;
-                  })}
+                  <option value=""> انتخاب دسته بندی </option>
+                  {isLoading1 ? (
+                    <option>Loading...</option>
+                  ) : isError1 ? (
+                    <option>Error loading categories</option>
+                  ) : (
+                    data1?.categories.map((item) => {
+                      return (
+                        <option key={item._id} value={item._id}>
+                          {item.name}
+                        </option>
+                      );
+                    })
+                  )}
+
+                  {/* {data1?.categories.map((item) => {
+                    return (
+                      <option key={item._id} value={item._id}>
+                        {item.name}
+                      </option>
+                    );
+                  })} */}
                 </select>
               </div>
               <div className="my-4">
@@ -194,13 +228,32 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                   // onChange={handleInputChange}
                 >
                   <option> انتخاب زیر گروه </option>
-                  {category.length !== 0
-                    ? data2?.subcategories.map((isub) => {
+                  {isLoading2 ? (
+                    <option>Loading....</option>
+                  ) : isError2 ? (
+                    <option>Error loading subcategories</option>
+                  ) : data2 && data2.length > 0 ? (
+                    data2.subcategories.map((isub) => {
+                      return (
                         <option key={isub._id} value={isub._id}>
                           {isub.name}
-                        </option>;
-                      })
-                    : null}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option>زیرگروهی وجود ندارد</option>
+                  )}
+                  {/* {category.length !== 0 && data2 && data2.subcategories ? (
+                    data2?.subcategories.map((isub) => {
+                      return (
+                        <option key={isub._id} value={isub._id}>
+                          {isub.name}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option>زیرگروهی وجود ندارد</option>
+                  )} */}
                 </select>
               </div>
               <div className="my-4">
