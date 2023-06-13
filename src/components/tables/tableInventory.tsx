@@ -1,8 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, Component } from 'react';
 import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { TablePagination } from '@mui/material';
 import Button from './../../kit/Button';
 import axios from 'axios';
+import EasyEdit from 'react-easy-edit';
 
 const TableInventory = () => {
   const [products, setProducts] = useState([]);
@@ -28,11 +29,6 @@ const TableInventory = () => {
           rowsPerPage,
           sortOrder
         );
-        // console.log(productsData);
-        // console.log(productsData);
-        // console.log(productsData.total_pages);
-        // console.log(productsData.data.total);
-
         setTotalPage(productsData.total_pages);
         setProducts(productsData.data.products);
         setTotalProducts(productsData.total);
@@ -50,6 +46,34 @@ const TableInventory = () => {
   // setUsers(res.data.data.categories);
   //   });
   // }, []);
+
+  /////handling editing quantity & price function
+  const handleSave = async (itemId, fieldName, newValue) => {
+    try {
+      const updatedProduct = { [fieldName]: newValue };
+      await axios.patch(
+        `http://localhost:8000/api/products/${itemId}`,
+        updatedProduct
+      );
+
+      const updatedProducts = products.map((product) => {
+        if (product._id === itemId) {
+          return { ...product, [fieldName]: newValue };
+        }
+        console.log(itemId);
+        return product;
+      });
+      setProducts(updatedProducts);
+
+      console.log(`Product ${itemId} ${fieldName} updated successfully`);
+    } catch (error) {
+      console.error(`Error updating product ${itemId} ${fieldName}:`, error);
+    }
+  };
+
+  const handleCancel = () => {
+    fetchProducts();
+  };
 
   //////////////pagination
   interface paginationProps {
@@ -93,7 +117,7 @@ const TableInventory = () => {
       <div className="flex justify-start mb-12">
         <Button>ذخیره</Button>
       </div>
-      <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border rounded items-center">
+      <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border items-center">
         <thead className="mx-auto border-gray-400 border-b">
           <tr>
             <th
@@ -104,14 +128,6 @@ const TableInventory = () => {
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={() => setIsRotated(!isRotated)}
               >
-                {/* <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="1em"
-                  viewBox="0 0 320 512"
-                  className={` ${isRotated ? 'rotate-180' : ''}`}
-                >
-                  <path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
-                </svg> */}
                 نام کالا
               </div>
             </th>
@@ -122,8 +138,6 @@ const TableInventory = () => {
                   setIsRotated(!isRotated);
                   setSortOrder((prev) => !prev);
                 }}
-                // onClick={() => setIsRotated(!isRotated)}
-                // onClick={() => setSortOrder((prev) => !prev)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,14 +158,6 @@ const TableInventory = () => {
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={() => setIsRotated(!isRotated)}
               >
-                {/* <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="1em"
-                  viewBox="0 0 320 512"
-                  className={`${isRotated ? 'rotate-180' : ''}`}
-                >
-                  <path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
-                </svg> */}
                 موجودی
               </div>
             </th>
@@ -165,10 +171,42 @@ const TableInventory = () => {
                 {/* {users.map((i) => {
                   return item.name === i._id && <span>{i.name}</span>;
                 })} */}
-                {item.name}
+                {/* {item.name} */}
+                <EasyEdit
+                  type="text"
+                  value={item.name}
+                  onSave={(newValue) => handleSave(item._id, 'name', newValue)}
+                  onCancel={handleCancel}
+                  saveButtonLabel="ذخیره"
+                  cancelButtonLabel="لغو"
+                />
               </td>
-              <td className="p-3 shadow">{item.price}</td>
-              <td className="p-3 shadow">{item.quantity}</td>
+              <td className="p-3 shadow">
+                {/* {item.price} */}
+                <EasyEdit
+                  type="number"
+                  value={item.price.toString()}
+                  onSave={(newValue) =>
+                    handleSave(item._id, 'price', parseFloat(newValue))
+                  }
+                  onCancel={handleCancel}
+                  saveButtonLabel="ذخیره"
+                  cancelButtonLabel="لغو"
+                />
+              </td>
+              <td className="p-3 shadow">
+                {/* {item.quantity} */}
+                <EasyEdit
+                  type="number"
+                  value={item.quantity.toString()}
+                  onSave={(newValue) =>
+                    handleSave(item._id, 'quantity', parseFloat(newValue))
+                  }
+                  onCancel={handleCancel}
+                  saveButtonLabel="ذخیره"
+                  cancelButtonLabel="لغو"
+                />
+              </td>
             </tr>
           ))}
         </tbody>

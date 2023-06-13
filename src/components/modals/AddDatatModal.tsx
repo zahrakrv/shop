@@ -1,12 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import { useEffect, useState } from 'react';
 import React, { Component } from 'react';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-  useQuery,
-} from 'react-query';
+import { MutationObserver, useMutation, useQuery } from '@tanstack/react-query';
 
 import dynamic from 'next/dynamic';
 import Cookies from 'universal-cookie';
@@ -51,14 +46,14 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
   //   setCategory(e.target.value);
   // };
   ////show added images
-  const handleImageSelect = (e: React.ChangeEvent<HTMLFormElement>) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setProductAdded({ ...productAdded, images: filesArray });
-    }
-  };
+  // const handleImageSelect = (e: React.ChangeEvent<HTMLFormElement>) => {
+  //   if (e.target.files) {
+  //     const filesArray = Array.from(e.target.files).map((file) =>
+  //       URL.createObjectURL(file)
+  //     );
+  //     setProductAdded({ ...productAdded, images: filesArray });
+  //   }
+  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,6 +91,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
     isError: isError1,
     error: error1,
   } = useQuery(['data1'], () => fetchData('/categories'));
+  console.log(data1);
 
   const {
     data: data2,
@@ -107,6 +103,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
     () => fetchData(`/categories?category=${category}`),
     { enabled: !!category }
   );
+  console.log(data2);
 
   if (isLoading1) {
     return <div>Loading...</div>;
@@ -197,11 +194,13 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                   // onChange={handleInputChange}
                 >
                   <option> انتخاب زیر گروه </option>
-                  {data2?.subcategories.map((isub) => {
-                    <option key={isub._id} value={isub._id}>
-                      {isub.name}
-                    </option>;
-                  })}
+                  {category.length !== 0
+                    ? data2?.subcategories.map((isub) => {
+                        <option key={isub._id} value={isub._id}>
+                          {isub.name}
+                        </option>;
+                      })
+                    : null}
                 </select>
               </div>
               <div className="my-4">
@@ -210,7 +209,7 @@ const AddDataModal = ({ isOpenAdding, onClose }) => {
                   type="file"
                   name="image"
                   multiple
-                  onChange={handleImageSelect}
+                  // onChange={handleImageSelect}
                 >
                   {/* {productAdded?.images.map((image) => (
                     <img key={image} src={image} alt="product" />
