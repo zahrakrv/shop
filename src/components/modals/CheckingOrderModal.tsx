@@ -20,9 +20,22 @@ const CheckingOrderModal = ({
     }
   }, [modalData.deliveryStatus]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (!deliveryStatus) {
-      setDeliveryStatus(true);
+      try {
+        const response = await fetch('http://localhost:8000/api/orders', {
+          method: 'PUT',
+          body: JSON.stringify({ deliveryStatus: true }),
+        });
+        if (response.ok) {
+          setDeliveryStatus(true);
+          modalData.deliveryStatus = true;
+        } else {
+          console.error('خطا در درخواست');
+        }
+      } catch (error) {
+        console.error('خطا در ارتباط با سرور', error);
+      }
     }
   };
   // const getSelectedOrder = (orderId) => {
