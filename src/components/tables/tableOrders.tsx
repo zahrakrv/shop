@@ -4,8 +4,23 @@ import { TablePagination } from '@mui/material';
 import Button from './../../kit/Button';
 import { request } from '@/utils/request';
 import { all } from 'axios';
+import CheckingOrderModal from '../modals/CheckingOrderModal';
 
 const TableOrders = () => {
+  ////for modal
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const [modalUserName, setModalUserName] = useState([]);
+
+  // const [selectedOrderId, setSelectedOrderId] = useState(null);
+  // const handleOrderClick = (orderId) => {
+  //   setSelectedOrderId(orderId);
+  //   setIsOpen(true);
+  // };
+  // const onCloseModal = () => {
+  //   setSelectedOrderId(null);
+  //   setIsOpen(false);
+  // };
   ////radio button
   const [value, setValue] = useState('all');
   // const [orders, setOrders] = useState<Order[]>([]);
@@ -38,7 +53,7 @@ const TableOrders = () => {
           sortOrder,
           deliveryStatus
         );
-        console.log(productsData);
+        // console.log(productsData);
         // console.log(productsData);
         // console.log(productsData.total_pages);
         // console.log(productsData.data.total);
@@ -47,24 +62,14 @@ const TableOrders = () => {
         setTotalOrders(productsData.data.data.orders);
         // setProducts(productsData.data.products);
         setAllOrders(productsData.data.total);
-        // const OrdersFilter = productsData.data.data.orders.filter((order) => {
-        //   // console.log(order.deliveryStatus);
-        //   if (value === 'waiting') {
-        //     return order.deliveryStatus === false;
-        //   } else if (value === 'done') {
-        //     return order.deliveryStatus === true;
-        //   } else {
-        //     return true;
-        //   }
-        // });
-        // setFilteredOrders(OrdersFilter);
+        // const OrdersFilter = productsData.data.data.orders.
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
     getProducts();
   }, [sortOrder, rowsPerPage, page, fetchOrders, deliveryStatus]);
-  console.log(allOrders);
+  // console.log(totalOrders);
 
   useEffect(() => {
     try {
@@ -76,6 +81,18 @@ const TableOrders = () => {
     }
   }, []);
 
+  ///////modal
+  const handleId = (id) => {
+    const filterTotalOrders = totalOrders.filter((order) => order._id === id);
+
+    setModalData(filterTotalOrders[0]);
+  };
+
+  // const handleIdUser = (id) => {
+  //   const filterUserName = userName.filter((order) => order._id === id);
+
+  //   setModalUserNam(filterUserName[0]);
+  // };
   //////وضضعیت تحویل
   // console.log(totalOrders);
   // const OrdersFilter = totalOrders.filter((order) => {
@@ -264,7 +281,6 @@ const TableOrders = () => {
         <tbody className="text-center">
           {/* {console.log('sdfd', userName)} */}
           {totalOrders?.map((item: any) => (
-            // console.log(category),
             <tr key={item.id}>
               <td className="p-3 shadow">
                 {userName?.map((i) => {
@@ -277,12 +293,34 @@ const TableOrders = () => {
                 {item.deliveryStatus ? 'تحویل داده شده' : 'در انتظار تحویل'}
               </td>
               <td className="p-6 shadow">
-                <a>بررسی سفارش ها</a>
+                <button
+                  onClick={() => {
+                    handleId(item._id);
+                    const userNameById = userName?.find((i) => {
+                      return i?._id === item?.user && i?.username;
+                    });
+                    setModalUserName(userNameById);
+                    setIsOpen(true);
+                  }}
+                >
+                  بررسی سفارش ها
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {/* ////modal */}
+      <CheckingOrderModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        totalOrders={totalOrders}
+        userName={userName}
+        modalUserName={modalUserName}
+        formatDate={formatDate}
+        modalData={modalData}
+        // selectedOrderId={selectedOrderId}
+      />
       {/* ///////pagination */}
       <TablePagination
         dir="ltr"
