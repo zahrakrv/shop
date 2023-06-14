@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 
 const CheckingOrderModal = ({
@@ -11,13 +11,25 @@ const CheckingOrderModal = ({
   modalUserName,
   // selectedOrderId,
 }) => {
+  const [deliveryStatus, setDeliveryStatus] = useState(false);
+  useEffect(() => {
+    if (modalData.deliveryStatus) {
+      setDeliveryStatus(true);
+    } else {
+      setDeliveryStatus(false);
+    }
+  }, [modalData.deliveryStatus]);
+
+  const handleClick = () => {
+    if (!deliveryStatus) {
+      setDeliveryStatus(true);
+    }
+  };
   // const getSelectedOrder = (orderId) => {
   //   return totalOrders.find((order) => order.id === orderId);
   // };
   // const selectedOrder = getSelectedOrder(selectedOrderId);
-
-  console.log(modalData);
-
+  // console.log(modalData);
   return (
     <>
       <Dialog open={isOpen} onClose={onClose}>
@@ -89,21 +101,26 @@ const CheckingOrderModal = ({
                 <tbody>
                   <tr>
                     <td className="shadow py-2">
-                      {modalData.products[0].product.name}
+                      {modalData.length > 0
+                        ? modalData.products[0].product.name
+                        : null}
                     </td>
                     <td className="shadow py-2">{modalData.totalPrice}</td>
                     <td className="shadow py-2">
-                      {modalData.products[0].count}
+                      {modalData.length > 0
+                        ? modalData.products[0].count
+                        : null}
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <div className="flex justify-center mb-3">
-              <button className="bg-teal-500 text-white rounded p-2 mx-auto">
-                {modalData.deliveryStatus
-                  ? 'تحویل داده شده'
-                  : 'در انتظار تحویل'}
+              <button
+                className="bg-teal-500 text-white rounded p-2 mx-auto"
+                onClick={handleClick}
+              >
+                {deliveryStatus ? 'تحویل داده شده' : 'در انتظار تحویل'}
               </button>
             </div>
             {/* <button onClick={onClose}>Deactivate</button>

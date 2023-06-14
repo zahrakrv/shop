@@ -21,17 +21,15 @@ const TableAddProduct = () => {
   const cookies = new Cookies();
   const admintoken = cookies.get('adminToken');
   // console.log(products);
+  //////edit states
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         const productsData = await fetchProducts(page + 1, rowsPerPage);
-        // console.log(productsData);
-        // console.log(productsData);
-        // console.log(productsData.total_pages);
-        // console.log(productsData.data.total);
-        // console.log(productsData.data.products);
-
         setTotalPage(productsData.total_pages);
         setProducts(productsData.data.products);
         setTotalProducts(productsData.total);
@@ -87,6 +85,15 @@ const TableAddProduct = () => {
     }
   };
 
+  //////edit
+  const handleEdit = (productId) => {
+    const selectedProduct = products.find(
+      (product) => product._id === productId
+    );
+    setSelectedProduct(selectedProduct);
+    setIsEditing(true);
+  };
+
   return (
     <>
       <div className="flex justify-center items-center gap-24 mb-12 mt-5">
@@ -130,8 +137,7 @@ const TableAddProduct = () => {
 
                 <td className="p-3 shadow">
                   <button className="cursor-pointer bg-green-500 rounded p-2 text-white">
-                    {' '}
-                    ویرایش{' '}
+                    ویرایش
                   </button>
                 </td>
                 <td
@@ -139,8 +145,7 @@ const TableAddProduct = () => {
                   onClick={() => handleDelete(product._id)}
                 >
                   <button className="cursor-pointer bg-rose-500 rounded p-2 text-white">
-                    {' '}
-                    حذف{' '}
+                    حذف
                   </button>
                 </td>
               </tr>
