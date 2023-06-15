@@ -1,5 +1,9 @@
 const MiniCardProduct = () => {
-    return (  );
-}
- 
+  return (
+    <>
+      <div></div>
+    </>
+  );
+};
+
 export default MiniCardProduct;

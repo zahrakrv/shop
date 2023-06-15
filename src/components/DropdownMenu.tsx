@@ -15,6 +15,16 @@ const DropdownMenu = ({
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
+  useEffect(() => {
+    fetchCategories().then((res) => {
+      setCategories(res.data.data.categories);
+    });
+  }, []);
+  useEffect(() => {
+    fetchSubCategories().then((response) => {
+      setSubCategory(response.data.data.subcategories);
+    });
+  }, []);
   // const [isOpen, setIsOpen] = useState(false);
   // const [subMenuOpen, setSubMenuOpen] = useState(true);
 
@@ -41,16 +51,6 @@ const DropdownMenu = ({
   //   getCategories();
   // }, [fetchCategories]);
 
-  useEffect(() => {
-    fetchCategories().then((res) => {
-      setCategories(res.data.data.categories);
-    });
-  }, []);
-  useEffect(() => {
-    fetchSubCategories().then((response) => {
-      setSubCategory(response.data.data.subcategories);
-    });
-  }, []);
   // console.log('subCategory', subCategory);
 
   return (

@@ -8,6 +8,9 @@ export const GlobalContext = createContext({});
 /////check for window is not server side
 const ISSERVER = typeof window === 'undefined';
 const GlobalProvider = ({ children }: any) => {
+  const [categories, setCategories] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+
   ///router
   const router = useRouter();
   ///////admin auth token state
@@ -166,6 +169,10 @@ const GlobalProvider = ({ children }: any) => {
         fetchSortPrice,
         fetchSubCategories,
         fetchUsers,
+        categories,
+        setCategories,
+        subCategory,
+        setSubCategory,
       }}
     >
       {children}

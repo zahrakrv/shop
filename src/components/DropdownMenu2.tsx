@@ -11,9 +11,16 @@ const DropdownMenu2 = ({
   toggleMenu,
   toggleSubMenu,
 }) => {
-  const { fetchCategories, fetchSubCategories } = useContext(GlobalContext);
-  const [categories, setCategories] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
+  const {
+    categories,
+    subCategory,
+    setCategories,
+    setSubCategory,
+    fetchCategories,
+    fetchSubCategories,
+  } = useContext(GlobalContext);
+  // const [categories, setCategories] = useState([]);
+  // const [subCategory, setSubCategory] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     fetchCategories().then((res) => {
