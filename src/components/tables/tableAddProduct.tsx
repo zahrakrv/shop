@@ -5,10 +5,14 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Button from './../../kit/button';
 import AddDataModal from '../modals/AddDatatModal';
+// import updateProduct from '../modals/AddDatatModal'
+
+const cookies = new Cookies();
 
 const TableAddProduct = () => {
   ////////opening adding modal
   const [isOpenAdding, setIsOpenAdding] = useState(false);
+  console.log(isOpenAdding);
 
   const [categories, setCategories] = useState([]);
 
@@ -18,7 +22,6 @@ const TableAddProduct = () => {
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalPage, setTotalPage] = useState();
   const [totalProducts, setTotalProducts] = useState();
-  const cookies = new Cookies();
   const admintoken = cookies.get('adminToken');
   // console.log(products);
   //////edit states
@@ -26,22 +29,30 @@ const TableAddProduct = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const productsData = await fetchProducts(page + 1, rowsPerPage);
+  //       setTotalPage(productsData.total_pages);
+  //       setProducts(productsData.data.products);
+  //       setTotalProducts(productsData.total);
+  // fetchCategories().then((res) => {
+  //   console.log(res);
+  // });
+  //     } catch (error) {
+  //       console.error('Error fetching products:', error);
+  //     }
+  //   };
+  //   getProducts();
+  // }, [rowsPerPage, page]);
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const productsData = await fetchProducts(page + 1, rowsPerPage);
-        setTotalPage(productsData.total_pages);
-        setProducts(productsData.data.products);
-        setTotalProducts(productsData.total);
-        // fetchCategories().then((res) => {
-        //   console.log(res);
-        // });
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-    getProducts();
-  }, [fetchProducts, rowsPerPage, page]);
+    fetchProducts(page + 1, rowsPerPage).then((productsData) => {
+      setTotalPage(productsData.total_pages);
+      setProducts(productsData.data.products);
+      setTotalProducts(productsData.total);
+      console.log('ok');
+    });
+  }, [rowsPerPage, page]);
 
   useEffect(() => {
     fetchCategories().then((res) => {
@@ -87,11 +98,13 @@ const TableAddProduct = () => {
 
   //////edit
   const handleEdit = (productId) => {
+    console.log(productId);
     const selectedProduct = products.find(
       (product) => product._id === productId
     );
     setSelectedProduct(selectedProduct);
     setIsEditing(true);
+    setIsOpenAdding(true);
   };
 
   return (
@@ -100,7 +113,10 @@ const TableAddProduct = () => {
         {/* <span className="font-semibold"> جدول کالاها </span> */}
         <button
           className="bg-teal-400 rounded-lg p-2"
-          onClick={() => setIsOpenAdding(true)}
+          onClick={() => {
+            setIsOpenAdding(true);
+            setIsEditing(false);
+          }}
         >
           افزودن کالا
         </button>
@@ -129,14 +145,19 @@ const TableAddProduct = () => {
                 <td className="p-3 shadow">
                   {categories.map((item) => {
                     return (
-                      product.category === item._id && <span>{item.name}</span>
+                      product.category._id === item._id && (
+                        <span>{item.name}</span>
+                      )
                     );
                     // console.log(item.name);
                   })}
                 </td>
 
                 <td className="p-3 shadow">
-                  <button className="cursor-pointer bg-green-500 rounded p-2 text-white">
+                  <button
+                    className="cursor-pointer bg-green-500 rounded p-2 text-white"
+                    onClick={() => handleEdit(product._id)}
+                  >
                     ویرایش
                   </button>
                 </td>
@@ -162,6 +183,9 @@ const TableAddProduct = () => {
       <AddDataModal
         isOpenAdding={isOpenAdding}
         onClose={() => setIsOpenAdding(false)}
+        selectedProduct={selectedProduct}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
       />
 
       {/* ///////pagination */}

@@ -7,6 +7,8 @@ import dynamic from 'next/dynamic';
 import Cookies from 'universal-cookie';
 import { request } from '@/utils/request';
 import Previews from './Previews';
+import { Controller, useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
 const createProduct = async (productData) => {
   const cookie = new Cookies();
@@ -22,7 +24,38 @@ const createProduct = async (productData) => {
   );
   return response.data;
 };
-const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
+
+const updateProduct = async (id, productData) => {
+  try {
+    const cookie = new Cookies();
+    const response = await request.patch(
+      'http://localhost:8000/api/products/' + id,
+      productData
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const AddDataModal = ({
+  isOpenAdding,
+  onClose,
+  selectedProduct,
+  isEditing,
+}) => {
+  console.log(selectedProduct);
+
+  const router = useRouter();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    getValues,
+    register,
+    reset,
+  } = useForm();
   // const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
   // const [data, setData] = useState<string>('');
 
@@ -30,7 +63,23 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
   //   setEditorLoaded(true);
   // }, []);
   /////mutate (send) data to database
-  const mutation = useMutation(createProduct);
+  const mutation = useMutation({
+    mutationFn: createProduct,
+    onSuccess: () => {
+      reset();
+      // router.push(router.pathname);
+      onClose();
+    },
+  });
+
+  const mutationEdit = useMutation({
+    mutationFn: ({ id, productData }) => updateProduct(id, productData),
+    onSuccess: () => {
+      reset();
+      onClose();
+    },
+  });
+  console.log(selectedProduct);
   // const [productAdded, setProductAdded] = useState({
   //   name: '',
   //   price: 0,
@@ -41,9 +90,11 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
   //   image: [],
   // });
 
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState();
   const [subcategory, setSubcategory] = useState([]);
   const [description, setDescription] = useState('توضیحات');
+
+  // console.log(category);
 
   // const handleInputChange = (e) => {
   //   setCategory(e.target.value);
@@ -58,17 +109,8 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
   //   }
   // };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(e.currentTarget.elements);
-    // const {
-    //   name,
-    //   price,
-    //   quantity,
-    //   brand,
-    //   category,
-    //   subcategory,
-    // } = e.currentTarget.elements;
     const image = e.currentTarget.elements.image.files;
     const productData = new FormData();
     const elements = e.currentTarget.querySelectorAll(
@@ -81,12 +123,18 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
       productData.append('images', image[i]);
     }
     productData.append('description', description);
-    console.log(Object.fromEntries(productData));
-    mutation.mutate(productData);
+    // console.log(Object.fromEntries(productData));
+    isEditing
+      ? mutationEdit.mutate({
+          id: selectedProduct._id,
+          productData: productData,
+        })
+      : mutation.mutate(productData);
   };
   const fetchData = async (url: string) => {
     const response = await request.get(url);
-    return response.data.data;
+    // console.log(response.data);
+    return response.data;
   };
 
   //category
@@ -95,8 +143,8 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
     isLoading: isLoading1,
     isError: isError1,
     error: error1,
-  } = useQuery(['data1'], () => fetchData('/categories'));
-  console.log(data1);
+  } = useQuery(['category1'], () => fetchData('/categories'));
+  // console.log(data1);
 
   ////subcategory
   const {
@@ -111,18 +159,24 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
     /////تا زمانی که کتگوری enable نیست، ساب کتگوری رو نگیر
     { enabled: !!category }
   );
-  console.log(data2);
-  console.log(data2?.subcategories);
+  // console.log(data2);
+  // console.log(data2?.data.subcategories);
+  // console.log(data2);
 
   useEffect(() => {
-    // if (category && subcategory) {
-    //   setSubcategory('');
-    // }
-    refetch();
+    if (category) {
+      refetch();
+    }
   }, [category]);
+  useEffect(() => {
+    if (data2) {
+      setSubcategory(data2?.data.subcategories);
+    }
+  }, [data2]);
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+  const handleCategoryChange = (categoryId) => {
+    setCategory(categoryId);
+    console.log(categoryId);
   };
 
   const handleSubcategoryChange = (e) => {
@@ -133,6 +187,19 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
   //   return <div>Loading...</div>;
   // }
 
+  useEffect(() => {
+    if (selectedProduct) {
+      setValue('name', selectedProduct.name);
+      setValue('price', selectedProduct.price);
+      setValue('brand', selectedProduct.brand);
+      setValue('quantity', selectedProduct.quantity);
+      setValue('category', selectedProduct.category._id);
+      setValue('subcategory', selectedProduct.subcategory._id);
+      setCategory(selectedProduct.category._id);
+      console.log(selectedProduct.category.name);
+      // setSubcategory(selectedProduct.subcategory);
+    }
+  }, [selectedProduct]);
   //////textEditor
   const Editor = dynamic(() => import('../Editor'), { ssr: false });
   return (
@@ -157,104 +224,150 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
                   </svg>
                 </div>
               </Dialog.Title>
-              <form className="p-4" onSubmit={handleSubmit}>
+              <form className="p-4" onSubmit={onSubmit}>
                 <div className="flex justify-between items-center">
                   <div className="my-3 flex flex-col gap-3 justify-start">
                     <label> نام کالا </label>
-                    <input
-                      className="border border-teal-950 rounded bg-teal-50 p-2"
-                      type="text"
+                    <Controller
+                      control={control}
                       name="name"
-                    >
-                      defaultValue={selectedProduct ? selectedProduct.name : ''}
-                    </input>
+                      render={({ field: { onChange, value, name } }) => {
+                        return (
+                          <input
+                            className="border border-teal-950 rounded bg-teal-50 p-2"
+                            type="text"
+                            name={name}
+                            onChange={onChange}
+                            value={value}
+                          />
+                        );
+                      }}
+                    />
                   </div>
                   <div className="my-3 flex flex-col gap-3 justify-start">
                     <label> قیمت </label>
-                    <input
-                      className="border border-teal-950 rounded bg-teal-50 p-2"
-                      type="text"
+                    <Controller
+                      control={control}
                       name="price"
-                    >
-                      defaultValue=
-                      {selectedProduct ? selectedProduct.price : ''}
-                    </input>
+                      render={({ field: { onChange, value, name } }) => {
+                        return (
+                          <input
+                            className="border border-teal-950 rounded bg-teal-50 p-2"
+                            type="text"
+                            name={name}
+                            onChange={onChange}
+                            value={value}
+                          />
+                        );
+                      }}
+                    />
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <div className="my-3 flex flex-col gap-3 justify-start">
                     <label> موجودی</label>
-                    <input
-                      className="border border-teal-950 rounded bg-teal-50 p-2"
-                      type="text"
+                    <Controller
+                      control={control}
                       name="quantity"
-                    >
-                      defaultValue=
-                      {selectedProduct ? selectedProduct.quantity : ''}
-                    </input>
+                      render={({ field: { onChange, value, name } }) => {
+                        return (
+                          <input
+                            className="border border-teal-950 rounded bg-teal-50 p-2"
+                            type="text"
+                            name={name}
+                            onChange={onChange}
+                            value={value}
+                          />
+                        );
+                      }}
+                    />
                   </div>
                   <div className="my-3 flex flex-col gap-3 justify-start">
                     <label> برند</label>
-                    <input
-                      className="border border-teal-950 rounded bg-teal-50 p-2"
-                      type="text"
+                    <Controller
+                      control={control}
                       name="brand"
-                    >
-                      defaultValue=
-                      {selectedProduct ? selectedProduct.brand : ''}
-                    </input>
+                      render={({ field: { onChange, value, name } }) => {
+                        return (
+                          <input
+                            className="border border-teal-950 rounded bg-teal-50 p-2"
+                            type="text"
+                            name={name}
+                            onChange={onChange}
+                            value={value}
+                          />
+                        );
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div className="my-3 ">
                     <label> دسته بندی </label>
                     <br></br>
-                    <select
-                      className="border border-teal-950 rounded bg-teal-50 p-2"
+                    <Controller
+                      control={control}
                       name="category"
-                      //  onChange={handleInputChange}
-                      onChange={handleCategoryChange}
-                    >
-                      <option value=""> انتخاب دسته بندی </option>
-                      {isLoading1 ? (
-                        <option>Loading...</option>
-                      ) : isError1 ? (
-                        <option>Error loading categories</option>
-                      ) : (
-                        data1?.categories.map((item) => {
-                          return (
-                            <option key={item._id} value={item._id}>
-                              {item.name}
-                            </option>
-                          );
-                        })
-                      )}
+                      render={({ field: { onChange, value, name } }) => {
+                        return (
+                          <select
+                            value={value}
+                            name={name}
+                            onChange={(event) => {
+                              handleCategoryChange(event.target.value);
+                              onChange(event);
+                            }}
+                            className="border border-teal-950 rounded bg-teal-50 p-2"
+                          >
+                            <option value=""> انتخاب دسته بندی </option>
+                            {isLoading1 ? (
+                              <option>Loading...</option>
+                            ) : isError1 ? (
+                              <option>Error loading categories</option>
+                            ) : (
+                              data1?.data?.categories.map((item) => {
+                                return (
+                                  <option
+                                    key={item._id}
+                                    value={item._id}
+                                    onClick={() => {
+                                      setCategory(item._id);
+                                    }}
+                                  >
+                                    {item.name}
+                                  </option>
+                                );
+                              })
+                            )}
 
-                      {/* {data1?.categories.map((item) => {
+                            {/* {data1?.categories.map((item) => {
                     return (
                       <option key={item._id} value={item._id}>
                         {item.name}
                       </option>
                     );
                   })} */}
-                    </select>
+                          </select>
+                        );
+                      }}
+                    />
                   </div>
                   <div className="my-3 ">
                     <label> زیرگروه</label>
                     <br></br>
                     <select
                       className="border border-teal-950 rounded bg-teal-50 p-2"
-                      name="subcategory"
                       // onChange={handleInputChange}
+                      {...register('subcategory')}
                     >
-                      <option> انتخاب زیر گروه </option>
+                      {!selectedProduct && <option> انتخاب زیر گروه </option>}
                       {isLoading2 ? (
                         <option>Loading....</option>
                       ) : isError2 ? (
                         <option>Error loading subcategories</option>
-                      ) : data2 && data2.subcategories.length > 0 ? (
-                        data2?.subcategories.map((isub) => {
+                      ) : subcategory.length > 0 ? (
+                        subcategory.map((isub) => {
                           return (
                             <option key={isub._id} value={isub._id}>
                               {isub.name}
@@ -301,8 +414,9 @@ const AddDataModal = ({ isOpenAdding, onClose, selectedProduct }) => {
                     className="mb-3 p-3 rounded bg-teal-400"
                     type="submit"
                     // onClick={handleSubmit}
+                    // onClick={onClose}
                   >
-                    افزودن
+                    {isEditing ? 'ویرایش' : 'افزودن'}
                   </button>
                   <button
                     className="mb-3 p-3 rounded bg-red-400"

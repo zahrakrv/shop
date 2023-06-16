@@ -22,7 +22,7 @@ request.interceptors.response.use(
 
   (error) => {
     const config = error.config;
-    console.log('congig', config);
+    // console.log('config', config);
     if (error.response.status === 401 && !config.sent) {
       config.sent = true;
       if (config.url !== '/auth/token' && config.url !== '/auth/login') {

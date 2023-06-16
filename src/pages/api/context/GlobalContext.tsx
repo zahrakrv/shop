@@ -52,7 +52,7 @@ const GlobalProvider = ({ children }: any) => {
     try {
       //localhost:8000/api/categories
       const response = await axios.get(
-        `http://localhost:8000/api/products?page=${page}&limit=${limit}&fields=-rating,-createdAt,-updatedAt,-__v&sort=price&quantity[gte]=8`,
+        `http://localhost:8000/api/products?page=${page}&limit=${limit}&sort=price`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
