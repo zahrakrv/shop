@@ -10,10 +10,10 @@ const TableAddProduct = () => {
   ////////opening adding modal
   const [isOpenAdding, setIsOpenAdding] = useState(false);
 
-  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  const { fetchCategories, fetchProducts } = useContext(GlobalContext);
+  const { products, setProducts, fetchCategories, fetchProducts } =
+    useContext(GlobalContext);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalPage, setTotalPage] = useState();

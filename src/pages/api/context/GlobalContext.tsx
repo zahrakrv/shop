@@ -10,6 +10,7 @@ const ISSERVER = typeof window === 'undefined';
 const GlobalProvider = ({ children }: any) => {
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
+  const [products, setProducts] = useState([]);
 
   ///router
   const router = useRouter();
@@ -173,6 +174,8 @@ const GlobalProvider = ({ children }: any) => {
         setCategories,
         subCategory,
         setSubCategory,
+        products,
+        setProducts,
       }}
     >
       {children}
