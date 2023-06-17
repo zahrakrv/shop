@@ -11,6 +11,7 @@ const GlobalProvider = ({ children }: any) => {
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   ///router
   const router = useRouter();
@@ -77,6 +78,23 @@ const GlobalProvider = ({ children }: any) => {
       return response.data;
     } catch (error) {
       console.error('Error fetching categories:', error);
+      return [];
+    }
+  };
+  const fetchAllProducts = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8000/api/products?limit=all',
+        {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }
+      );
+      // console.log(response.data);
+      setAllProducts(response.data.data.products);
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching allProducts:', error);
       return [];
     }
   };
@@ -176,6 +194,9 @@ const GlobalProvider = ({ children }: any) => {
         setSubCategory,
         products,
         setProducts,
+        fetchAllProducts,
+        setAllProducts,
+        allProducts,
       }}
     >
       {children}
