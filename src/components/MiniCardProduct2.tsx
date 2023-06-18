@@ -1,8 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
 
-const MiniCardProduct2 = ({ products }) => {
+const MiniCardProduct2 = ({ products, useRouter }) => {
+  const router = useRouter();
   //   console.log(products);
+
+  const handleCardClick = (productId) => {
+    router.push(`/products/${productId}`);
+  };
   return (
     <>
       {products.map((product) => {
@@ -12,6 +17,7 @@ const MiniCardProduct2 = ({ products }) => {
           <div
             key={product._id}
             className="bg-white rounded-xl w-44 flex flex-col justify-center items-center gap-8"
+            onClick={() => handleCardClick(product._id)}
           >
             <img
               className="w-32 mt-3"
