@@ -9,9 +9,11 @@ const ProductPage = () => {
   //   const { id } = router.query;
   const { query } = router;
   const id = query.productId;
+  const [quantity, setQuantity] = useState(1);
   ///null برای انکه اولش هیچی نباشه و با یوزافکت بیاد فچ بزنه
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+  const [category, setCategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
 
   useEffect(() => {
     const fetchProductsByID = async () => {
@@ -19,6 +21,9 @@ const ProductPage = () => {
         const res = await axios.get(`http://localhost:8000/api/products/${id}`);
         console.log(res.data);
         setProduct(res.data.data.product);
+        setCategory(res.data.data.product.category.name);
+        setSubCategory(res.data.data.product.subcategory.name);
+        // console.log(res.data.data.product.category.name);
       } catch (error) {
         console.error('Error fetching product:', error);
       }
@@ -30,7 +35,8 @@ const ProductPage = () => {
   if (!product) {
     return <p>Loading...</p>;
   }
-  const formattedPrice = product.price.toLocaleString();
+  // const formattedPrice = product.price.toLocaleString();
+  const formattedPrice = Intl.NumberFormat('fa-IR').format(product.price);
 
   const incrementQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -46,11 +52,22 @@ const ProductPage = () => {
             />
           </div>
           <div className="w-[40rem]">
+            <div className="flex items-center gap-4 mb-6 text-gray-500">
+              <span>{category}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="1em"
+                viewBox="0 0 320 512"
+                className="fill-gray-500"
+              >
+                <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+              </svg>
+              <span>{subCategory}</span>
+            </div>
             <h1 className="font-semibold text-gray-700 text-xl mb-6">
               {product.name}
             </h1>
-            <p>category</p>
-            <p>subcategory</p>
+
             <div className="mb-6">
               <span className="font-semibold text-gray-700 ">قیمت :</span>
               <span>{formattedPrice} تومان</span>

@@ -56,6 +56,8 @@ const MainContent2 = () => {
             // console.log(product.category._id);
             // console.log(product);
           });
+          // console.log(category);
+
           //   console.log(categoryProducts);
           const randomProducts = categoryProducts
             .sort(() => 0.5 - Math.random())
@@ -63,18 +65,21 @@ const MainContent2 = () => {
           //   console.log(randomProducts);
           return (
             <div key={category._id}>
-              <h2 className="hel drop-shadow-2xl text-blue-900 text-3xl font-Bold p-2 cursor-pointer flex gap-4 items-center">
-                کالاهای گروه {category.name}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="1em"
-                  viewBox="0 0 256 512"
-                  className="fill-red-500"
-                >
-                  <path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z" />
-                </svg>
-              </h2>
-
+              <Link
+                href={`/landing?category=${category.name}&categoryId=${category._id}`}
+              >
+                <h2 className="hel drop-shadow-2xl text-blue-900 text-3xl font-Bold p-2 cursor-pointer flex gap-4 items-center">
+                  کالاهای گروه {category.name}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="1em"
+                    viewBox="0 0 256 512"
+                    className="fill-red-500"
+                  >
+                    <path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z" />
+                  </svg>
+                </h2>
+              </Link>
               <div className="bg-red-500 my-10 mx-3 py-4 px-4 flex rounded flex justify-between items-center">
                 {/* ///div categori pix */}
                 <div className="px-14 flex flex-col items-center justify-center">
@@ -108,7 +113,9 @@ const MainContent2 = () => {
                       انگیز
                     </p>
                     <img className="w-28" src="./box.png" />
-                    <Link href="/landing">
+                    <Link
+                      href={`/landing?category=${category.name}&categoryId=${category._id}`}
+                    >
                       <div className="flex items-center gap-3 mt-2 hover:text-blue-900">
                         {' '}
                         <p className="text-white text-xl text-center">

@@ -6,7 +6,7 @@ const Footer = () => {
       <hr className="my-10"></hr>
       <div className="flex justify-between items-center">
         <div>
-          <img src="logo.png" className="sm:w-44 w-44"></img>
+          <img src="logo.png" className="sm:w-44 w-44" />
           <div className="sm:flex">
             <p className="ml-6 text-sm p-3">تلفن پشتیبانی : 021 - 76767000</p>
             <p className="hidden sm:ml-6 sm:text-xl"> | </p>
@@ -30,23 +30,23 @@ const Footer = () => {
       </div>
       <div className="hidden sm:flex sm:justify-between md:p-4 mt-5 mb-5">
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="express-delivery.svg"></img>
+          <img src="express-delivery.svg" />
           <p>امکان تحویل اکسپرس</p>
         </div>
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="cash-on-delivery.svg"></img>
+          <img src="cash-on-delivery.svg" />
           <p>امکان پرداخت در محل</p>
         </div>
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="support.svg"></img>
+          <img src="support.svg" />
           <p>7 روز هفته، 24 ساعته</p>
         </div>
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="days-return.svg"></img>
+          <img src="days-return.svg" />
           <p>هفت روز ضمانت بازگشت کالا</p>
         </div>
         <div className="text-slate-500 text-sm flex-col items-center justify-center">
-          <img src="original-products.svg"></img>
+          <img src="original-products.svg" />
           <p>ضمانت اصل بودن کالا</p>
         </div>
       </div>
@@ -237,13 +237,13 @@ const Footer = () => {
         </div>
         <div className="flex justify-center">
           <div className="border border-2 border-slate-300 rounded w-28 h-32 p-2">
-            <img src="rasane.webp"></img>
+            <img src="rasane.webp" />
           </div>
           <div className="border border-2 border-slate-300 rounded w-24 h-32 p-2">
-            <img src="kasbokar.webp"></img>
+            <img src="kasbokar.webp" />
           </div>
           <div className="border border-2 border-slate-300 rounded w-28 h-32 p-2">
-            <img src="enamad.webp"></img>
+            <img src="enamad.webp" />
           </div>
         </div>
       </div>
