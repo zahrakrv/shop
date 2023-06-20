@@ -89,7 +89,8 @@ const GlobalProvider = ({ children }: any) => {
     try {
       //localhost:8000/api/categories
       const response = await axios.get(
-        `http://localhost:8000/api/products?page=${page}&limit=${limit}&sort=price`,
+        // `http://localhost:8000/api/products?page=${page}&limit=${limit}&sort=price`,
+        `http://localhost:8000/api/products?page=${page}&limit=${limit}&sort=-createdAt`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
@@ -120,7 +121,7 @@ const GlobalProvider = ({ children }: any) => {
   const fetchAllProducts = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/products?limit=all',
+        'http://localhost:8000/api/products?limit=all&sort=-createdAt',
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }

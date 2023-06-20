@@ -57,7 +57,7 @@ const LandingPage = () => {
     <>
       <Layout>
         <div className="flex gap-2 p-4">
-          <div className="w-1/4 mt-16 px-5 border border-red-500 border-b-0 rounded-xl rounded-b-none shadow">
+          <div className="w-1/4 h-full mt-16 px-5 border border-red-500 border-b-0 rounded-xl rounded-b-none shadow">
             <SideBarLanding />
           </div>
           <div className="w-3/4 border border-b-0 border-red-500 rounded-xl rounded-b-none shadow my-16 px-5">

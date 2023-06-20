@@ -1,6 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import { useEffect, useState } from 'react';
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState, useRef } from 'react';
 import { MutationObserver, useMutation, useQuery } from '@tanstack/react-query';
 
 import dynamic from 'next/dynamic';
@@ -9,6 +8,8 @@ import { request } from '@/utils/request';
 import Previews from './Previews';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const createProduct = async (productData) => {
   const cookie = new Cookies();
@@ -43,8 +44,11 @@ const AddDataModal = ({
   onClose,
   selectedProduct,
   isEditing,
+  fetchingData,
+  page,
 }) => {
-  console.log(selectedProduct);
+  // console.log(selectedProduct);
+  // const refTextEditor = useRef(null);
 
   const router = useRouter();
   const {
@@ -77,6 +81,7 @@ const AddDataModal = ({
     onSuccess: () => {
       reset();
       onClose();
+      // updateProduct(id, productData);
     },
   });
   console.log(selectedProduct);
@@ -108,7 +113,7 @@ const AddDataModal = ({
   //     setProductAdded({ ...productAdded, images: filesArray });
   //   }
   // };
-
+  // const Editor = dynamic(() => import('../EditorQuil'), { ssr: false });
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const image = e.currentTarget.elements.image.files;
@@ -125,11 +130,22 @@ const AddDataModal = ({
     productData.append('description', description);
     // console.log(Object.fromEntries(productData));
     isEditing
-      ? mutationEdit.mutate({
-          id: selectedProduct._id,
-          productData: productData,
-        })
-      : mutation.mutate(productData);
+      ? mutationEdit.mutate(
+          {
+            id: selectedProduct._id,
+            productData: productData,
+          },
+          {
+            onSuccess: () => {
+              fetchingData(page + 1);
+            },
+          }
+        )
+      : mutation.mutate(productData, {
+          onSuccess: () => {
+            fetchingData(page + 1);
+          },
+        });
   };
   const fetchData = async (url: string) => {
     const response = await request.get(url);
@@ -202,6 +218,8 @@ const AddDataModal = ({
   }, [selectedProduct]);
   //////textEditor
   const Editor = dynamic(() => import('../Editor'), { ssr: false });
+  // const Editor = dynamic(() => import('../EditorQuil'), { ssr: false });
+
   return (
     <>
       <Dialog open={isOpenAdding} onClose={onClose} className="relative z-50">
@@ -405,10 +423,36 @@ const AddDataModal = ({
                   </input>
                 </div>
                 {/* /////////////////////////////////////////text editor */}
+                {/* <Editor
+                  refTextEditor={refTextEditor}
+                  value={description}
+                  onChange={(v) => setDescription(v)}
+                /> */}
                 <Editor
                   value={description}
                   onChange={(v) => setDescription(v)}
                 />
+                {/* <div dir="ltr" className="w-full">
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field: { onChange, value } }) => {
+                      return (
+                        <ReactQuill
+                          className="w-full h-[100px]"
+                          id="description"
+                          theme="snow"
+                          onChange={onChange}
+                          // defaultValue={}
+                          modules={Editor}
+                        />
+                      );
+                    }}
+                  />
+                  <p className="text-red-500">
+                    {errors.description?.message?.toString()}
+                  </p>
+                </div> */}
                 <div className="flex justify-center gap-4 mt-3">
                   <button
                     className="mb-3 p-3 rounded bg-teal-400"

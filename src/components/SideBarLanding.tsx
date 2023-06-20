@@ -33,7 +33,8 @@ const SideBarLanding = () => {
         {categories?.map((category) => (
           <div key={category._id}>
             <Link
-                href={`/landing?category=${category.name}&categoryId=${category._id}`}
+                // href={`/landing?category=${category.name}&categoryId=${category._id}`}
+                href={{pathname:'/landing', query:{category:category.name, categoryId:category._id}}}
               >
             <h2 className='hel mt-10 mb-6 mr-2 text-xl'>{category.name}</h2>
             </Link>
@@ -43,7 +44,9 @@ const SideBarLanding = () => {
                 .map((subcategory:SubCategoryType) => (
                   <Link
                   key={subcategory._id}
-                  href={`/landing?category=${category.name}&categoryId=${category._id}&subCategory=${subcategory.name}&subCategoryId=${subcategory._id}`}
+                  // href={`/landing?category=${category.name}&categoryId=${category._id}&subCategory=${subcategory.name}&subCategoryId=${subcategory._id}`}
+                href={{pathname:'/landing', query:{category:category.name, categoryId:category._id,subCategory: subcategory.name,subCategoryId:subcategory._id}}}
+
                 >
                   <li key={subcategory._id} className='py-2 cursor-pointer'>{subcategory.name}</li>
                   </Link>

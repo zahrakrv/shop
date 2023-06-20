@@ -45,13 +45,16 @@ const TableAddProduct = () => {
   //   };
   //   getProducts();
   // }, [rowsPerPage, page]);
-  useEffect(() => {
-    fetchProducts(page + 1, rowsPerPage).then((productsData) => {
+
+  const fetchingData = (page: number, limit: number = rowsPerPage) => {
+    fetchProducts(page, limit).then((productsData) => {
       setTotalPage(productsData.total_pages);
       setProducts(productsData.data.products);
       setTotalProducts(productsData.total);
-      console.log('ok');
     });
+  };
+  useEffect(() => {
+    fetchingData(page + 1, rowsPerPage);
   }, [rowsPerPage, page]);
 
   useEffect(() => {
@@ -90,6 +93,7 @@ const TableAddProduct = () => {
       const updatedProducts = products.filter(
         (product) => product._id !== productId
       );
+      fetchingData(page + 1);
       setProducts(updatedProducts);
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -186,6 +190,8 @@ const TableAddProduct = () => {
         selectedProduct={selectedProduct}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
+        fetchingData={fetchingData}
+        page={page}
       />
 
       {/* ///////pagination */}

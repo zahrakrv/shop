@@ -66,7 +66,11 @@ const MainContent2 = () => {
           return (
             <div key={category._id}>
               <Link
-                href={`/landing?category=${category.name}&categoryId=${category._id}`}
+                // href={`/landing?category=${category.name}&categoryId=${category._id}`}
+                href={{
+                  pathname: '/landing',
+                  query: { category: category.name, categoryId: category._id },
+                }}
               >
                 <h2 className="hel drop-shadow-2xl text-blue-900 text-[30px] font-Bold p-2 cursor-pointer flex gap-4 items-center">
                   کالاهای گروه {category.name}
@@ -114,7 +118,14 @@ const MainContent2 = () => {
                     </p>
                     <img className="w-28" src="./box.png" />
                     <Link
-                      href={`/landing?category=${category.name}&categoryId=${category._id}`}
+                      // href={`/landing?category=${category.name}&categoryId=${category._id}`}
+                      href={{
+                        pathname: '/landing',
+                        query: {
+                          category: category.name,
+                          categoryId: category._id,
+                        },
+                      }}
                     >
                       <div className="flex items-center gap-3 mt-2 hover:text-blue-900">
                         {' '}
