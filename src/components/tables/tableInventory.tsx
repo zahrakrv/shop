@@ -5,8 +5,14 @@ import Button from './../../kit/Button';
 import axios from 'axios';
 import EasyEdit from 'react-easy-edit';
 
-const TableInventory = () => {
-  const [products, setProducts] = useState([]);
+interface ProductType {
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+const TableInventory: React.FC = () => {
+  const [products, setProducts] = useState<ProductType[]>([]);
   const { fetchCategories, fetchProducts, fetchSortPrice, fetchUsers } =
     useContext(GlobalContext);
   const [page, setPage] = useState(0);
@@ -48,7 +54,11 @@ const TableInventory = () => {
   // }, []);
 
   /////handling editing quantity & price function
-  const handleSave = async (itemId, fieldName, newValue) => {
+  const handleSave = async (
+    itemId: string,
+    fieldName: string,
+    newValue: any
+  ) => {
     try {
       const updatedProduct = { [fieldName]: newValue };
       await axios.patch(
@@ -84,12 +94,17 @@ const TableInventory = () => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   }
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     // console.log(newPage);
 
     setPage(newPage);
   };
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 4));
     setPage(0);
   };
@@ -114,9 +129,9 @@ const TableInventory = () => {
   // fetchSortPrice(price);
   return (
     <div className="flex-col justify-center">
-      <div className="flex justify-start mb-12">
+      {/* <div className="flex justify-start mb-12">
         <Button>ذخیره</Button>
-      </div>
+      </div> */}
       <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border items-center">
         <thead className="mx-auto border-gray-400 border-b">
           <tr>

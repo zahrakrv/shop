@@ -31,6 +31,7 @@ const Footer = () => {
       <div className="hidden sm:flex sm:justify-between md:p-4 mt-5 mb-5">
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
           <img src="express-delivery.svg" />
+
           <p>امکان تحویل اکسپرس</p>
         </div>
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">

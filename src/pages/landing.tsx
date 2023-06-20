@@ -10,20 +10,48 @@ const LandingPage = () => {
   const { allProducts } = useContext(GlobalContext);
   const [categoryProducts, setCategoryProducts] = useState([]);
   const router = useRouter();
-  const { category, categoryId } = router.query;
+  const { category, categoryId, subCategory, subCategoryId } = router.query;
+
+  // useEffect(() => {
+  //   if (categoryId) {
+  //     const products = allProducts.filter(
+  //       (product) => product.category._id === categoryId
+  //     );
+  //     // setCategoryProducts(products);
+  //   } else if (category) {
+  //     const products = allProducts.filter(
+  //       (product) => product.category.slugname === category
+  //     );
+  //     // setCategoryProducts(products);
+  //   }
+
+  // }, [allProducts, category, categoryId]);
+
   useEffect(() => {
+    let filteredProducts = allProducts;
+
     if (categoryId) {
-      const products = allProducts.filter(
+      filteredProducts = filteredProducts.filter(
         (product) => product.category._id === categoryId
       );
-      setCategoryProducts(products);
     } else if (category) {
-      const products = allProducts.filter(
+      filteredProducts = filteredProducts.filter(
         (product) => product.category.slugname === category
       );
-      setCategoryProducts(products);
     }
-  }, [allProducts, category, categoryId]);
+
+    if (subCategoryId) {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.subcategory._id === subCategoryId
+      );
+    } else if (subCategory) {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.subcategory.slugname === subCategory
+      );
+    }
+
+    setCategoryProducts(filteredProducts);
+  }, [allProducts, category, categoryId, subCategory, subCategoryId]);
 
   return (
     <>

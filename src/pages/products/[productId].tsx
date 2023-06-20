@@ -4,6 +4,20 @@ import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
+interface ProductType {
+  name: string;
+  price: number;
+  quantity: number;
+  description: string;
+  images: string[];
+  category: {
+    name: string;
+  };
+  subcategory: {
+    name: string;
+  };
+}
+
 const ProductPage = () => {
   const router = useRouter();
   //   const { id } = router.query;
@@ -11,7 +25,7 @@ const ProductPage = () => {
   const id = query.productId;
   const [quantity, setQuantity] = useState(1);
   ///null برای انکه اولش هیچی نباشه و با یوزافکت بیاد فچ بزنه
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<ProductType | null>(null);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
@@ -37,10 +51,15 @@ const ProductPage = () => {
   }
   // const formattedPrice = product.price.toLocaleString();
   const formattedPrice = Intl.NumberFormat('fa-IR').format(product.price);
+  const formattedQuant = Intl.NumberFormat('fa-IR').format(product.quantity);
 
   const incrementQuantity = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+    setQuantity((prevQuantity) => {
+      const newQuantity = prevQuantity + 1;
+      return newQuantity <= product.quantity ? newQuantity : product.quantity;
+    });
   };
+  const addToCartDisabled = product.quantity === 0;
   return (
     <>
       <Layout>
@@ -67,10 +86,15 @@ const ProductPage = () => {
             <h1 className="font-semibold text-gray-700 text-xl mb-6">
               {product.name}
             </h1>
-
             <div className="mb-6">
               <span className="font-semibold text-gray-700 ">قیمت :</span>
               <span>{formattedPrice} تومان</span>
+            </div>
+            <div className="mb-6">
+              <span className="font-semibold text-gray-700">
+                موجودی این محصول:
+              </span>
+              <span className="mb-6"> {formattedQuant} عدد</span>
             </div>
             <div className="mb-6">
               <span className="font-semibold text-gray-700">
@@ -89,10 +113,14 @@ const ProductPage = () => {
               const value = parseInt(e.target.value);
               setQuantity(value >= 1 ? value : 1);
             }}
+            min="1"
           />
           <button
-            className="bg-green-500 rounded p-2"
+            className={`bg-green-500 rounded p-2 ${
+              addToCartDisabled ? 'bg-gray-500 cursor-not-allowed' : ''
+            }`}
             onClick={incrementQuantity}
+            disabled={addToCartDisabled}
           >
             <div className="flex gap-3">
               افزودن به سبد خرید{' '}

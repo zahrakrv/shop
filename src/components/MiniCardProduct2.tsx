@@ -1,11 +1,25 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
 
-const MiniCardProduct2 = ({ products, useRouter, className }) => {
+interface ProductType {
+  _id: string | number;
+  name: string;
+  price: number;
+  images: string[];
+}
+interface MiniCardProduct2Props {
+  products: string[];
+  className?: string;
+}
+const MiniCardProduct2: React.FC<MiniCardProduct2Props> = ({
+  products,
+  useRouter,
+  className,
+}) => {
   const router = useRouter();
   //   console.log(products);
 
-  const handleCardClick = (productId) => {
+  const handleCardClick = (productId: string) => {
     router.push(`/products/${productId}`);
   };
   return (

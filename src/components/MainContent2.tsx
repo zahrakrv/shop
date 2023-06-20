@@ -68,7 +68,7 @@ const MainContent2 = () => {
               <Link
                 href={`/landing?category=${category.name}&categoryId=${category._id}`}
               >
-                <h2 className="hel drop-shadow-2xl text-blue-900 text-3xl font-Bold p-2 cursor-pointer flex gap-4 items-center">
+                <h2 className="hel drop-shadow-2xl text-blue-900 text-[30px] font-Bold p-2 cursor-pointer flex gap-4 items-center">
                   کالاهای گروه {category.name}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
