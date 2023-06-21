@@ -3,7 +3,7 @@ import Layout from '@/layout/layout';
 import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-
+import Image from 'next/image';
 interface ProductType {
   name: string;
   price: number;
@@ -65,10 +65,16 @@ const ProductPage = () => {
       <Layout>
         <div className="flex p-4 mt-10">
           <div>
-            <img
+            <Image
+              src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+              alt=""
+              width={256}
+              height={384}
+            />
+            {/* <img
               className="w-64 rounded"
               src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-            />
+            /> */}
           </div>
           <div className="w-[40rem]">
             <div className="flex items-center gap-4 mb-6 text-gray-500">
@@ -114,6 +120,7 @@ const ProductPage = () => {
               setQuantity(value >= 1 ? value : 1);
             }}
             min="1"
+            max={product.quantity}
           />
           <button
             className={`bg-green-500 rounded p-2 ${

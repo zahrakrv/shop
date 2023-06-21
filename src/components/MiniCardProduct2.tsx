@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
+import Image from 'next/image';
 
 interface ProductType {
   _id: string | number;
@@ -33,11 +34,17 @@ const MiniCardProduct2: React.FC<MiniCardProduct2Props> = ({
             className="mini-card bg-white rounded-xl w-44 flex flex-col justify-center items-center gap-8 border border-gray-200 shadow p-2"
             onClick={() => handleCardClick(product._id)}
           >
-            <img
+            <Image
+              src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+              alt=""
+              width={256}
+              height={256}
+            />
+            {/* <img
               className="w-32 mt-3"
               src={`http://localhost:8000/images/products/images/${product.images[0]}`}
               alt={product.name}
-            />
+            /> */}
             <p className="font-semibold">{product.name}</p>
             <p className="mb-2">{formattedPrice} تومان</p>
 

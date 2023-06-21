@@ -3,6 +3,8 @@ import { GlobalContext } from './../pages/api/context/GlobalContext';
 import MiniCardProduct2 from './MiniCardProduct2';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import box from '../../public/box.png';
 
 const MainContent2 = () => {
   const {
@@ -116,7 +118,8 @@ const MainContent2 = () => {
                       <br /> شگفت <br />
                       انگیز
                     </p>
-                    <img className="w-28" src="./box.png" />
+                    <Image src={box} alt="" width={112} height={112} />
+                    {/* <img className="w-28" src="./box.png" /> */}
                     <Link
                       // href={`/landing?category=${category.name}&categoryId=${category._id}`}
                       href={{

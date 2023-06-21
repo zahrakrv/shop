@@ -1,4 +1,14 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import cash from '../../public/cash-on-delivery.svg';
+import delivery from '../../public/express-delivery.svg';
+import support from '../../public/support.svg';
+import days from '../../public/days-return.svg';
+import original from '../../public/original-products.svg';
+import rasane from '../../public/rasane.webp';
+import kasbokar from '../../public/kasbokar.webp';
+import enamad from '../../public/enamad.webp';
+import logo from '../../public/logo.png';
 
 const Footer = () => {
   return (
@@ -6,7 +16,9 @@ const Footer = () => {
       <hr className="my-10"></hr>
       <div className="flex justify-between items-center">
         <div>
-          <img src="logo.png" className="sm:w-44 w-44" />
+          {/* <img src="logo.png" className="sm:w-44 w-44" /> */}
+          <Image src={logo} alt="express" height={80} width={176} />
+
           <div className="sm:flex">
             <p className="ml-6 text-sm p-3">تلفن پشتیبانی : 021 - 76767000</p>
             <p className="hidden sm:ml-6 sm:text-xl"> | </p>
@@ -30,24 +42,32 @@ const Footer = () => {
       </div>
       <div className="hidden sm:flex sm:justify-between md:p-4 mt-5 mb-5">
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="express-delivery.svg" />
+          {/* <img src="express-delivery.svg" /> */}
+          <Image src={delivery} alt="express" height={60} width={60} />
 
           <p>امکان تحویل اکسپرس</p>
         </div>
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="cash-on-delivery.svg" />
+          <Image src={cash} alt="express" height={60} width={60} />
+          {/* <img src="cash-on-delivery.svg" /> */}
           <p>امکان پرداخت در محل</p>
         </div>
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="support.svg" />
+          {/* <img src="support.svg" /> */}
+          <Image src={support} alt="express" height={60} width={60} />
+
           <p>7 روز هفته، 24 ساعته</p>
         </div>
         <div className="text-slate-500 text-sm flex flex-col items-center justify-center">
-          <img src="days-return.svg" />
+          {/* <img src="days-return.svg" /> */}
+          <Image src={days} alt="express" height={60} width={60} />
+
           <p>هفت روز ضمانت بازگشت کالا</p>
         </div>
         <div className="text-slate-500 text-sm flex-col items-center justify-center">
-          <img src="original-products.svg" />
+          {/* <img src="original-products.svg" /> */}
+          <Image src={original} alt="express" height={60} width={60} />
+
           <p>ضمانت اصل بودن کالا</p>
         </div>
       </div>
@@ -238,13 +258,16 @@ const Footer = () => {
         </div>
         <div className="flex justify-center">
           <div className="border border-2 border-slate-300 rounded w-28 h-32 p-2">
-            <img src="rasane.webp" />
+            {/* <img src="rasane.webp" /> */}
+            <Image src={rasane} alt="express" height={112} width={128} />
           </div>
           <div className="border border-2 border-slate-300 rounded w-24 h-32 p-2">
-            <img src="kasbokar.webp" />
+            {/* <img src="kasbokar.webp" /> */}
+            <Image src={kasbokar} alt="express" height={112} width={128} />
           </div>
           <div className="border border-2 border-slate-300 rounded w-28 h-32 p-2">
-            <img src="enamad.webp" />
+            {/* <img src="enamad.webp" /> */}
+            <Image src={enamad} alt="express" height={128} width={112} />
           </div>
         </div>
       </div>

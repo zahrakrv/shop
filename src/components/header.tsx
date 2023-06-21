@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import logo from '../../public/logo.png';
 
 const HeaderSite = () => {
   return (
@@ -10,8 +12,9 @@ const HeaderSite = () => {
       <div className="">
         <div className="w-full sm:w-full md:w-full sm:flex sm:justify-between sm:items-center sm:gap-4">
           <Link href="/">
-            <div className="flex items-center justify-center">
-              <img src="logo.png" className="sm:w-52 w-44"></img>
+            <div className="flex items-center justify-center sm:w-52">
+              {/* <img src="logo.png" className="sm:w-52 w-44"></img> */}
+              <Image src={logo} alt="express" height={80} width={176} />
             </div>
           </Link>
           {/* ////div search & cart */}

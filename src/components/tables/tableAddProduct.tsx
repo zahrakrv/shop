@@ -5,6 +5,8 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Button from './../../kit/button';
 import AddDataModal from '../modals/AddDatatModal';
+import Image from 'next/image';
+
 // import updateProduct from '../modals/AddDatatModal'
 
 const cookies = new Cookies();
@@ -140,10 +142,16 @@ const TableAddProduct = () => {
             return (
               <tr key={product._id}>
                 <td className="p-3 shadow">
-                  <img
+                  <Image
+                    src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                    alt=""
+                    width={112}
+                    height={112}
+                  />
+                  {/* <img
                     className="w-24 rounded"
                     src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-                  />
+                  /> */}
                 </td>
                 <td className="p-3 shadow">{product.name}</td>
                 <td className="p-3 shadow">
