@@ -391,7 +391,9 @@ const AddDataModal = ({
                         );
                       }}
                     />
-                    {errors.name && <p> نام کالا الزامیست</p>}
+                    {errors.name && (
+                      <p className="text-red-500"> نام کالا الزامیست</p>
+                    )}
                   </div>
                   <div className="my-3 flex flex-col gap-3 justify-start">
                     {/* <label> قیمت </label> */}
@@ -413,7 +415,9 @@ const AddDataModal = ({
                         );
                       }}
                     />
-                    {errors.price && <p> قیمت الزامیست</p>}
+                    {errors.price && (
+                      <p className="text-red-500"> قیمت الزامیست</p>
+                    )}
                   </div>
                 </div>
 
@@ -438,7 +442,9 @@ const AddDataModal = ({
                         );
                       }}
                     />
-                    {errors.quantity && <p> تعداد کالا الزامیست</p>}
+                    {errors.quantity && (
+                      <p className="text-red-500"> تعداد کالا الزامیست</p>
+                    )}
                   </div>
                   <div className="my-3 flex flex-col gap-3 justify-start">
                     {/* <label> برند</label> */}
@@ -460,7 +466,9 @@ const AddDataModal = ({
                         );
                       }}
                     />
-                    {errors.brand && <p> نام برند الزامیست</p>}
+                    {errors.brand && (
+                      <p className="text-red-500"> نام برند الزامیست</p>
+                    )}
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -515,7 +523,9 @@ const AddDataModal = ({
                         );
                       }}
                     />
-                    {errors.category && <p> دسته بندی الزامیست</p>}
+                    {errors.category && (
+                      <p className="text-red-500"> دسته بندی الزامیست</p>
+                    )}
                   </div>
                   <div className="my-3 ">
                     {/* <label> زیرگروه</label> */}
@@ -553,7 +563,9 @@ const AddDataModal = ({
                     <option>زیرگروهی وجود ندارد</option>
                     )} */}
                     </select>
-                    {errors.category && <p> زیر گروه الزامیست</p>}
+                    {errors.category && (
+                      <p className="text-red-500"> زیر گروه الزامیست</p>
+                    )}
                   </div>
                 </div>
                 <div className="my-4">
