@@ -122,7 +122,7 @@ const DropdownMenu2 = ({
 
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl ">
-        <div className="flex justify-start items-center self-start gap-8 hover:text-blue-950 hover:font-bold">
+        <div className="flex justify-start items-center  bg-white z-40 self-start gap-8 hover:text-blue-950 hover:font-bold">
           {categories.map((category) => {
             const subCategories = subCategory.filter(
               (sub) => sub.category === category._id

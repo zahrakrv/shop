@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import React, { Component, useEffect, useState, useRef } from 'react';
 import { MutationObserver, useMutation, useQuery } from '@tanstack/react-query';
-
+import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Cookies from 'universal-cookie';
 import { request } from '@/utils/request';
@@ -10,6 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Image from 'next/image';
 
 const createProduct = async (productData) => {
   const cookie = new Cookies();
@@ -17,9 +18,14 @@ const createProduct = async (productData) => {
     'http://localhost:8000/api/products',
     productData,
     {
+      // headers: {
+      //   'Content-Type': `multipart/form-data; boundary=${productData._boundary}`,
+      //   Authorization: `Bearer ${cookie.get('adminToken')}`,
+      // },
       headers: {
-        'Content-Type': `multipart/form-data; boundary=${productData._boundary}`,
-        Authorization: `Bearer ${cookie.get('adminToken')}`,
+        'Content-Type':
+          'multipart/form-data; boundary=' + productData._boundary,
+        Authorization: 'Bearer ' + cookie.get('adminToken'),
       },
     }
   );
@@ -48,6 +54,7 @@ const AddDataModal = ({
   page,
 }) => {
   // console.log(selectedProduct);
+  // console.log(isEditing);
   // const refTextEditor = useRef(null);
 
   const router = useRouter();
@@ -84,7 +91,7 @@ const AddDataModal = ({
       // updateProduct(id, productData);
     },
   });
-  console.log(selectedProduct);
+  // console.log(selectedProduct);
   // const [productAdded, setProductAdded] = useState({
   //   name: '',
   //   price: 0,
@@ -98,7 +105,13 @@ const AddDataModal = ({
   const [category, setCategory] = useState();
   const [subcategory, setSubcategory] = useState([]);
   const [description, setDescription] = useState('توضیحات');
-
+  /////thumbnail
+  const [currentThumbnailName, setCurrentThumbnailName] = useState([]);
+  ///image
+  const [currentImages, setCurrentImages] = useState([]);
+  const [imgName, setImgName] = useState([]);
+  const [reload, setReload] = useState();
+  const [open, setOpen] = useState(true);
   // console.log(category);
 
   // const handleInputChange = (e) => {
@@ -114,21 +127,85 @@ const AddDataModal = ({
   //   }
   // };
   // const Editor = dynamic(() => import('../EditorQuil'), { ssr: false });
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const image = e.currentTarget.elements.image.files;
+  // const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const image = e.currentTarget.elements.image.files;
+  //   const thumbnail = e.currentTarget.elements.thumbnail.files;
+
+  //   const productData = new FormData();
+  //   const elements = e.currentTarget.querySelectorAll(
+  //     'input:not([type="file"]), select, textarea'
+  //   );
+  //   elements.forEach((element) => {
+  //     productData.append(element.name, element.value);
+  //   });
+  //   for (let i = 0; i < image.length; i++) {
+  //     productData.append('images', image[i]);
+  //   }
+  //   for (let i = 0; i < thumbnail.length; i++) {
+  //     productData.append('thumbnail', thumbnail[i]);
+  //   }
+  //   // imgName.map((item) => productData.append('images', item));
+  //   // axios.post('http://localhost:8000/api/products', productData);
+  //   // setReload(!reload);
+  //   // setOpen(false);
+  //   // imgName.map((item) => productData.append('thumbnail', item));
+  //   // axios.post('http://localhost:8000/api/products', productData);
+  //   // setReload(!reload);
+  //   // setOpen(false);
+
+  //   productData.append('description', description);
+  //   // console.log(Object.fromEntries(productData));
+  //   isEditing
+  //     ? mutationEdit.mutate(
+  //         {
+  //           id: selectedProduct._id,
+  //           productData: productData,
+  //         },
+  //         {
+  //           onSuccess: () => {
+  //             fetchingData(page + 1);
+  //           },
+  //         }
+  //       )
+  //     : mutation.mutate(productData, {
+  //         onSuccess: () => {
+  //           fetchingData(page + 1);
+  //         },
+  //       });
+  // };
+
+  const onSubmit = (data, e) => {
+    const {
+      name,
+      price,
+      quantity,
+      brand,
+      category,
+      subcategory,
+      image,
+      thumbnail,
+    } = data;
+    // const elements = e.currentTarget;
+    // const image = e.currentTarget.elements.image.files;
+    // const thumbnail = e.currentTarget.elements.thumbnail.files;
     const productData = new FormData();
-    const elements = e.currentTarget.querySelectorAll(
-      'input:not([type="file"]), select, textarea'
-    );
-    elements.forEach((element) => {
-      productData.append(element.name, element.value);
-    });
-    for (let i = 0; i < image.length; i++) {
+    productData.append('name', name);
+    productData.append('price', price);
+    productData.append('quantity', quantity);
+    productData.append('brand', brand);
+    productData.append('category', category);
+    // productData.append('subcategory', subcategory);
+    productData.append('subcategory', subcategory || []);
+
+    for (let i = 0; i < image?.length; i++) {
       productData.append('images', image[i]);
     }
+    // if (thumbnail) {
+    //   productData.append('thumbnail', thumbnail[0]);
+    // }
     productData.append('description', description);
-    // console.log(Object.fromEntries(productData));
+
     isEditing
       ? mutationEdit.mutate(
           {
@@ -147,6 +224,7 @@ const AddDataModal = ({
           },
         });
   };
+
   const fetchData = async (url: string) => {
     const response = await request.get(url);
     // console.log(response.data);
@@ -190,9 +268,9 @@ const AddDataModal = ({
     }
   }, [data2]);
 
-  const handleCategoryChange = (categoryId) => {
+  const handleCategoryChange = (categoryId: number) => {
     setCategory(categoryId);
-    console.log(categoryId);
+    // console.log(categoryId);
   };
 
   const handleSubcategoryChange = (e) => {
@@ -220,6 +298,55 @@ const AddDataModal = ({
   const Editor = dynamic(() => import('../Editor'), { ssr: false });
   // const Editor = dynamic(() => import('../EditorQuil'), { ssr: false });
 
+  /////thumbnail
+  const fileInputRef2 = useRef(null);
+  const handleThumbnailChange = (e) => {
+    const file = e.target.files[0]; // for (let i = 0; i < files.length; i++) { //   const file = files[i]; //   console.log(file)
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setCurrentThumbnailName(reader.result);
+    };
+    reader.onerror = () => {
+      console.log(reader.error);
+    };
+    const imageName2 = e.currentTarget.files;
+    const entries = Object.entries(imageName2);
+    const Array = entries.map((item) => item[1]);
+    setCurrentThumbnailName(Array[0]);
+  };
+  /////image
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+    const newImages = [...currentImages];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        newImages.push(reader.result);
+        if (newImages.length === files.length) {
+          setCurrentImages([...currentImages, ...newImages]);
+        }
+      };
+      reader.readAsDataURL(files[i]);
+    }
+
+    const imageName2 = e.currentTarget.files;
+    const entries = Object.entries(imageName2);
+    const Array = entries.map((item) => item[1]);
+    setImgName(Array);
+  };
+
+  ///delete picture
+  const handleImageDelete = (index) => {
+    const imagesCopy = [...currentImages];
+    imagesCopy.splice(index, 1);
+    setCurrentImages(imagesCopy);
+  };
   return (
     <>
       <Dialog open={isOpenAdding} onClose={onClose} className="relative z-50">
@@ -242,94 +369,112 @@ const AddDataModal = ({
                   </svg>
                 </div>
               </Dialog.Title>
-              <form className="p-4" onSubmit={onSubmit}>
+              <form className="p-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between items-center">
                   <div className="my-3 flex flex-col gap-3 justify-start">
-                    <label> نام کالا </label>
+                    {/* <label> نام کالا </label> */}
                     <Controller
                       control={control}
                       name="name"
+                      rules={{ required: true }}
                       render={({ field: { onChange, value, name } }) => {
                         return (
                           <input
+                            // {...field}
                             className="border border-teal-950 rounded bg-teal-50 p-2"
                             type="text"
                             name={name}
                             onChange={onChange}
                             value={value}
+                            placeholder="نام کالا"
                           />
                         );
                       }}
                     />
+                    {errors.name && <p> نام کالا الزامیست</p>}
                   </div>
                   <div className="my-3 flex flex-col gap-3 justify-start">
-                    <label> قیمت </label>
+                    {/* <label> قیمت </label> */}
                     <Controller
                       control={control}
                       name="price"
+                      rules={{ required: true }}
                       render={({ field: { onChange, value, name } }) => {
                         return (
                           <input
+                            // {...field}
                             className="border border-teal-950 rounded bg-teal-50 p-2"
                             type="text"
                             name={name}
                             onChange={onChange}
                             value={value}
+                            placeholder="قیمت"
                           />
                         );
                       }}
                     />
+                    {errors.price && <p> قیمت الزامیست</p>}
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <div className="my-3 flex flex-col gap-3 justify-start">
-                    <label> موجودی</label>
+                    {/* <label> موجودی</label> */}
                     <Controller
                       control={control}
                       name="quantity"
+                      rules={{ required: true }}
                       render={({ field: { onChange, value, name } }) => {
                         return (
                           <input
+                            // {...field}
                             className="border border-teal-950 rounded bg-teal-50 p-2"
                             type="text"
                             name={name}
                             onChange={onChange}
                             value={value}
+                            placeholder="تعداد"
                           />
                         );
                       }}
                     />
+                    {errors.quantity && <p> تعداد کالا الزامیست</p>}
                   </div>
                   <div className="my-3 flex flex-col gap-3 justify-start">
-                    <label> برند</label>
+                    {/* <label> برند</label> */}
                     <Controller
                       control={control}
                       name="brand"
+                      rules={{ required: true }}
                       render={({ field: { onChange, value, name } }) => {
                         return (
                           <input
+                            // {...field}
                             className="border border-teal-950 rounded bg-teal-50 p-2"
                             type="text"
                             name={name}
                             onChange={onChange}
                             value={value}
+                            placeholder="برند"
                           />
                         );
                       }}
                     />
+                    {errors.brand && <p> نام برند الزامیست</p>}
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div className="my-3 ">
-                    <label> دسته بندی </label>
+                    {/* <label> دسته بندی </label> */}
                     <br></br>
                     <Controller
                       control={control}
                       name="category"
+                      rules={{ required: true }}
                       render={({ field: { onChange, value, name } }) => {
                         return (
                           <select
+                            // {...field}
                             value={value}
                             name={name}
                             onChange={(event) => {
@@ -365,14 +510,15 @@ const AddDataModal = ({
                         {item.name}
                       </option>
                     );
-                  })} */}
+                    })} */}
                           </select>
                         );
                       }}
                     />
+                    {errors.category && <p> دسته بندی الزامیست</p>}
                   </div>
                   <div className="my-3 ">
-                    <label> زیرگروه</label>
+                    {/* <label> زیرگروه</label> */}
                     <br></br>
                     <select
                       className="border border-teal-950 rounded bg-teal-50 p-2"
@@ -403,33 +549,139 @@ const AddDataModal = ({
                         </option>
                       );
                     })
-                  ) : (
+                   ) : (
                     <option>زیرگروهی وجود ندارد</option>
-                  )} */}
+                    )} */}
                     </select>
+                    {errors.category && <p> زیر گروه الزامیست</p>}
                   </div>
                 </div>
                 <div className="my-4">
-                  <label> تصویر کالا </label>
+                  <label> تصویر </label>
                   <input
                     type="file"
                     name="image"
                     multiple
+                    {...register('image', { required: !isEditing })}
+                    className="input"
+                  />
+                  {errors.image && (
+                    <span className="text-red-500">
+                      {isEditing ? 'تصویر الزامی نیست' : 'تصویر الزامی است'}
+                    </span>
+                  )}
+                </div>
+                <div className="my-4">
+                  <label> تصویر کوچک </label>
+                  <input
+                    type="file"
+                    name="thumbnail"
+                    {...register('thumbnail')}
+                    className="input"
+                  />
+                  {errors.thumbnail && (
+                    <span className="text-red-500">
+                      {isEditing
+                        ? 'تصویر کوچک الزامی نیست'
+                        : 'تصویر کوچک الزامی است'}
+                    </span>
+                  )}
+                </div>
+                {/* /////thumbnail */}
+                {/* <div className="flex flex-col gap-5 w-full">
+                    <div className="flex gap-10">
+                      <div>
+                        <Image
+                          src={currentThumbnailName}
+                          alt=""
+                          width={150}
+                          height={150}
+                        />
+                      </div>
+                    </div>
+                    <input
+                      type="file"
+                      ref={fileInputRef2}
+                      onChange={handleThumbnailChange}
+                      onClick={() => fileInputRef2.current?.click()}
+                    />
+                  </div> */}
+
+                {/* //////img */}
+                {/* <div className="flex flex-col gap-5 w-full">
+                  <div className="flex gap-10">
+                    {currentImages &&
+                      currentImages.map((image, index) => (
+                        <div key={index}>
+                          <Image
+                            src={image}
+                            alt=""
+                            onChange={(e) => handleInputChange(e)}
+                            width={150}
+                            height={150}
+                          />
+                          <button onClick={() => handleImageDelete(index)}>
+                            Delete
+                          </button>
+                        </div>
+                      ))}
+                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                    onClick={() => fileInputRef.current.click()}
+                    multiple
+                  />
+                  </div> */}
+                {/* <Controller
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => ( */}
+                {/* <label> تصویر کالا </label>
+                  <input
+                    // {...field}
+                    type="file"
+                    name="image"
+                    multiple
                     // onChange={handleImageSelect}
-                  >
-                    {/* {productAdded?.images.map((image) => (
+                  /> */}
+                {/* )}
+                  /> */}
+                {/* {errors.category && <p> تصویر الزامیست</p>} */}
+                {/* </div>
+                <div className="my-4"> */}
+                {/* <Controller
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => ( */}
+                {/* <label> تصویر تامبنیل</label>
+                  <input
+                    // {...field}
+                    type="file"
+                    name="thumbnail"
+                    multiple
+                    // onChange={handleImageSelect}
+                  /> */}
+                {/* )}
+                  /> */}
+                {/* {errors.category && <p> تصویر تامبنیل الزامیست</p>} */}
+                {/* </div> */}
+                {/* {productAdded?.images.map((image) => (
                     <img key={image} src={image} alt="product" />
                   ))} */}
-                  </input>
-                </div>
+                {/* </input>
+                </div> */}
                 {/* /////////////////////////////////////////text editor */}
                 {/* <Editor
                   refTextEditor={refTextEditor}
                   value={description}
                   onChange={(v) => setDescription(v)}
                 /> */}
+
                 <Editor
                   value={description}
+                  // defaultValue={description}
                   onChange={(v) => setDescription(v)}
                 />
                 {/* <div dir="ltr" className="w-full">
