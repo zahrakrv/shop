@@ -3,7 +3,43 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'universal-cookie';
 
-export const GlobalContext = createContext({});
+export type SubCategoryType = {
+  _id: string;
+  name: string;
+  category: string;
+};
+export interface GlobalContextType {
+  adminToken: string | boolean;
+  adminLogin: (data: any) => void;
+  fetchProducts: (page: number, limit: number) => Promise<any>;
+  fetchCategories: () => Promise<any>;
+  fetchOrders: (
+    page: number,
+    limit: number,
+    sortDelivery: string,
+    deliveryStatus: string | undefined
+  ) => Promise<any>;
+  fetchSortPrice: (
+    page: number,
+    limit: number,
+    sortOrder: boolean
+  ) => Promise<any>;
+  fetchSubCategories: () => Promise<any>;
+  fetchUsers: () => Promise<any>;
+  categories: any[];
+  setCategories: React.Dispatch<React.SetStateAction<never[]>>;
+  setSubCategory: React.Dispatch<React.SetStateAction<never[]>>;
+  subCategory: SubCategoryType[];
+  products: any[];
+  setProducts: React.Dispatch<React.SetStateAction<never[]>>;
+  fetchAllProducts: () => Promise<any>;
+  setAllProducts: React.Dispatch<React.SetStateAction<never[]>>;
+  allProducts: any[];
+}
+
+export const GlobalContext = createContext<GlobalContextType>(
+  {} as GlobalContextType
+);
 
 /////check for window is not server side
 const ISSERVER = typeof window === 'undefined';
@@ -49,11 +85,12 @@ const GlobalProvider = ({ children }: any) => {
   };
 
   ////product
-  const fetchProducts = async (page, limit) => {
+  const fetchProducts = async (page: number, limit: number) => {
     try {
       //localhost:8000/api/categories
       const response = await axios.get(
-        `http://localhost:8000/api/products?page=${page}&limit=${limit}&sort=price`,
+        // `http://localhost:8000/api/products?page=${page}&limit=${limit}&sort=price`,
+        `http://localhost:8000/api/products?page=${page}&limit=${limit}&sort=-createdAt`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
@@ -84,7 +121,7 @@ const GlobalProvider = ({ children }: any) => {
   const fetchAllProducts = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:8000/api/products?limit=all',
+        'http://localhost:8000/api/products?limit=all&sort=-createdAt',
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
@@ -130,7 +167,12 @@ const GlobalProvider = ({ children }: any) => {
     // console.log(res.data.data);
   };
 
-  const fetchOrders = async (page, limit, sortDelivery, deliveryStatus) => {
+  const fetchOrders = async (
+    page: number,
+    limit: number,
+    sortDelivery: string,
+    deliveryStatus: boolean
+  ) => {
     try {
       const res = await axios.get(
         `http://localhost:8000/api/orders?page=${page}&sort=${sortDelivery}&limit=${limit}${
@@ -147,7 +189,11 @@ const GlobalProvider = ({ children }: any) => {
     // console.log(res.data.data);
   };
 
-  const fetchSortPrice = async (page, limit, sortOrder) => {
+  const fetchSortPrice = async (
+    page: number,
+    limit: number,
+    sortOrder: string
+  ) => {
     try {
       const response = await axios.get(
         `http://localhost:8000/api/products?page=${page}&limit=${limit}&fields=-rating,-createdAt,-updatedAt,-__v&sort=${

@@ -5,6 +5,8 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Button from './../../kit/button';
 import AddDataModal from '../modals/AddDatatModal';
+import Image from 'next/image';
+
 // import updateProduct from '../modals/AddDatatModal'
 
 const cookies = new Cookies();
@@ -45,13 +47,16 @@ const TableAddProduct = () => {
   //   };
   //   getProducts();
   // }, [rowsPerPage, page]);
-  useEffect(() => {
-    fetchProducts(page + 1, rowsPerPage).then((productsData) => {
+
+  const fetchingData = (page: number, limit: number = rowsPerPage) => {
+    fetchProducts(page, limit).then((productsData) => {
       setTotalPage(productsData.total_pages);
       setProducts(productsData.data.products);
       setTotalProducts(productsData.total);
-      console.log('ok');
     });
+  };
+  useEffect(() => {
+    fetchingData(page + 1, rowsPerPage);
   }, [rowsPerPage, page]);
 
   useEffect(() => {
@@ -90,6 +95,7 @@ const TableAddProduct = () => {
       const updatedProducts = products.filter(
         (product) => product._id !== productId
       );
+      fetchingData(page + 1);
       setProducts(updatedProducts);
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -136,10 +142,16 @@ const TableAddProduct = () => {
             return (
               <tr key={product._id}>
                 <td className="p-3 shadow">
-                  <img
+                  <Image
+                    src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                    alt=""
+                    width={112}
+                    height={112}
+                  />
+                  {/* <img
                     className="w-24 rounded"
                     src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-                  />
+                  /> */}
                 </td>
                 <td className="p-3 shadow">{product.name}</td>
                 <td className="p-3 shadow">
@@ -186,6 +198,8 @@ const TableAddProduct = () => {
         selectedProduct={selectedProduct}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
+        fetchingData={fetchingData}
+        page={page}
       />
 
       {/* ///////pagination */}
