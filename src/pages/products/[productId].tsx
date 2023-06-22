@@ -102,14 +102,20 @@ const ProductPage = () => {
               </span>
               <span className="mb-6"> {formattedQuant} عدد</span>
             </div>
-            <div className="mb-6">
-              <span className="font-semibold text-gray-700">
+
+            <div>
+              <span className="font-semibold text-gray-700 mb-6">
                 درباره ی محصول:
               </span>
-              <span className="mb-6"> {product.description}</span>
+              <div
+                className="mb-6 mt-6"
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
+              {/* <span className="mb-6"> {product.description}</span> */}
             </div>
           </div>
         </div>
+        {/* </div> */}
         <div className="p-4 mr-20 flex gap-4">
           <input
             type="number"

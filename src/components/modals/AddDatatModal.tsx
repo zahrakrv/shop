@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import React, { Component, useEffect, useState, useRef } from 'react';
+import React, { Component, useEffect, useState, useRef, useMemo } from 'react';
 import { MutationObserver, useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
@@ -56,7 +56,8 @@ const AddDataModal = ({
   // console.log(selectedProduct);
   // console.log(isEditing);
   // const refTextEditor = useRef(null);
-
+  ////editor
+  const [editor, setEditor] = useState('');
   const router = useRouter();
   const {
     control,
@@ -195,6 +196,8 @@ const AddDataModal = ({
     productData.append('quantity', quantity);
     productData.append('brand', brand);
     productData.append('category', category);
+    productData.append('description', editor);
+
     // productData.append('subcategory', subcategory);
     productData.append('subcategory', subcategory || []);
 
@@ -204,7 +207,7 @@ const AddDataModal = ({
     // if (thumbnail) {
     //   productData.append('thumbnail', thumbnail[0]);
     // }
-    productData.append('description', description);
+    // productData.append('description', description);
 
     isEditing
       ? mutationEdit.mutate(
@@ -295,8 +298,12 @@ const AddDataModal = ({
     }
   }, [selectedProduct]);
   //////textEditor
-  const Editor = dynamic(() => import('../Editor'), { ssr: false });
+  // const Editor = dynamic(() => import('../Editor'), { ssr: false });
   // const Editor = dynamic(() => import('../EditorQuil'), { ssr: false });
+  const ReactQuill = useMemo(
+    () => dynamic(import('react-quill'), { ssr: false }),
+    []
+  );
 
   /////thumbnail
   const fileInputRef2 = useRef(null);
@@ -691,10 +698,16 @@ const AddDataModal = ({
                   onChange={(v) => setDescription(v)}
                 /> */}
 
-                <Editor
+                {/* <Editor
                   value={description}
                   // defaultValue={description}
                   onChange={(v) => setDescription(v)}
+                /> */}
+                <ReactQuill
+                  theme="snow"
+                  value={editor}
+                  placeholder="توضیحات"
+                  onChange={(v) => setEditor(v)}
                 />
                 {/* <div dir="ltr" className="w-full">
                   <Controller

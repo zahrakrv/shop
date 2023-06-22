@@ -1,7 +1,8 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import React from 'react';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const DropdownMenu2 = ({
   isOpen,
@@ -11,6 +12,7 @@ const DropdownMenu2 = ({
   toggleMenu,
   toggleSubMenu,
 }) => {
+  const router = useRouter();
   const {
     categories,
     subCategory,
@@ -87,8 +89,16 @@ const DropdownMenu2 = ({
                         {/* toggleSubMenu(category._id) */}
                         <button
                           //   href="#"
-                          onClick={() => {
+                          onClick={(e) => {
                             // console.log('hhhh');
+                            e.preventDefault();
+                            router.push({
+                              pathname: '/landing',
+                              query: {
+                                category: category.name,
+                                categoryId: category._id,
+                              },
+                            });
                             setMenuOpen(!menuOpen);
                           }}
                         >
@@ -122,7 +132,7 @@ const DropdownMenu2 = ({
 
       {/* //////////sm menu */}
       <div className="h-16 p-4 hidden sm:flex justify-between items-center gap-6 text-xl ">
-        <div className="flex justify-start items-center  bg-white z-40 self-start gap-8 hover:text-blue-950 hover:font-bold">
+        <div className="flex justify-start items-center  bg-white z-40 self-start gap-12 ">
           {categories.map((category) => {
             const subCategories = subCategory.filter(
               (sub) => sub.category === category._id
@@ -134,10 +144,17 @@ const DropdownMenu2 = ({
                 key={category._id}
               >
                 <a
-                  className="mb-8"
+                  className="mb-8 hover:text-blue-950 hover:font-bold"
                   href="#"
-                  onClick={() => {
-                    // console.log('hhhh');
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push({
+                      pathname: '/landing',
+                      query: {
+                        category: category.name,
+                        categoryId: category._id,
+                      },
+                    });
                     setMenuOpen(!menuOpen);
                   }}
                 >
@@ -149,7 +166,24 @@ const DropdownMenu2 = ({
                   }`}
                 >
                   {subCategories.map((sub) => (
-                    <li key={sub._id}>{sub.name}</li>
+                    <li
+                      className="mb-6 cursor-pointer hover:text-blue-950 hover:font-bold "
+                      key={sub._id}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        router.push({
+                          pathname: '/landing',
+                          query: {
+                            category: category.name,
+                            categoryId: category._id,
+                            subCategory: sub.name,
+                            subCategoryId: sub._id,
+                          },
+                        });
+                      }}
+                    >
+                      {sub.name}
+                    </li>
                   ))}
                 </ul>
               </span>
