@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import HeaderSite from './../components/header';
-import Footer from './../components/footer';
+import Footer from './../components/footer2';
 import NavBar from '@/components/NavBar';
 
 const Layout = ({ children }: { children: ReactNode }) => {
