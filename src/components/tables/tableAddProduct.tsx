@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 import Button from './../../kit/button';
 import AddDataModal from '../modals/AddDatatModal';
 import Image from 'next/image';
+import DeleteModal from '../modals/DeleteModal';
 
 // import updateProduct from '../modals/AddDatatModal'
 
@@ -30,6 +31,8 @@ const TableAddProduct = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  ////modal delete
+  const [delModalIsOpen, setDelModalIsOpen] = useState(false);
 
   // useEffect(() => {
   //   const getProducts = async () => {
@@ -88,6 +91,10 @@ const TableAddProduct = () => {
   //   rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage);
 
   /////////delete item
+
+  const closeModal = () => {
+    setDelModalIsOpen(false);
+  };
   const handleDelete = async (productId) => {
     try {
       await axios.delete(`http://localhost:8000/api/products/${productId}`);
@@ -100,6 +107,8 @@ const TableAddProduct = () => {
     } catch (error) {
       console.error('Error deleting product:', error);
     }
+
+    setDelModalIsOpen(false);
   };
 
   //////edit
@@ -175,9 +184,12 @@ const TableAddProduct = () => {
                 </td>
                 <td
                   className="p-3 shadow"
-                  onClick={() => handleDelete(product._id)}
+                  // onClick={() => handleDelete(product._id)}
                 >
-                  <button className="cursor-pointer bg-rose-500 rounded p-2 text-white">
+                  <button
+                    className="cursor-pointer bg-rose-500 rounded p-2 text-white"
+                    onClick={() => setDelModalIsOpen(product._id)}
+                  >
                     حذف
                   </button>
                 </td>
@@ -201,7 +213,12 @@ const TableAddProduct = () => {
         fetchingData={fetchingData}
         page={page}
       />
-
+      <DeleteModal
+        isOpen={delModalIsOpen}
+        onClose={closeModal}
+        onConfirmDelete={handleDelete}
+        // id={delModalIsOpen}
+      />
       {/* ///////pagination */}
       <TablePagination
         dir="ltr"
