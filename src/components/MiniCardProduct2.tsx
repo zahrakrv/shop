@@ -11,6 +11,7 @@ interface ProductType {
 interface MiniCardProduct2Props {
   products: string[];
   className?: string;
+  useRouter?: any;
 }
 const MiniCardProduct2: React.FC<MiniCardProduct2Props> = ({
   products,
