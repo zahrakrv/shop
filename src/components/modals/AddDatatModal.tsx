@@ -92,16 +92,6 @@ const AddDataModal = ({
       // updateProduct(id, productData);
     },
   });
-  // console.log(selectedProduct);
-  // const [productAdded, setProductAdded] = useState({
-  //   name: '',
-  //   price: 0,
-  //   quantity: 0,
-  //   brand: '',
-  //   category: '',
-  //   subcategory: '',
-  //   image: [],
-  // });
 
   const [category, setCategory] = useState();
   const [subcategory, setSubcategory] = useState([]);
@@ -693,12 +683,6 @@ const AddDataModal = ({
                 </div> */}
                 {/* /////////////////////////////////////////text editor */}
                 {/* <Editor
-                  refTextEditor={refTextEditor}
-                  value={description}
-                  onChange={(v) => setDescription(v)}
-                /> */}
-
-                {/* <Editor
                   value={description}
                   // defaultValue={description}
                   onChange={(v) => setDescription(v)}
@@ -709,27 +693,7 @@ const AddDataModal = ({
                   placeholder="توضیحات"
                   onChange={(v) => setEditor(v)}
                 />
-                {/* <div dir="ltr" className="w-full">
-                  <Controller
-                    name="description"
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <ReactQuill
-                          className="w-full h-[100px]"
-                          id="description"
-                          theme="snow"
-                          onChange={onChange}
-                          // defaultValue={}
-                          modules={Editor}
-                        />
-                      );
-                    }}
-                  />
-                  <p className="text-red-500">
-                    {errors.description?.message?.toString()}
-                  </p>
-                </div> */}
+
                 <div className="flex justify-center gap-4 mt-3">
                   <button
                     className="mb-3 p-3 rounded bg-teal-400"
@@ -745,7 +709,6 @@ const AddDataModal = ({
                   >
                     انصراف
                   </button>
-                  {/* <Previews /> */}
                 </div>
               </form>
             </Dialog.Panel>

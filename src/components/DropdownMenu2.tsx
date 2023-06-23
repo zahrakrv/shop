@@ -4,7 +4,16 @@ import { GlobalContext } from './../pages/api/context/GlobalContext';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const DropdownMenu2 = ({
+interface DropdownMenuProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  subMenuOpen: boolean;
+  setSubMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleMenu: () => void;
+  toggleSubMenu: (categoryId: string) => void;
+}
+
+const DropdownMenu2: React.FC<DropdownMenuProps> = ({
   isOpen,
   setIsOpen,
   subMenuOpen,
@@ -21,8 +30,7 @@ const DropdownMenu2 = ({
     fetchCategories,
     fetchSubCategories,
   } = useContext(GlobalContext);
-  // const [categories, setCategories] = useState([]);
-  // const [subCategory, setSubCategory] = useState([]);
+
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     fetchCategories().then((res) => {

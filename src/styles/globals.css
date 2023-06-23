@@ -75,3 +75,16 @@ body {
 .hel:hover {
   font-weight: bolder;
 }
+
+.easy-edit-button-wrapper > button:first-child {
+  background-color: rgb(11, 218, 81);
+  border-radius: 4px;
+  color: white;
+}
+.easy-edit-button-wrapper > button:nth-child(2) {
+  background-color: rgb(255, 87, 51);
+  border-radius: 4px;
+  color: white;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
