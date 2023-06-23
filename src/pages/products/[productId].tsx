@@ -4,6 +4,7 @@ import { GlobalContext } from '../../pages/api/context/GlobalContext';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
+import { request } from '@/utils/request';
 interface ProductType {
   name: string;
   price: number;
@@ -32,7 +33,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProductsByID = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/products/${id}`);
+        const res = await request.get(`/products/${id}`);
         console.log(res.data);
         setProduct(res.data.data.product);
         setCategory(res.data.data.product.category.name);
@@ -63,7 +64,7 @@ const ProductPage = () => {
   return (
     <>
       <Layout>
-        <div className="flex p-4 mt-10">
+        <div className="flex p-4 gap-6 mt-10">
           <div>
             <Image
               src={`http://localhost:8000/images/products/images/${product.images[0]}`}
@@ -76,7 +77,7 @@ const ProductPage = () => {
               src={`http://localhost:8000/images/products/images/${product.images[0]}`}
             /> */}
           </div>
-          <div className="w-[40rem]">
+          <div className="w-[40rem] mr-6">
             <div className="flex items-center gap-4 mb-6 text-gray-500">
               <span>{category}</span>
               <svg
@@ -102,14 +103,20 @@ const ProductPage = () => {
               </span>
               <span className="mb-6"> {formattedQuant} عدد</span>
             </div>
-            <div className="mb-6">
-              <span className="font-semibold text-gray-700">
+
+            <div>
+              <span className="font-semibold text-gray-700 mb-6">
                 درباره ی محصول:
               </span>
-              <span className="mb-6"> {product.description}</span>
+              <div
+                className="mb-6 mt-6"
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
+              {/* <span className="mb-6"> {product.description}</span> */}
             </div>
           </div>
         </div>
+        {/* </div> */}
         <div className="p-4 mr-20 flex gap-4">
           <input
             type="number"

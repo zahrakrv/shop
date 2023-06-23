@@ -7,6 +7,7 @@ import Button from './../../kit/button';
 import AddDataModal from '../modals/AddDatatModal';
 import Image from 'next/image';
 import DeleteModal from '../modals/DeleteModal';
+import { request } from '@/utils/request';
 
 // import updateProduct from '../modals/AddDatatModal'
 
@@ -97,7 +98,7 @@ const TableAddProduct = () => {
   };
   const handleDelete = async (productId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/products/${productId}`);
+      await request.delete(`/products/${productId}`);
       // حذف آیتم از لیست products
       const updatedProducts = products.filter(
         (product) => product._id !== productId

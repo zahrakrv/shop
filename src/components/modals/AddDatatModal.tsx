@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import React, { Component, useEffect, useState, useRef } from 'react';
+import React, { Component, useEffect, useState, useRef, useMemo } from 'react';
 import { MutationObserver, useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
@@ -56,7 +56,8 @@ const AddDataModal = ({
   // console.log(selectedProduct);
   // console.log(isEditing);
   // const refTextEditor = useRef(null);
-
+  ////editor
+  const [editor, setEditor] = useState('');
   const router = useRouter();
   const {
     control,
@@ -91,16 +92,6 @@ const AddDataModal = ({
       // updateProduct(id, productData);
     },
   });
-  // console.log(selectedProduct);
-  // const [productAdded, setProductAdded] = useState({
-  //   name: '',
-  //   price: 0,
-  //   quantity: 0,
-  //   brand: '',
-  //   category: '',
-  //   subcategory: '',
-  //   image: [],
-  // });
 
   const [category, setCategory] = useState();
   const [subcategory, setSubcategory] = useState([]);
@@ -195,6 +186,8 @@ const AddDataModal = ({
     productData.append('quantity', quantity);
     productData.append('brand', brand);
     productData.append('category', category);
+    productData.append('description', editor);
+
     // productData.append('subcategory', subcategory);
     productData.append('subcategory', subcategory || []);
 
@@ -204,7 +197,7 @@ const AddDataModal = ({
     // if (thumbnail) {
     //   productData.append('thumbnail', thumbnail[0]);
     // }
-    productData.append('description', description);
+    // productData.append('description', description);
 
     isEditing
       ? mutationEdit.mutate(
@@ -295,8 +288,12 @@ const AddDataModal = ({
     }
   }, [selectedProduct]);
   //////textEditor
-  const Editor = dynamic(() => import('../Editor'), { ssr: false });
+  // const Editor = dynamic(() => import('../Editor'), { ssr: false });
   // const Editor = dynamic(() => import('../EditorQuil'), { ssr: false });
+  const ReactQuill = useMemo(
+    () => dynamic(import('react-quill'), { ssr: false }),
+    []
+  );
 
   /////thumbnail
   const fileInputRef2 = useRef(null);
@@ -686,37 +683,17 @@ const AddDataModal = ({
                 </div> */}
                 {/* /////////////////////////////////////////text editor */}
                 {/* <Editor
-                  refTextEditor={refTextEditor}
-                  value={description}
-                  onChange={(v) => setDescription(v)}
-                /> */}
-
-                <Editor
                   value={description}
                   // defaultValue={description}
                   onChange={(v) => setDescription(v)}
+                /> */}
+                <ReactQuill
+                  theme="snow"
+                  value={editor}
+                  placeholder="توضیحات"
+                  onChange={(v) => setEditor(v)}
                 />
-                {/* <div dir="ltr" className="w-full">
-                  <Controller
-                    name="description"
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <ReactQuill
-                          className="w-full h-[100px]"
-                          id="description"
-                          theme="snow"
-                          onChange={onChange}
-                          // defaultValue={}
-                          modules={Editor}
-                        />
-                      );
-                    }}
-                  />
-                  <p className="text-red-500">
-                    {errors.description?.message?.toString()}
-                  </p>
-                </div> */}
+
                 <div className="flex justify-center gap-4 mt-3">
                   <button
                     className="mb-3 p-3 rounded bg-teal-400"
@@ -732,7 +709,6 @@ const AddDataModal = ({
                   >
                     انصراف
                   </button>
-                  {/* <Previews /> */}
                 </div>
               </form>
             </Dialog.Panel>
