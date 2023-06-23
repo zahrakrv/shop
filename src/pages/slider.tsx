@@ -4,7 +4,7 @@ import DropdownMenu from './../components/DropdownMenu';
 import { useState } from 'react';
 
 const Slider = () => {
-  // const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   // const [subMenuOpen, setSubMenuOpen] = useState(true);
 
   // const toggleMenu = () => {
@@ -16,16 +16,16 @@ const Slider = () => {
   //   setSubMenuOpen(!subMenuOpen);
   // };
   return (
-    <div className="relative">
-      <DropdownMenu
+    <div className="relative ml-[118px]">
+      {/* <DropdownMenu
         isOpen={isOpen}
         subMenuOpen={subMenuOpen}
         toggleMenu={toggleMenu}
         toggleSubMenu={toggleSubMenu}
-      />
-      <div className={`slider-container ${isOpen ? 'dropdown-open' : ''}`}>
-        <SlideShow />
-      </div>
+      /> */}
+      {/* <div className={`slider-container ${isOpen ? 'dropdown-open' : ''}`}> */}
+      <SlideShow />
+      {/* </div> */}
     </div>
   );
 };
