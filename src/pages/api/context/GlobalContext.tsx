@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'universal-cookie';
@@ -8,6 +8,11 @@ export type SubCategoryType = {
   name: string;
   category: string;
 };
+interface CartItem {
+  product: Product;
+  price: number;
+  quantity: number;
+}
 export interface GlobalContextType {
   adminToken: string | boolean;
   adminLogin: (data: any) => void;
@@ -35,6 +40,10 @@ export interface GlobalContextType {
   fetchAllProducts: () => Promise<any>;
   setAllProducts: React.Dispatch<React.SetStateAction<never[]>>;
   allProducts: any[];
+  cartItems: CartItem[];
+  addToCart: (product: Product, price: number, quantity: number) => void;
+  removeFromCart: (productName: string) => void;
+  clearCart: () => void;
 }
 
 export const GlobalContext = createContext<GlobalContextType>(
@@ -48,7 +57,7 @@ const GlobalProvider = ({ children }: any) => {
   const [subCategory, setSubCategory] = useState([]);
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
-
+  const [cartItems, setCartItems] = useState([]);
   ///router
   const router = useRouter();
   ///////admin auth token state
@@ -223,6 +232,61 @@ const GlobalProvider = ({ children }: any) => {
     }
   };
 
+  ////سبد خرید
+  const cookies = new Cookies();
+  const expires = new Date();
+  // ذخیره داده‌ها در کوکی هنگام تغییر سبد خرید
+  useEffect(() => {
+    expires.setDate(expires.getDate() + 7); //انقضای 7 روزه
+    cookies.set('cartItems', cartItems, { expires });
+    // cookies.set('cartItems', cartItems);
+  }, [cartItems]);
+  //    رفرش صفحه
+  useEffect(() => {
+    console.log(cartItems);
+    const savedCartItems = cookies.get('cartItems');
+    if (savedCartItems) {
+      setCartItems(savedCartItems);
+    }
+  }, []);
+  const addToCart = (product: Product, price: number, quantity: number) => {
+    const cartItem = {
+      product: product,
+      price: price,
+      quantity: quantity,
+    };
+    // بررسی وجود محصول تکراری در سبد خرید
+    const existingItem = cartItems.find(
+      (item) => item.product.name === product.name
+    );
+    if (existingItem) {
+      // اگر محصول تکراری وجود داشت، فقط مقدار تعداد آن را افزایش می‌دهیم
+      const updatedCartItems = cartItems.map((item) => {
+        if (item.product.name === product.name) {
+          return {
+            ...item,
+            quantity: item.quantity + quantity,
+          };
+        }
+        return item;
+      });
+
+      setCartItems(updatedCartItems);
+    } else {
+      setCartItems((prevCartItems) => [...prevCartItems, cartItem]);
+    }
+  };
+
+  const removeFromCart = (productName) => {
+    setCartItems((prevCartItems) =>
+      prevCartItems.filter((item) => item.product.name !== productName)
+    );
+  };
+
+  // const clearCart = () => {
+  //   setCartItems([]);
+  // };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -243,6 +307,10 @@ const GlobalProvider = ({ children }: any) => {
         fetchAllProducts,
         setAllProducts,
         allProducts,
+        cartItems,
+        addToCart,
+        removeFromCart,
+        // clearCart,
       }}
     >
       {children}

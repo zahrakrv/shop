@@ -30,6 +30,8 @@ const ProductPage = () => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
+  const { addToCart } = useContext(GlobalContext);
+
   useEffect(() => {
     const fetchProductsByID = async () => {
       try {
@@ -47,6 +49,7 @@ const ProductPage = () => {
       fetchProductsByID();
     }
   }, [id]);
+
   if (!product) {
     return <p>Loading...</p>;
   }
@@ -133,7 +136,7 @@ const ProductPage = () => {
             className={`bg-green-500 rounded p-2 ${
               addToCartDisabled ? 'bg-gray-500 cursor-not-allowed' : ''
             }`}
-            onClick={incrementQuantity}
+            onClick={() => addToCart(product, product.price, quantity)}
             disabled={addToCartDisabled}
           >
             <div className="flex gap-3">

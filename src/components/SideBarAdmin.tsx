@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 import { useContext, useState } from 'react';
 import { GlobalContext } from '../pages/api/context/GlobalContext';
 import DashboardContent from './allCategories';
@@ -9,6 +11,7 @@ interface SideBarAdminProps {
   sidebar: boolean;
 }
 const SideBarAdmin = ({ sidebar, setShowTable }: SideBarAdminProps) => {
+  const { pathname } = useRouter();
   const { fetchProducts } = useContext(GlobalContext);
   const [categories, setCategories] = useState([]);
   // const [showTable, setShowTable] = useState(false);
@@ -48,7 +51,9 @@ const SideBarAdmin = ({ sidebar, setShowTable }: SideBarAdminProps) => {
             </li> */}
             {/* //// */}
             <li
-              className="flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition "
+              className={`flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition hover:text-white font-bold ${
+                pathname === '/admins/products' ? 'bg-teal-800' : ''
+              } focus:text-white p-2 px-4 rounded`}
               // onClick={() => {
               // handlefetchProducts();
               // setShowTable(true);
@@ -66,7 +71,11 @@ const SideBarAdmin = ({ sidebar, setShowTable }: SideBarAdminProps) => {
               </Link>
             </li>
             {/* //// */}
-            <li className=" bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition ">
+            <li
+              className={`bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition hover:text-white font-bold ${
+                pathname === '/admins/inventory' ? 'bg-teal-800' : ''
+              } focus:text-white p-2 px-4 rounded`}
+            >
               <Link href="/admins/inventory" className="flex">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +91,11 @@ const SideBarAdmin = ({ sidebar, setShowTable }: SideBarAdminProps) => {
               </Link>
             </li>
             {/* /// */}
-            <li className="flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition ">
+            <li
+              className={`flex bg-teal-600 items-center py-2 px-4 rounded mx-2 my-3 cursor-pointer hover:bg-teal-800 transition hover:text-white font-bold ${
+                pathname === '/admins/orders' ? 'bg-teal-800' : ''
+              } focus:text-white p-2 px-4 rounded`}
+            >
               <Link href="/admins/orders" className="flex">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
