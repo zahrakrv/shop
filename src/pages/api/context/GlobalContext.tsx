@@ -203,7 +203,7 @@ const GlobalProvider = ({ children }: any) => {
         //   headers: { Authorization: `Bearer ${adminToken}` },
         // }
       );
-      console.log(response.data);
+      // console.log(response.data);
       // setSortOrder((prev) => !prev);
       return response.data;
     } catch (error) {
