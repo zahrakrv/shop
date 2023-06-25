@@ -233,34 +233,108 @@ const GlobalProvider = ({ children }: any) => {
   };
 
   ////سبد خرید
-  const cookies = new Cookies();
-  const expires = new Date();
-  // ذخیره داده‌ها در کوکی هنگام تغییر سبد خرید
-  useEffect(() => {
-    expires.setDate(expires.getDate() + 7); //انقضای 7 روزه
-    cookies.set('cartItems', cartItems, { expires });
-    // cookies.set('cartItems', cartItems);
-  }, [cartItems]);
-  //    رفرش صفحه
-  useEffect(() => {
-    console.log(cartItems);
-    const savedCartItems = cookies.get('cartItems');
-    if (savedCartItems) {
-      setCartItems(savedCartItems);
+  // useEffect(() => {
+  //   console.log(cartItems);
+  //   // const savedCartItems = cookies.get('cartItems');
+  //   const savedCartItems = JSON.parse(localStorage.getItem('cartItems'));
+  //   if (savedCartItems) {
+  //     setCartItems(savedCartItems);
+  //     console.log('localstorage found');
+  //   } else {
+  //     localStorage.setItem('cartItems', JSON.stringify([]));
+  //     console.log('localstorage not found');
+  //   }
+  // }, []);
+  // const addToCart = (product: Product, price: number, quantity: number) => {
+  //   const cartItem = {
+  //     product: product,
+  //     price: price,
+  //     quantity: quantity,
+  //     image: image,
+  //   };
+  //   // بررسی وجود محصول تکراری در سبد خرید
+  //   const existingItem = cartItems.find(
+  //     (item) => item.product.name === product.name
+  //   );
+  //   if (existingItem) {
+  //     // اگر محصول تکراری وجود داشت، فقط مقدار تعداد آن را افزایش می‌دهیم
+  //     const updatedCartItems = cartItems.map((item) => {
+  //       if (item.product.name === product.name) {
+  //         return {
+  //           ...item,
+  //           quantity: item.quantity + quantity,
+  //         };
+  //       }
+  //       return item;
+  //     });
+
+  //     setCartItems(() => {
+  //       localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  //       return updatedCartItems;
+  //     });
+  //   } else {
+  //     setCartItems((prevCartItems) => {
+  //       const prevCart = [...prevCartItems, cartItem];
+
+  //       localStorage.setItem('cartItems', JSON.stringify(prevCart));
+  //       return prevCart;
+  //     });
+  //   }
+  // };
+
+  // const removeFromCart = (productName) => {
+  //   setCartItems((prevCartItems) =>
+  //     prevCartItems.filter((item) => item.product.name !== productName)
+  //   );
+  // };
+
+  // const clearCart = () => {
+  //   setCartItems([]);
+  // };
+
+  /////سبد خرید با دیتا
+  const fetchProductsCartItems = async (cartItemsData) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8000/api/products?limit=all'
+      );
+      const products = response.data.data.products;
+      setProducts(response.data.data.products);
+      // console.log(response.data);
+      const updatedCartItems = cartItemsData.map((cartItem) => {
+        const product = products.find(
+          (item) => item.name === cartItem.product.name
+        );
+        return {
+          ...cartItem,
+          product: product ? product : cartItem.product,
+        };
+      });
+
+      return {
+        products: response.data,
+        cartItems: updatedCartItems,
+      };
+    } catch (error) {
+      console.error('Error fetching allProducts:', error);
+      return {
+        products: [],
+        cartItems: cartItemsData,
+      };
     }
-  }, []);
-  const addToCart = (product: Product, price: number, quantity: number) => {
+  };
+  const addToCart = (product, price, quantity, image) => {
     const cartItem = {
       product: product,
       price: price,
       quantity: quantity,
+      image: image,
     };
-    // بررسی وجود محصول تکراری در سبد خرید
+
     const existingItem = cartItems.find(
       (item) => item.product.name === product.name
     );
     if (existingItem) {
-      // اگر محصول تکراری وجود داشت، فقط مقدار تعداد آن را افزایش می‌دهیم
       const updatedCartItems = cartItems.map((item) => {
         if (item.product.name === product.name) {
           return {
@@ -271,22 +345,19 @@ const GlobalProvider = ({ children }: any) => {
         return item;
       });
 
-      setCartItems(updatedCartItems);
+      setCartItems(() => {
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        return updatedCartItems;
+      });
     } else {
-      setCartItems((prevCartItems) => [...prevCartItems, cartItem]);
+      setCartItems((prevCartItems) => {
+        const prevCart = [...prevCartItems, cartItem];
+
+        localStorage.setItem('cartItems', JSON.stringify(prevCart));
+        return prevCart;
+      });
     }
   };
-
-  const removeFromCart = (productName) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.filter((item) => item.product.name !== productName)
-    );
-  };
-
-  // const clearCart = () => {
-  //   setCartItems([]);
-  // };
-
   return (
     <GlobalContext.Provider
       value={{
@@ -308,9 +379,11 @@ const GlobalProvider = ({ children }: any) => {
         setAllProducts,
         allProducts,
         cartItems,
+        setCartItems,
         addToCart,
-        removeFromCart,
+        // removeFromCart,
         // clearCart,
+        fetchProductsCartItems,
       }}
     >
       {children}
