@@ -98,6 +98,7 @@ const LandingPage = () => {
             <Stack spacing={2}>
               <Typography>Page: {page}</Typography>
               <Pagination
+                dir="ltr"
                 count={Math.ceil(categoryProducts.length / perPage)}
                 page={page}
                 onChange={handleChange}
