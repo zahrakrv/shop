@@ -121,7 +121,6 @@ const TableInventory: React.FC = () => {
         sortOrder
       );
       console.log(updatedProductsData.data.data.products);
-
       setProducts(updatedProductsData.data.data.products);
 
       console.log('All changes saved successfully');
