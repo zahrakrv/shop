@@ -358,6 +358,41 @@ const GlobalProvider = ({ children }: any) => {
       });
     }
   };
+
+  // const handleFormSubmit = async (formData) => {
+  //   try {
+  //     const response = await fetch('http://localhost:8000/api/orders', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+  //     if (response.ok) {
+  //       console.log('Form submitted successfully');
+  //       // انجام دیگر عملیات یا نمایش پیغام موفقیت آمیز بودن ارسال اطلاعات
+  //     } else {
+  //       console.error('Form submission failed');
+  //       // نمایش پیغام خطا در صورت بروز خطا در ارسال اطلاعات
+  //     }
+  //   } catch (error) {
+  //     console.error('Error submitting form:', error);
+  //     // نمایش پیغام خطا در صورت بروز خطا در ارسال اطلاعات
+  //   }
+  // };
+  const handleFormSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/api/orders',
+        data
+      );
+      console.log('Response:', response);
+      // انجام دیگر عملیات یا نمایش پیغام موفقیت آمیز بودن ارسال اطلاعات
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // نمایش پیغام خطا در صورت بروز خطا در ارسال اطلاعات
+    }
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -384,6 +419,7 @@ const GlobalProvider = ({ children }: any) => {
         // removeFromCart,
         // clearCart,
         fetchProductsCartItems,
+        handleFormSubmit,
       }}
     >
       {children}

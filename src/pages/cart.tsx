@@ -22,7 +22,6 @@ const ShoppingCart = () => {
           // console.log(data.cartItems[0].quantity);
           setCartItems(data.cartItems);
           // console.log(cartItems);
-
           console.log('localstorage found');
         })
         .catch((error) => {
@@ -34,7 +33,6 @@ const ShoppingCart = () => {
       console.log('localstorage not found');
     }
   }, []);
-
   // const addToCart = (product, price, quantity, image) => {
   //   const cartItem = {
   //     product: product,
@@ -76,7 +74,6 @@ const ShoppingCart = () => {
   //     prevCartItems.filter((item) => item.product._id !== productId)
   //   );
   // };
-
   const removeFromCart = (productId) => {
     const updatedCartItems = cartItems.filter(
       (item) => item.product._id !== productId
