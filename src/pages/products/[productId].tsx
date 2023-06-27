@@ -27,8 +27,12 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   ///null برای انکه اولش هیچی نباشه و با یوزافکت بیاد فچ بزنه
   const [product, setProduct] = useState<ProductType | null>(null);
+  const [currentImage, setCurrentImage] = useState(
+    'http://localhost:8000/default-image.jpg'
+  );
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
+  const [isImageLoaded, setImageLoaded] = useState(false);
 
   const { addToCart } = useContext(GlobalContext);
 
@@ -49,6 +53,17 @@ const ProductPage = () => {
       fetchProductsByID();
     }
   }, [id]);
+  useEffect(() => {
+    if (product && product.images.length > 0 && !isImageLoaded) {
+      setCurrentImage(
+        `http://localhost:8000/images/products/images/${product.images[0]}`
+      );
+      setImageLoaded(true);
+    }
+  }, [product, isImageLoaded]);
+  if (!product) {
+    return <p>Loading...</p>;
+  }
 
   if (!product) {
     return <p>Loading...</p>;
@@ -64,17 +79,38 @@ const ProductPage = () => {
     });
   };
   const addToCartDisabled = product.quantity === 0;
+
+  const handleClickThumbnail = (image) => {
+    setCurrentImage(`http://localhost:8000/images/products/images/${image}`);
+  };
   return (
     <>
       <Layout>
         <div className="flex p-4 gap-6 mt-10">
           <div>
             <Image
-              src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+              src={currentImage}
+              // src={`http://localhost:8000/images/products/images/${product.images[0]}`}
               alt=""
               width={256}
               height={384}
             />
+            <div className="flex justify-center mt-6">
+              {product.images.map((image, index) => (
+                <div
+                  key={index}
+                  className="w-20 h-20 mr-2"
+                  onClick={() => handleClickThumbnail(image)}
+                >
+                  <Image
+                    src={`http://localhost:8000/images/products/images/${image}`}
+                    alt=""
+                    width={80}
+                    height={80}
+                  />
+                </div>
+              ))}
+            </div>
             {/* <img
               className="w-64 rounded"
               src={`http://localhost:8000/images/products/images/${product.images[0]}`}
