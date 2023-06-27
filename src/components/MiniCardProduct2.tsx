@@ -49,7 +49,7 @@ const MiniCardProduct2: React.FC<MiniCardProduct2Props> = ({
             <p className="font-semibold">{product.name}</p>
             <p className="mb-2">{formattedPrice} تومان</p>
 
-            <button className="mini-card-button font-semibold bg-red-500 mb-3 rounded-3xl p-2">
+            <button className="text-white mini-card-button font-semibold bg-red-500 mb-3 rounded-3xl p-2">
               مشاهده کالا
             </button>
           </div>

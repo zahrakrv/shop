@@ -20,8 +20,8 @@ const TableInventory: React.FC = () => {
 
   ////about pagination
   const [rowsPerPage, setRowsPerPage] = useState(4);
-  const [totalPage, setTotalPage] = useState();
-  const [totalProducts, setTotalProducts] = useState();
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
   // const [users, setUsers] = useState([]);
 
   ////about sorting
@@ -96,22 +96,19 @@ const TableInventory: React.FC = () => {
     try {
       setIsEditing(false);
 
-      const patchRequests = [];
-      products.forEach((item) => {
+      const patchRequests = products.map((item) => {
         //دیتاهای آپدیت شده
         const updatedProduct = {
           name: item.name,
           price: item.price,
           quantity: item.quantity,
         };
-        patchRequests.push(
-          axios.patch(
-            `http://localhost:8000/api/products/${item._id}`,
-            updatedProduct
-          )
-        );
+        // console.log(item);
+        // patchRequests.push(
+        //   request.patch(`/products/${item._id}`, updatedProduct)
+        // );
+        return request.patch(`/products/${item._id}`, updatedProduct);
       });
-
       // ارسال همه درخواست‌های patch به صورت همزمان
       await Promise.all(patchRequests);
       // دریافت دیتاهای جدید از سرور
@@ -120,8 +117,8 @@ const TableInventory: React.FC = () => {
         rowsPerPage,
         sortOrder
       );
-      console.log(updatedProductsData.data.data.products);
-      setProducts(updatedProductsData.data.data.products);
+      console.log(updatedProductsData.data.products);
+      setProducts(updatedProductsData.data.products);
 
       console.log('All changes saved successfully');
     } catch (error) {
@@ -148,7 +145,7 @@ const TableInventory: React.FC = () => {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 4));
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
   // const emptyRows =

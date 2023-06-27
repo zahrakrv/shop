@@ -186,6 +186,7 @@ const AddDataModal = ({
     productData.append('quantity', quantity);
     productData.append('brand', brand);
     productData.append('category', category);
+    // productData.append('description', data.editor);
     productData.append('description', editor);
 
     // productData.append('subcategory', subcategory);
@@ -282,6 +283,8 @@ const AddDataModal = ({
       setValue('quantity', selectedProduct.quantity);
       setValue('category', selectedProduct.category._id);
       setValue('subcategory', selectedProduct.subcategory._id);
+      setValue('description', selectedProduct.description);
+      console.log(selectedProduct.description);
       setCategory(selectedProduct.category._id);
       console.log(selectedProduct.category.name);
       // setSubcategory(selectedProduct.subcategory);
@@ -596,7 +599,7 @@ const AddDataModal = ({
                     </span>
                   )}
                 </div>
-                {/* /////thumbnail */}
+                   {/* /////thumbnail */}
                 {/* <div className="flex flex-col gap-5 w-full">
                     <div className="flex gap-10">
                       <div>
@@ -687,13 +690,35 @@ const AddDataModal = ({
                   // defaultValue={description}
                   onChange={(v) => setDescription(v)}
                 /> */}
+                {/* <Controller
+                  control={control}
+                  name="editor"
+                  defaultValue=""
+                  rules={{
+                    required: 'وارد کردن توضیحات الزامی است',
+                  }}
+                  render={({ field }) => (
+                    <ReactQuill
+                      // theme="snow"
+                      // value={editor}
+                      // placeholder="توضیحات"
+                      // onChange={(v) => setEditor(v)}
+                      theme="snow"
+                      value={field.value}
+                      onChange={(value) => field.onChange(value)}
+                      placeholder="توضیحات"
+                    />
+                  )}
+                />
+                {errors.editor && (
+                  <span className="text-red-500">{errors.editor.message}</span>
+                )} */}
                 <ReactQuill
                   theme="snow"
                   value={editor}
                   placeholder="توضیحات"
                   onChange={(v) => setEditor(v)}
                 />
-
                 <div className="flex justify-center gap-4 mt-3">
                   <button
                     className="mb-3 p-3 rounded bg-teal-400"
