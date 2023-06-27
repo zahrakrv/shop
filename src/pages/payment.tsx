@@ -3,15 +3,50 @@ import shaparak from '../../public/shaparak.png';
 import shp from '../../public/shp.png';
 import { GlobalContext } from './api/context/GlobalContext';
 import { useContext, useState } from 'react';
+import { request } from '@/utils/request';
+import Cookies from 'universal-cookie';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { useSelector, useDispatch } from 'react-redux';
 
 const PaymentPage = () => {
-  const { handleFormSubmit } = useContext(GlobalContext);
+  const cartState = useSelector((state) => state.cartState);
+  const cookie = new Cookies();
+  const userID = cookie.get('id');
+  // const { handleFormSubmit } = useContext(GlobalContext);
   const [formData, setFormData] = useState({});
-
   const updateFormData = (newData) => {
     setFormData(newData);
   };
   console.log(formData);
+  const postOrder = async (data) => {
+    return await request.post('/orders', data);
+  };
+  const mutationOrder = useMutation({
+    mutationFn: (data) => postOrder(data),
+    onSuccess: () => {
+      console.log('added');
+    },
+  });
+  const handlePayment = () => {
+    const productCart = JSON.parse(localStorage.getItem('cartItems'));
+    const orderArr = productCart.map((item) => {
+      return {
+        product: item.product._id,
+        count: item.quantity,
+      };
+    });
+    console.log(userID);
+    const ordersData = {
+      user: userID,
+      deliveryDate: cartState.deliveryDate,
+      products: orderArr,
+      deliveryStatus: false,
+    };
+    // console.log(data);
+    // console.log(productCart);
+    mutationOrder.mutate(ordersData);
+    console.log(ordersData);
+  };
   return (
     <>
       {/* <div className="container flex justify-center items-center"> */}
@@ -28,7 +63,8 @@ const PaymentPage = () => {
       />
       <button
         className="bg-green-500 z-40 absolute top-52 left-20 px-20 rounded py-2 text-white"
-        onClick={() => handleFormSubmit(formData)}
+        // onClick={() => handleFormSubmit(formData)}
+        onClick={() => handlePayment()}
       >
         پرداخت
       </button>

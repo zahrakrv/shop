@@ -4,8 +4,15 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { GlobalContext } from './api/context/GlobalContext';
 import Link from 'next/link';
+import Cookies from 'universal-cookie';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { FORM } from '@/redux/slice/cart';
 
 const UserInformation = () => {
+  ////redux toolkit
+  const dispatch = useDispatch();
   const { handleFormSubmit } = useContext(GlobalContext);
   const {
     register,
@@ -28,21 +35,72 @@ const UserInformation = () => {
 
     fetchUserData();
   }, []);
-  const onSubmit = (data) => {
-    handleFormSubmit(data);
-    console.log(data);
-  };
+  // const postOrder = async (data) => {
+  //   return await request.post('/orders', data);
+  // };
+  // const mutationOrder = useMutation({
+  //   mutationFn: (data) => postOrder(data),
+  //   onSuccess: () => {
+  //     console.log('added');
 
-  const handleUserSelect = (userId) => {
-    const selectedUser = users.find((user) => user._id === userId);
-    if (selectedUser) {
-      setValue('firstname', selectedUser.firstname);
-      setValue('lastname', selectedUser.lastname);
-      setValue('address', selectedUser.address);
-      setValue('phoneNumber', selectedUser.phoneNumber);
-      setValue('deliveryDate', selectedUser.deliveryDate);
-    }
+  //     // updateProduct(id, productData);
+  //   },
+  // });
+  const cookie = new Cookies();
+  const userID = cookie.get('id');
+  const getUserData = async () => {
+    return await request
+      .get(`/users/${userID}`)
+      .then((res) => res.data.data.user);
   };
+  const { isLoading, data, refetch, isError } = useQuery([], getUserData, {
+    onSuccess: (data) => {
+      // console.log("Get data!");
+      // console.log(data);
+      setValue('firstname', data.firstname);
+      setValue('lastname', data.lastname);
+      setValue('address', data.address);
+      setValue('phoneNumber', data.phoneNumber);
+      // setValue('deliveryDate', data.deliveryDate);
+    },
+  });
+
+  const onSubmit = (data) => {
+    dispatch(FORM({ deliveryDate: data.deliveryDate }));
+    handleFormSubmit(data);
+    // const productCart = JSON.parse(localStorage.getItem('cartItems'));
+    // const orderArr = productCart.map((item) => {
+    //   return {
+    //     product: item.product._id,
+    //     count: item.quantity,
+    //   };
+    // });
+    // console.log(userID);
+    // const ordersData = {
+    //   user: userID,
+    //   deliveryDate: data.deliveryDate,
+    //   products: orderArr,
+    //   deliveryStatus: false,
+    // };
+    // // console.log(data);
+    // // console.log(productCart);
+    // mutationOrder.mutate(ordersData);
+    // console.log(ordersData);
+  };
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+
+  // const handleUserSelect = (userId) => {
+  //   // const selectedUser = users.find((user) => user._id === userId);
+  //   if (selectedUser) {
+  //     setValue('firstname', selectedUser.firstname);
+  //     setValue('lastname', selectedUser.lastname);
+  //     setValue('address', selectedUser.address);
+  //     setValue('phoneNumber', selectedUser.phoneNumber);
+  //     setValue('deliveryDate', selectedUser.deliveryDate);
+  //   }
+  // };
   return (
     <>
       <Layout>
@@ -53,7 +111,7 @@ const UserInformation = () => {
               className="flex flex-col justify-center items-center"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div>
+              {/* <div>
                 <label className="ml-4">انتخاب کاربر:</label>
                 <select
                   className="border border-gray-200 rounded p-3 mb-6"
@@ -67,8 +125,8 @@ const UserInformation = () => {
                     </option>
                   ))}
                 </select>
-                {/* {users.map((user) => console.log(user))} */}
-              </div>
+                {users.map((user) => console.log(user))}
+              </div> */}
               <div className="flex gap-4 mb-8">
                 <label>
                   نام
@@ -76,7 +134,7 @@ const UserInformation = () => {
                     className="mr-3 p-3 border border-gray-200 rounded w-96"
                     type="text"
                     placeholder="نام"
-                    disabled="true"
+                    // disabled="true"
                     {...register('firstname', { required: 'نام الزامی است' })}
                   />
                   {errors.firstName && (
@@ -91,7 +149,7 @@ const UserInformation = () => {
                     className="mr-3 p-3 border border-gray-200 rounded w-96"
                     type="text"
                     placeholder="نام خانوادگی"
-                    disabled="true"
+                    // disabled="true"
                     {...register('lastname', {
                       required: 'نام خانوادگی الزامی است',
                     })}
@@ -105,7 +163,7 @@ const UserInformation = () => {
                   <textarea
                     className="mr-3 p-3 border border-gray-200 rounded w-96"
                     placeholder="آدرس"
-                    disabled="true"
+                    // disabled="true"
                     {...register('address', { required: 'آدرس الزامی است' })}
                   />
                   {errors.address && <span>{errors.address.message}</span>}
@@ -117,7 +175,7 @@ const UserInformation = () => {
                     className="mr-3 p-3 border border-gray-200 rounded w-96"
                     type="number"
                     placeholder="تلفن همراه"
-                    disabled="true"
+                    // disabled="true"
                     {...register('phoneNumber', {
                       required: 'تلفن همراه الزامی است',
                     })}
@@ -146,7 +204,7 @@ const UserInformation = () => {
                   className="bg-green-500 text-white rounded px-5 py-2"
                   type="submit"
                 >
-                  پرداخت
+                  ادامه ی پرداخت
                 </button>
               </Link>
             </form>

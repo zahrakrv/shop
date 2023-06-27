@@ -172,7 +172,7 @@ const ProductPage = () => {
             className={`bg-green-500 rounded p-2 ${
               addToCartDisabled ? 'bg-gray-500 cursor-not-allowed' : ''
             }`}
-            onClick={() => addToCart(product, product.price, quantity)}
+            onClick={() => addToCart(product, product.price, quantity, product._id)}
             disabled={addToCartDisabled}
           >
             <div className="flex gap-3">

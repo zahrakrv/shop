@@ -323,12 +323,13 @@ const GlobalProvider = ({ children }: any) => {
       };
     }
   };
-  const addToCart = (product, price, quantity, image) => {
+  const addToCart = (product, price, quantity, image, id) => {
     const cartItem = {
       product: product,
       price: price,
       quantity: quantity,
       image: image,
+      id: id,
     };
 
     const existingItem = cartItems.find(
