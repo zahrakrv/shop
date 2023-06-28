@@ -2,15 +2,22 @@ import Image from 'next/image';
 import shaparak from '../../public/shaparak.png';
 import shp from '../../public/shp.png';
 import sadad from '../../public/sadad.jpg';
-
 import { GlobalContext } from './api/context/GlobalContext';
 import { useContext, useState } from 'react';
 import { request } from '@/utils/request';
 import Cookies from 'universal-cookie';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSelector, useDispatch } from 'react-redux';
+import MyDialog from '@/components/modals/modalSuccess';
+import UnsuccessModal from '@/components/modals/modalUnSuccess';
 
 const PaymentPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const dispatch = useDispatch();
+  const deliveryDate = useSelector((state) => state.deliveryDate);
+
   const cartState = useSelector((state) => state.cartState);
   const cookie = new Cookies();
   const userID = cookie.get('id');
@@ -48,6 +55,14 @@ const PaymentPage = () => {
     // console.log(productCart);
     mutationOrder.mutate(ordersData);
     console.log(ordersData);
+    localStorage.removeItem('cartItems');
+    dispatch({ type: 'RESET_CART' });
+    dispatch({ type: 'SET_DELIVERY_DATE', payload: null });
+    ///modal
+    setIsOpen(true);
+  };
+  const handleModalCancel = () => {
+    setIsOpenModal(true);
   };
   return (
     <div className="p-3">
@@ -85,7 +100,10 @@ const PaymentPage = () => {
             >
               پرداخت
             </button>
-            <button className="bg-red-500 px-14 rounded py-2 text-white w-1/3 mb-4">
+            <button
+              className="bg-red-500 px-14 rounded py-2 text-white w-1/3 mb-4"
+              onClick={handleModalCancel}
+            >
               انصراف
             </button>
           </div>
@@ -109,6 +127,12 @@ const PaymentPage = () => {
           </div>
         </div>
       </div>
+      <MyDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      <UnsuccessModal
+        isOpenModal={isOpenModal}
+        setIsOpenModal={setIsOpenModal}
+      />
+
       {/* </div> */}
     </div>
   );

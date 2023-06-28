@@ -4,6 +4,7 @@ import Layout from '@/layout/layout';
 import HeaderSite from '@/components/header';
 import Image from 'next/image';
 import emptyCart from '../../public/empty-cart.png';
+import Link from 'next/link';
 
 const ShoppingCart = () => {
   const { products, cartItems, setCartItems, fetchProductsCartItems } =
@@ -268,12 +269,14 @@ const ShoppingCart = () => {
                     <span>مبلغ قابل پرداخت:</span>
                     <span>{calculateTotalPrice()} تومان</span>
                   </div>
-                  <button
-                    className="bg-green-500 p-2 w-full text-white rounded"
-                    onClick={handleFinalizeCart}
-                  >
-                    پرداخت و خرید
-                  </button>
+                  <Link href="/information">
+                    <button
+                      className="bg-green-500 p-2 w-full text-white rounded"
+                      onClick={handleFinalizeCart}
+                    >
+                      پرداخت و خرید
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
