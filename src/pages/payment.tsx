@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import shaparak from '../../public/shaparak.png';
 import shp from '../../public/shp.png';
+import sadad from '../../public/sadad.jpg';
+
 import { GlobalContext } from './api/context/GlobalContext';
 import { useContext, useState } from 'react';
 import { request } from '@/utils/request';
@@ -48,49 +50,67 @@ const PaymentPage = () => {
     console.log(ordersData);
   };
   return (
-    <>
+    <div className="p-3">
       {/* <div className="container flex justify-center items-center"> */}
-      <div className="bg-[#f2f2f2] h-40 w-full">
-        <Image className="" src={shp} alt="shaparak" height={80} width={100} />
+      <div className="bg-[#f2f2f2] h-32 w-full">
+        <div className="flex justify-between">
+          <Image
+            className=""
+            src={shp}
+            alt="shaparak"
+            height={80}
+            width={100}
+          />
+          <Image className="" src={sadad} alt="sadad" height={80} width={100} />
+        </div>
+        <div className="bg-[#ffcb04] h-8 mt-2"></div>
       </div>
       {/* absolute top-0 mr-8 */}
-      <Image
-        className=""
-        src={shaparak}
-        alt="shaparak"
-        height={1000}
-        width={650}
-      />
-      <button
-        className="bg-green-500 z-40 absolute top-52 left-20 px-20 rounded py-2 text-white"
-        // onClick={() => handleFormSubmit(formData)}
-        onClick={() => handlePayment()}
-      >
-        پرداخت
-      </button>
-      <button className="bg-red-500 z-40 absolute top-72 left-28 px-14 rounded py-2 text-white">
-        انصراف
-      </button>
-      <div className="absolute border border-gray-300 rounded bottom-14 left-0">
+      <div className="flex justify-between">
         <div>
+          <Image
+            className=""
+            src={shaparak}
+            alt="shaparak"
+            height={1000}
+            width={650}
+          />
+        </div>
+        <div className="w-1/3">
+          <div className="flex flex-col items-center justify-center gap-10 my-12 border border-gray-300 rounded">
+            <button
+              className="bg-green-500 px-20 rounded py-2 text-white w-2/3 mt-4"
+              // onClick={() => handleFormSubmit(formData)}
+              onClick={() => handlePayment()}
+            >
+              پرداخت
+            </button>
+            <button className="bg-red-500 px-14 rounded py-2 text-white w-1/3 mb-4">
+              انصراف
+            </button>
+          </div>
+          <div className="border border-gray-300 rounded flex flex-col gap-10 p-4">
+            {/* <div>
           <span>مبلغ تراکنش :</span>
           <span></span>
-        </div>
-        <div>
-          <span>شماره پذیرش:</span>
-          <span>1223456677</span>
-        </div>
-        <div>
-          <span>شماره سفارش:</span>
-          <span>454545677334</span>
-        </div>
-        <div>
-          <span>آدرس وب :</span>
-          <span>megamag.ir</span>
+        </div> */}
+            <div className="mt-3 flex justify-between items-center">
+              <span>شماره پذیرش:</span>
+              <span>1223456677</span>
+            </div>
+            <div className=" flex justify-between items-center">
+              <span>شماره سفارش:</span>
+              <span>454545677334</span>
+            </div>
+            <div className="mb-3 flex justify-between items-center">
+              <span>آدرس وب :</span>
+              <span>megamag.ir</span>
+            </div>
+          </div>
         </div>
       </div>
       {/* </div> */}
-    </>
+    </div>
   );
 };
 
