@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Cookies from 'universal-cookie';
@@ -8,6 +8,11 @@ export type SubCategoryType = {
   name: string;
   category: string;
 };
+interface CartItem {
+  product: Product;
+  price: number;
+  quantity: number;
+}
 export interface GlobalContextType {
   adminToken: string | boolean;
   adminLogin: (data: any) => void;
@@ -35,6 +40,10 @@ export interface GlobalContextType {
   fetchAllProducts: () => Promise<any>;
   setAllProducts: React.Dispatch<React.SetStateAction<never[]>>;
   allProducts: any[];
+  cartItems: CartItem[];
+  addToCart: (product: Product, price: number, quantity: number) => void;
+  removeFromCart: (productName: string) => void;
+  clearCart: () => void;
 }
 
 export const GlobalContext = createContext<GlobalContextType>(
@@ -48,6 +57,8 @@ const GlobalProvider = ({ children }: any) => {
   const [subCategory, setSubCategory] = useState([]);
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [updateCartItems, setUptadeCartItems] = useState(0);
 
   ///router
   const router = useRouter();
@@ -170,7 +181,7 @@ const GlobalProvider = ({ children }: any) => {
   const fetchOrders = async (
     page: number,
     limit: number,
-    sortDelivery: string,
+    sortDelivery: boolean,
     deliveryStatus: boolean
   ) => {
     try {
@@ -203,7 +214,7 @@ const GlobalProvider = ({ children }: any) => {
         //   headers: { Authorization: `Bearer ${adminToken}` },
         // }
       );
-      // console.log(response.data);
+      console.log(response.data);
       // setSortOrder((prev) => !prev);
       return response.data;
     } catch (error) {
@@ -223,6 +234,169 @@ const GlobalProvider = ({ children }: any) => {
     }
   };
 
+  ////سبد خرید
+  // useEffect(() => {
+  //   console.log(cartItems);
+  //   // const savedCartItems = cookies.get('cartItems');
+  //   const savedCartItems = JSON.parse(localStorage.getItem('cartItems'));
+  //   if (savedCartItems) {
+  //     setCartItems(savedCartItems);
+  //     console.log('localstorage found');
+  //   } else {
+  //     localStorage.setItem('cartItems', JSON.stringify([]));
+  //     console.log('localstorage not found');
+  //   }
+  // }, []);
+  // const addToCart = (product: Product, price: number, quantity: number) => {
+  //   const cartItem = {
+  //     product: product,
+  //     price: price,
+  //     quantity: quantity,
+  //     image: image,
+  //   };
+  //   // بررسی وجود محصول تکراری در سبد خرید
+  //   const existingItem = cartItems.find(
+  //     (item) => item.product.name === product.name
+  //   );
+  //   if (existingItem) {
+  //     // اگر محصول تکراری وجود داشت، فقط مقدار تعداد آن را افزایش می‌دهیم
+  //     const updatedCartItems = cartItems.map((item) => {
+  //       if (item.product.name === product.name) {
+  //         return {
+  //           ...item,
+  //           quantity: item.quantity + quantity,
+  //         };
+  //       }
+  //       return item;
+  //     });
+
+  //     setCartItems(() => {
+  //       localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  //       return updatedCartItems;
+  //     });
+  //   } else {
+  //     setCartItems((prevCartItems) => {
+  //       const prevCart = [...prevCartItems, cartItem];
+
+  //       localStorage.setItem('cartItems', JSON.stringify(prevCart));
+  //       return prevCart;
+  //     });
+  //   }
+  // };
+
+  // const removeFromCart = (productName) => {
+  //   setCartItems((prevCartItems) =>
+  //     prevCartItems.filter((item) => item.product.name !== productName)
+  //   );
+  // };
+
+  // const clearCart = () => {
+  //   setCartItems([]);
+  // };
+
+  /////سبد خرید با دیتا
+  const fetchProductsCartItems = async (cartItemsData) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8000/api/products?limit=all'
+      );
+      const products = response.data.data.products;
+      setProducts(response.data.data.products);
+      // console.log(response.data);
+      const updatedCartItems = cartItemsData.map((cartItem) => {
+        const product = products.find(
+          (item) => item.name === cartItem.product.name
+        );
+        return {
+          ...cartItem,
+          product: product ? product : cartItem.product,
+        };
+      });
+
+      return {
+        products: response.data,
+        cartItems: updatedCartItems,
+      };
+    } catch (error) {
+      console.error('Error fetching allProducts:', error);
+      return {
+        products: [],
+        cartItems: cartItemsData,
+      };
+    }
+  };
+  const addToCart = (product, price, quantity, image, id) => {
+    const cartItem = {
+      product: product,
+      price: price,
+      quantity: quantity,
+      image: image,
+      id: id,
+    };
+
+    const existingItem = cartItems.find(
+      (item) => item.product.name === product.name
+    );
+    if (existingItem) {
+      const updatedCartItems = cartItems.map((item) => {
+        if (item.product.name === product.name) {
+          return {
+            ...item,
+            quantity: item.quantity + quantity,
+          };
+        }
+        return item;
+      });
+      setCartItems(() => {
+        const localCartItems = localStorage.setItem(
+          'cartItems',
+          JSON.stringify(updatedCartItems)
+        );
+        return updatedCartItems;
+      });
+    } else {
+      setCartItems((prevCartItems) => {
+        const prevCart = [...prevCartItems, cartItem];
+
+        localStorage.setItem('cartItems', JSON.stringify(prevCart));
+        return prevCart;
+      });
+    }
+  };
+  // const handleFormSubmit = async (formData) => {
+  //   try {
+  //     const response = await fetch('http://localhost:8000/api/orders', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+  //     if (response.ok) {
+  //       console.log('Form submitted successfully');
+  //       // انجام دیگر عملیات یا نمایش پیغام موفقیت آمیز بودن ارسال اطلاعات
+  //     } else {
+  //       console.error('Form submission failed');
+  //       // نمایش پیغام خطا در صورت بروز خطا در ارسال اطلاعات
+  //     }
+  //   } catch (error) {
+  //     console.error('Error submitting form:', error);
+  //     // نمایش پیغام خطا در صورت بروز خطا در ارسال اطلاعات
+  //   }
+  // };
+  const handleFormSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/api/orders',
+        data
+      );
+      console.log('Response:', response);
+      // انجام دیگر عملیات یا نمایش پیغام موفقیت آمیز بودن ارسال اطلاعات
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // نمایش پیغام خطا در صورت بروز خطا در ارسال اطلاعات
+    }
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -243,6 +417,14 @@ const GlobalProvider = ({ children }: any) => {
         fetchAllProducts,
         setAllProducts,
         allProducts,
+        cartItems,
+        setCartItems,
+        addToCart,
+
+        // removeFromCart,
+        // clearCart,
+        fetchProductsCartItems,
+        handleFormSubmit,
       }}
     >
       {children}
