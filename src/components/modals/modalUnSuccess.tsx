@@ -38,9 +38,9 @@ function UnsuccessModal({ isOpenModal, setIsOpenModal }) {
             <p>پرداخت موفقیت آمیز نبود. سفارش شما در انتظار پرداخت است</p>
           </Dialog.Description>
           <div className="mt-4 flex justify-center items-center">
-            <Link href="/">
+            <Link href="/cart">
               <button className="mr-2 mb-4 px-4 py-2 bg-green-500 text-white rounded">
-                بازگشت به سایت
+                بازگشت به سبد خرید
               </button>
             </Link>
             {/* <button

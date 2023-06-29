@@ -58,6 +58,8 @@ const GlobalProvider = ({ children }: any) => {
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [updateCartItems, setUptadeCartItems] = useState(0);
+
   ///router
   const router = useRouter();
   ///////admin auth token state
@@ -345,9 +347,11 @@ const GlobalProvider = ({ children }: any) => {
         }
         return item;
       });
-
       setCartItems(() => {
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        const localCartItems = localStorage.setItem(
+          'cartItems',
+          JSON.stringify(updatedCartItems)
+        );
         return updatedCartItems;
       });
     } else {
@@ -359,7 +363,6 @@ const GlobalProvider = ({ children }: any) => {
       });
     }
   };
-
   // const handleFormSubmit = async (formData) => {
   //   try {
   //     const response = await fetch('http://localhost:8000/api/orders', {
@@ -417,6 +420,7 @@ const GlobalProvider = ({ children }: any) => {
         cartItems,
         setCartItems,
         addToCart,
+
         // removeFromCart,
         // clearCart,
         fetchProductsCartItems,

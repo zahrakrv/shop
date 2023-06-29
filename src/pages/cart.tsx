@@ -5,8 +5,11 @@ import HeaderSite from '@/components/header';
 import Image from 'next/image';
 import emptyCart from '../../public/empty-cart.png';
 import Link from 'next/link';
+import ModalDelCart from '@/components/modals/ModalDelCart';
 
 const ShoppingCart = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { products, cartItems, setCartItems, fetchProductsCartItems } =
     useContext(GlobalContext);
   const [quantity, setQuantity] = useState(0);
@@ -75,6 +78,8 @@ const ShoppingCart = () => {
   //     prevCartItems.filter((item) => item.product._id !== productId)
   //   );
   // };
+  console.log(cartItems);
+
   const removeFromCart = (productId) => {
     const updatedCartItems = cartItems.filter(
       (item) => item.product._id !== productId
@@ -180,79 +185,85 @@ const ShoppingCart = () => {
             <h1 className="hel mt-10 text-2xl mb-10">سبد خرید شما</h1>
             <div className="kol flex justify-between items-center p-5 gap-6">
               <div className="firs flex flex-col justify-between self-start w-2/3 border border-gray-200 rounded-xl p-5">
-                {cartItems.map((item) => {
-                  // console.log(item);
+                {cartItems &&
+                  cartItems.map((item) => {
+                    // console.log(item);
 
-                  return (
-                    <div
-                      className="flex justify-between items-center mb-10"
-                      key={item.product._id}
-                    >
-                      <div className="flex justify-between items-center gap-4 w-2/3">
-                        {/* /////مشخصات کالا */}
-                        <div className="flex justify-between">
-                          <div>
-                            <Image
-                              src={`http://localhost:8000/images/products/images/${item.product.images[0]}`}
-                              alt={item.product.name}
-                              width={256}
-                              height={256}
-                            />
-                          </div>
-                          <h2>{item.product.name}</h2>
-                          <div className="flex gap-4 items-center">
-                            <p> تعداد: </p>
-                            <div className="flex gap-2">
-                              <button
-                                className="text-white-500 text-xl rounded px-2 bg-red-500"
-                                onClick={() =>
-                                  decrementCartItem(item.product._id)
-                                }
-                              >
-                                -
-                              </button>
-                              <span className="px-3">
-                                {Intl.NumberFormat('fa-IR').format(
-                                  item.quantity
-                                )}
-                              </span>
-                              <button
-                                className="text-white-500 text-xl rounded px-2 bg-red-500"
-                                onClick={() =>
-                                  incrementCartItem(item.product._id)
-                                }
-                              >
-                                +
-                              </button>
+                    return (
+                      <div
+                        className="flex justify-between items-center mb-10"
+                        key={item.product._id}
+                      >
+                        <div className="flex justify-between items-center gap-12">
+                          {/* /////مشخصات کالا */}
+                          <div className="flex justify-between">
+                            <div className="ml-4">
+                              <Image
+                                src={`http://localhost:8000/images/products/images/${item.product.images[0]}`}
+                                alt={item.product.name}
+                                width={200}
+                                height={200}
+                              />
                             </div>
-                            <button
-                              className="bg-red-500 text-white rounded p-2"
-                              onClick={() => removeFromCart(item.product._id)}
-                            >
-                              حذف
-                            </button>
+                            <div className="flex items-center gap-6">
+                              <h2>{item.product.name}</h2>
+                              <div className="flex gap-4 items-center">
+                                <p> تعداد: </p>
+                                <div className="flex gap-2">
+                                  <button
+                                    className="text-white-500 text-xl rounded px-2 bg-red-500"
+                                    onClick={() =>
+                                      decrementCartItem(item.product._id)
+                                    }
+                                  >
+                                    -
+                                  </button>
+                                  <span className="px-3">
+                                    {Intl.NumberFormat('fa-IR').format(
+                                      item.quantity
+                                    )}
+                                  </span>
+                                  <button
+                                    className="text-white-500 text-xl rounded px-2 bg-red-500"
+                                    onClick={() =>
+                                      incrementCartItem(item.product._id)
+                                    }
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                                <button
+                                  className="bg-red-500 text-white rounded p-2"
+                                  onClick={() =>
+                                    removeFromCart(item.product._id)
+                                  }
+                                  // onClick={() => setIsModalOpen(true)}
+                                >
+                                  حذف
+                                </button>
+                              </div>
+                            </div>
                           </div>
+                          <div>
+                            <span>قیمت واحد:</span>
+                            <span>
+                              {Intl.NumberFormat('fa-IR').format(item.price)}{' '}
+                              تومان
+                            </span>
+                            <br />
+                            <span>قیمت نهایی:</span>
+                            <span>
+                              {Intl.NumberFormat('fa-IR').format(
+                                item.price * item.quantity
+                              )}{' '}
+                              تومان
+                            </span>
+                          </div>
+                          <hr className="leading-tight"></hr>
                         </div>
-                        <div>
-                          <span>قیمت واحد:</span>
-                          <span>
-                            {Intl.NumberFormat('fa-IR').format(item.price)}{' '}
-                            تومان
-                          </span>
-                          <br />
-                          <span>قیمت نهایی:</span>
-                          <span>
-                            {Intl.NumberFormat('fa-IR').format(
-                              item.price * item.quantity
-                            )}{' '}
-                            تومان
-                          </span>
-                        </div>
-                        <hr className="leading-tight"></hr>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
               <div className="sec flex flex-col justify-between gap-4 self-end w-1/3 border border-gray-200 rounded-xl p-5">
                 <h3>جزئیات پرداخت </h3>
@@ -339,6 +350,13 @@ const ShoppingCart = () => {
             </button>
           </div>
         )} */}
+        {isModalOpen && (
+          <ModalDelCart
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            removeFromCart={removeFromCart}
+          />
+        )}
       </Layout>
     </>
   );

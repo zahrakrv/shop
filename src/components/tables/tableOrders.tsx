@@ -39,6 +39,7 @@ const TableOrders = () => {
   ////
   const [totalOrders, setTotalOrders] = useState([]);
   ////////
+  const [isChange, setIsChange] = useState(false);
 
   ////about sorting
   const [sortOrder, setSortOrder] = useState(true);
@@ -68,7 +69,7 @@ const TableOrders = () => {
       }
     };
     getProducts();
-  }, [sortOrder, rowsPerPage, page, fetchOrders, deliveryStatus]);
+  }, [sortOrder, rowsPerPage, page, fetchOrders, deliveryStatus, isChange]);
   // console.log(totalOrders);
 
   useEffect(() => {
@@ -319,6 +320,8 @@ const TableOrders = () => {
         modalUserName={modalUserName}
         formatDate={formatDate}
         modalData={modalData}
+        setIsChange={setIsChange}
+        isChange={isChange}
         // selectedOrderId={selectedOrderId}
       />
       {/* ///////pagination */}

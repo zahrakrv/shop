@@ -9,6 +9,9 @@ const HeaderSite = () => {
   const { cartItems } = useContext(GlobalContext);
   const itemCount = cartItems.length;
 
+  // const cartBadge = JSON.parse(localStorage.getItem('cartItems'));
+  // const itemCount = cartBadge?.length;
+
   // console.log(itemCount);
 
   return (

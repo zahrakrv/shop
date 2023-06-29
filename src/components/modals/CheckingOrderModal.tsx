@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
+import axios from 'axios';
 
 const CheckingOrderModal = ({
   isOpen,
@@ -9,6 +10,8 @@ const CheckingOrderModal = ({
   formatDate,
   modalData,
   modalUserName,
+  setIsChange,
+  isChange,
   // selectedOrderId,
 }) => {
   const [deliveryStatus, setDeliveryStatus] = useState(false);
@@ -18,31 +21,63 @@ const CheckingOrderModal = ({
     } else {
       setDeliveryStatus(false);
     }
+    // console.log(modalUserName);
+    console.log(modalData);
+    // console.log(modalData?.products[0].product.name);
   }, [modalData.deliveryStatus]);
 
-  const handleClick = async () => {
-    if (!deliveryStatus) {
-      try {
-        const response = await fetch('http://localhost:8000/api/orders', {
-          method: 'PUT',
-          body: JSON.stringify({ deliveryStatus: true }),
-        });
-        if (response.ok) {
-          setDeliveryStatus(true);
-          modalData.deliveryStatus = true;
-        } else {
-          console.error('خطا در درخواست');
-        }
-      } catch (error) {
-        console.error('خطا در ارتباط با سرور', error);
-      }
-    }
-  };
   // const getSelectedOrder = (orderId) => {
   //   return totalOrders.find((order) => order.id === orderId);
   // };
   // const selectedOrder = getSelectedOrder(selectedOrderId);
   // console.log(modalData);
+
+  // const handleClick = async (id) => {
+  //   if (!deliveryStatus) {
+  //     try {
+  //       const response = await axios.patch(
+  //         `http://localhost:8000/api/orders/${id}`
+  //         // {
+  //         //   method: 'PUT',
+  //         //   body: JSON.stringify({ deliveryStatus: true }),
+  //         // }
+  //       );
+  //       if (response.ok) {
+  //         setDeliveryStatus(true);
+  //         modalData.deliveryStatus = true;
+  //         products: modalData.products.map((item) => {
+  //           return {
+  //             product: item.product._id,
+  //             _id: item._id,
+  //             count: item.count,
+  //           };
+  //         });
+  //       } else {
+  //         console.error('خطا در درخواست');
+  //       }
+  //     } catch (error) {
+  //       console.error('خطا در ارتباط با سرور', error);
+  //     }
+  //   }
+  // };
+
+  const handleClick = (id) => {
+    const deliveryStatus = 'true';
+    const data = {
+      deliveryStatus: deliveryStatus,
+      products: modalData.products.map((item) => {
+        return {
+          product: item.product._id,
+          // _id: item._id,
+          count: item.count,
+        };
+      }),
+    };
+    axios.patch(`http://localhost:8000/api/orders/${id}`, data);
+    // setDeliveryStatus(!deliveryStatus);
+    setIsChange(!isChange);
+  };
+
   return (
     <>
       <Dialog open={isOpen} onClose={onClose}>
@@ -92,11 +127,11 @@ const CheckingOrderModal = ({
               </div>
               <div className="mb-2">
                 <span> زمان تحویل: </span>
-                <span> ...... </span>
+                <span> {formatDate(modalData.deliveryDate)} </span>
               </div>
               <div className="mb-2">
                 <span> زمان سفارش: </span>
-                <span> {formatDate(modalUserName.createdAt)} </span>
+                <span> {formatDate(modalData.createdAt)} </span>
               </div>
               {/* </div> */}
               {/* ); */}
@@ -112,28 +147,38 @@ const CheckingOrderModal = ({
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  {/* <tr>
                     <td className="shadow py-2">
-                      {modalData.length > 0
-                        ? modalData.products[0].product.name
-                        : null}
-                    </td>
-                    <td className="shadow py-2">{modalData.totalPrice}</td>
-                    <td className="shadow py-2">
-                      {modalData.length > 0
-                        ? modalData.products[0].count
-                        : null}
-                    </td>
-                  </tr>
+                      {/* {modalData.length > 0 */}
+                  {/* ?  */}
+                  {/* {modalData?.products[0].product.name} */}
+                  {/* : null} */}
+                  {/* </td>
+                    <td className="shadow py-2">{modalData.totalPrice}</td> */}
+                  {/* <td className="shadow py-2"> */}
+                  {/* {modalData.length > 0 ?  */}
+                  {/* {modalData.products[0].count} */}
+                  {/* : null} */}
+                  {/* </td> */}
+                  {/* </tr> */}
+                  {modalData?.products?.map((product, index) => (
+                    <tr key={index}>
+                      <td className="shadow py-2">{product.product.name}</td>
+                      <td className="shadow py-2">{product.product.price}</td>
+                      <td className="shadow py-2">{product.count}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
             <div className="flex justify-center mb-3">
               <button
                 className="bg-teal-500 text-white rounded p-2 mx-auto"
-                onClick={handleClick}
+                onClick={() => {
+                  handleClick(modalData._id);
+                }}
               >
-                {deliveryStatus ? 'تحویل داده شده' : 'در انتظار تحویل'}
+                {isChange ? 'تحویل داده شده' : 'در انتظار تحویل'}
               </button>
             </div>
             {/* <button onClick={onClose}>Deactivate</button>

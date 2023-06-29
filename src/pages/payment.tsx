@@ -56,6 +56,7 @@ const PaymentPage = () => {
     mutationOrder.mutate(ordersData);
     console.log(ordersData);
     localStorage.removeItem('cartItems');
+    // dispatch({})
     dispatch({ type: 'RESET_CART' });
     dispatch({ type: 'SET_DELIVERY_DATE', payload: null });
     ///modal
