@@ -200,14 +200,16 @@ const ShoppingCart = () => {
                         <div className="flex justify-between items-center gap-12">
                           {/* /////مشخصات کالا */}
                           <div className="flex justify-between">
-                            <div className="ml-4">
-                              <Image
-                                src={`http://localhost:8000/images/products/images/${item.product.images[0]}`}
-                                alt={item.product.name}
-                                width={200}
-                                height={200}
-                              />
-                            </div>
+                            <Link href={`/products/${item.product._id}`}>
+                              <div className="ml-4">
+                                <Image
+                                  src={`http://localhost:8000/images/products/images/${item.product.images[0]}`}
+                                  alt={item.product.name}
+                                  width={200}
+                                  height={200}
+                                />
+                              </div>
+                            </Link>
                             <div className="flex items-center gap-6">
                               <h2>{item.product.name}</h2>
                               <div className="flex gap-4 items-center">
