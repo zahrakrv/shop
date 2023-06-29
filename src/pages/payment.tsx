@@ -2,7 +2,6 @@ import Image from 'next/image';
 import shaparak from '../../public/shaparak.png';
 import shp from '../../public/shp.png';
 import sadad from '../../public/sadad.jpg';
-import { GlobalContext } from './api/context/GlobalContext';
 import { useContext, useState } from 'react';
 import { request } from '@/utils/request';
 import Cookies from 'universal-cookie';
@@ -10,11 +9,13 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSelector, useDispatch } from 'react-redux';
 import MyDialog from '@/components/modals/modalSuccess';
 import UnsuccessModal from '@/components/modals/modalUnSuccess';
+import { GlobalContext } from './api/context/GlobalContext';
 
 const PaymentPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
+  const { cartItems, setCartItems } = useContext(GlobalContext);
   const dispatch = useDispatch();
   const deliveryDate = useSelector((state) => state.deliveryDate);
 
@@ -56,7 +57,8 @@ const PaymentPage = () => {
     mutationOrder.mutate(ordersData);
     console.log(ordersData);
     // localStorage.removeItem('cartItems');
-    localStorage.setItem('cartItems', []);
+    localStorage.setItem('cartItems', JSON.stringify([]));
+    setCartItems([]);
     dispatch({ type: 'RESET_CART' });
     dispatch({ type: 'SET_DELIVERY_DATE', payload: null });
     ///modal

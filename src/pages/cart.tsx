@@ -13,9 +13,11 @@ const ShoppingCart = () => {
   const { products, cartItems, setCartItems, fetchProductsCartItems } =
     useContext(GlobalContext);
   const [quantity, setQuantity] = useState(0);
+  // console.log(localStorage);
 
   useEffect(() => {
-    const savedCartItems = JSON.parse(localStorage.getItem('cartItems'));
+    const savedCartItems =
+      JSON.parse(localStorage?.getItem('cartItems') as string) || [];
     if (savedCartItems) {
       fetchProductsCartItems(savedCartItems)
         .then((data) => {
@@ -187,7 +189,7 @@ const ShoppingCart = () => {
             <div className="kol flex justify-between items-center p-5 gap-6">
               <div className="firs flex flex-col justify-between self-start w-2/3 border border-gray-200 rounded-xl p-5">
                 {cartItems &&
-                  cartItems.map((item) => {
+                  cartItems?.map((item) => {
                     // console.log(item);
 
                     return (
