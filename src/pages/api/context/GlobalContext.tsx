@@ -181,7 +181,7 @@ const GlobalProvider = ({ children }: any) => {
   const fetchOrders = async (
     page: number,
     limit: number,
-    sortDelivery: string,
+    sortDelivery: boolean,
     deliveryStatus: boolean
   ) => {
     try {

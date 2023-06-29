@@ -73,9 +73,10 @@ const CheckingOrderModal = ({
         };
       }),
     };
-    axios.patch(`http://localhost:8000/api/orders/${id}`, data);
+    axios.patch(`http://localhost:8000/api/orders/${id}`, data).then((res) => {
+      setIsChange(!isChange);
+    });
     // setDeliveryStatus(!deliveryStatus);
-    setIsChange(!isChange);
   };
 
   return (
