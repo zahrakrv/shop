@@ -4,6 +4,7 @@ import { TablePagination } from '@mui/material';
 import Button from './../../kit/Button';
 import axios from 'axios';
 import EasyEdit from 'react-easy-edit';
+import { request } from '@/utils/request';
 
 interface ProductType {
   _id: string;
@@ -26,6 +27,10 @@ const TableInventory: React.FC = () => {
   ////about sorting
   const [sortOrder, setSortOrder] = useState(true);
   const [isRotated, setIsRotated] = useState(false);
+  ////edit mode
+  const [isEditing, setIsEditing] = useState(false);
+  ///save all
+  const [arrSendRequest, setArrSendRequest] = useState([]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -60,11 +65,8 @@ const TableInventory: React.FC = () => {
     newValue: any
   ) => {
     try {
-      const updatedProduct = { [fieldName]: newValue };
-      await axios.patch(
-        `http://localhost:8000/api/products/${itemId}`,
-        updatedProduct
-      );
+      const updatedProduct = { change: { [fieldName]: newValue }, id: itemId };
+      //   await request.patch(`/products/${itemId}`, updatedProduct);
 
       const updatedProducts = products.map((product) => {
         if (product._id === itemId) {
@@ -73,8 +75,8 @@ const TableInventory: React.FC = () => {
         console.log(itemId);
         return product;
       });
-      setProducts(updatedProducts);
-
+      //   setProducts(updatedProducts);
+      setArrSendRequest((prev) => [...prev, updatedProduct]);
       console.log(`Product ${itemId} ${fieldName} updated successfully`);
     } catch (error) {
       console.error(`Error updating product ${itemId} ${fieldName}:`, error);
@@ -84,7 +86,55 @@ const TableInventory: React.FC = () => {
   const handleCancel = () => {
     fetchProducts();
   };
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+  const handleDiscard = () => {
+    fetchProducts();
+    setIsEditing(false);
+  };
 
+  //   const handleSaveAll = async () => {
+  //     try {
+  //       setIsEditing(false);
+
+  //       const patchRequests = [];
+  //       products.forEach((item) => {
+  //         //دیتاهای آپدیت شده
+  //         const updatedProduct = {
+  //           name: item.name,
+  //           price: item.price,
+  //           quantity: item.quantity,
+  //         };
+  //         patchRequests.push(
+  //           axios.patch(
+  //             `http://localhost:8000/api/products/${item._id}`,
+  //             updatedProduct
+  //           )
+  //         );
+  //       });
+
+  //       // ارسال همه درخواست‌های patch به صورت همزمان
+  //       await Promise.all(patchRequests);
+  //       // دریافت دیتاهای جدید از سرور
+  //       const updatedProductsData = await fetchSortPrice(
+  //         page + 1,
+  //         rowsPerPage,
+  //         sortOrder
+  //       );
+  //       console.log(updatedProductsData.data.data.products);
+  //       setProducts(updatedProductsData.data.data.products);
+
+  //       console.log('All changes saved successfully');
+  //     } catch (error) {
+  //       console.error('Error saving changes:', error);
+  //     }
+  //   };
+  const handleSaveAll = () => {
+    arrSendRequest.map((item) => {
+      axios.patch(`http://localhost:8000/api/products/${item.id}`, item.change);
+    });
+  };
   //////////////pagination
   interface paginationProps {
     event: React.MouseEvent<HTMLButtonElement> | null;
@@ -132,6 +182,14 @@ const TableInventory: React.FC = () => {
       {/* <div className="flex justify-start mb-12">
         <Button>ذخیره</Button>
       </div> */}
+      {isEditing ? (
+        <>
+          <Button onClick={handleSaveAll}>ذخیره</Button>
+          <Button onClick={handleDiscard}>انصراف</Button>
+        </>
+      ) : (
+        <Button onClick={handleEdit}>ویرایش</Button>
+      )}
       <table className=" mr-20 mt-12 bg-white rounded-xl p-4 border items-center">
         <thead className="mx-auto border-gray-400 border-b">
           <tr>
@@ -187,40 +245,54 @@ const TableInventory: React.FC = () => {
                   return item.name === i._id && <span>{i.name}</span>;
                 })} */}
                 {/* {item.name} */}
-                <EasyEdit
-                  type="text"
-                  value={item.name}
-                  onSave={(newValue) => handleSave(item._id, 'name', newValue)}
-                  onCancel={handleCancel}
-                  saveButtonLabel="ذخیره"
-                  cancelButtonLabel="لغو"
-                />
+                {isEditing ? (
+                  <EasyEdit
+                    type="text"
+                    value={item.name}
+                    onSave={(newValue) =>
+                      handleSave(item._id, 'name', newValue)
+                    }
+                    onCancel={handleCancel}
+                    saveButtonLabel="ذخیره"
+                    cancelButtonLabel="لغو"
+                  />
+                ) : (
+                  item.name
+                )}
               </td>
               <td className="p-3 shadow">
                 {/* {item.price} */}
-                <EasyEdit
-                  type="number"
-                  value={item.price.toString()}
-                  onSave={(newValue) =>
-                    handleSave(item._id, 'price', parseFloat(newValue))
-                  }
-                  onCancel={handleCancel}
-                  saveButtonLabel="ذخیره"
-                  cancelButtonLabel="لغو"
-                />
+                {isEditing ? (
+                  <EasyEdit
+                    type="number"
+                    value={item.price.toString()}
+                    onSave={(newValue) =>
+                      handleSave(item._id, 'price', parseFloat(newValue))
+                    }
+                    onCancel={handleCancel}
+                    saveButtonLabel="ذخیره"
+                    cancelButtonLabel="لغو"
+                  />
+                ) : (
+                  item.price
+                )}
               </td>
               <td className="p-3 shadow">
                 {/* {item.quantity} */}
-                <EasyEdit
-                  type="number"
-                  value={item.quantity.toString()}
-                  onSave={(newValue) =>
-                    handleSave(item._id, 'quantity', parseFloat(newValue))
-                  }
-                  onCancel={handleCancel}
-                  saveButtonLabel="ذخیره"
-                  cancelButtonLabel="لغو"
-                />
+                {isEditing ? (
+                  <EasyEdit
+                    type="number"
+                    value={item.quantity.toString()}
+                    onSave={(newValue) =>
+                      handleSave(item._id, 'quantity', parseFloat(newValue))
+                    }
+                    onCancel={handleCancel}
+                    saveButtonLabel="ذخیره"
+                    cancelButtonLabel="لغو"
+                  />
+                ) : (
+                  item.quantity
+                )}
               </td>
             </tr>
           ))}
