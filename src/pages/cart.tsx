@@ -171,6 +171,7 @@ const ShoppingCart = () => {
   const handleFinalizeCart = () => {
     // Handle the logic to finalize the shopping cart
   };
+  console.log(cartItems);
   return (
     <>
       <Layout>
@@ -234,10 +235,12 @@ const ShoppingCart = () => {
                                 </div>
                                 <button
                                   className="bg-red-500 text-white rounded p-2"
+                                  // onClick={() =>
+                                  // removeFromCart(item.product._id)
+                                  // }
                                   onClick={() =>
-                                    removeFromCart(item.product._id)
+                                    setIsModalOpen(item.product._id)
                                   }
-                                  // onClick={() => setIsModalOpen(true)}
                                 >
                                   حذف
                                 </button>
@@ -355,6 +358,7 @@ const ShoppingCart = () => {
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             removeFromCart={removeFromCart}
+            // id={item.product._id}
           />
         )}
       </Layout>

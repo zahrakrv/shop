@@ -26,7 +26,7 @@ function ModalDelCart({ isModalOpen, setIsModalOpen, removeFromCart }) {
             <button
               className="bg-green-500 text-white rounded p-2"
               onClick={() => {
-                removeFromCart();
+                removeFromCart(isModalOpen);
                 setIsModalOpen(false);
               }}
             >
