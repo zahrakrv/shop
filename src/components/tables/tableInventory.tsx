@@ -66,7 +66,7 @@ const TableInventory: React.FC = () => {
   ) => {
     try {
       const updatedProduct = { change: { [fieldName]: newValue }, id: itemId };
-      await request.patch(`/products/${itemId}`, updatedProduct);
+      //   await request.patch(`/products/${itemId}`, updatedProduct);
 
       const updatedProducts = products.map((product) => {
         if (product._id === itemId) {

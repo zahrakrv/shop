@@ -34,6 +34,8 @@ const AdminLogin = () => {
       const cookie = new Cookies();
       cookie.set('adminToken', response.data.token.accessToken);
       cookie.set('refreshToken', response.data.token.refreshToken);
+      // console.log(response.data);
+      cookie.set('id', response.data.data.user._id);
       router.push('/admins/dashboard');
       return response.data;
     } catch (error) {
