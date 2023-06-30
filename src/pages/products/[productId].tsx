@@ -153,43 +153,43 @@ const ProductPage = () => {
               />
               {/* <span className="mb-6"> {product.description}</span> */}
             </div>
+            <div className="flex gap-4">
+              <input
+                type="number"
+                className="w-24 border pr-6"
+                value={quantity}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  setQuantity(value >= 1 ? value : 1);
+                }}
+                min="1"
+                max={product.quantity}
+              />
+              <button
+                className={`bg-green-500 rounded p-2 ${
+                  addToCartDisabled ? 'bg-gray-500 cursor-not-allowed' : ''
+                }`}
+                onClick={() =>
+                  addToCart(product, product.price, quantity, product._id)
+                }
+                disabled={addToCartDisabled}
+              >
+                <div className="flex gap-3">
+                  افزودن به سبد خرید{' '}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="1.5em"
+                    viewBox="0 0 512 512"
+                    className="fill-white"
+                  >
+                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                  </svg>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
         {/* </div> */}
-        <div className="p-4 mr-72 flex gap-4">
-          <input
-            type="number"
-            className="w-24 border"
-            value={quantity}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              setQuantity(value >= 1 ? value : 1);
-            }}
-            min="1"
-            max={product.quantity}
-          />
-          <button
-            className={`bg-green-500 rounded p-2 ${
-              addToCartDisabled ? 'bg-gray-500 cursor-not-allowed' : ''
-            }`}
-            onClick={() =>
-              addToCart(product, product.price, quantity, product._id)
-            }
-            disabled={addToCartDisabled}
-          >
-            <div className="flex gap-3">
-              افزودن به سبد خرید{' '}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="1.5em"
-                viewBox="0 0 512 512"
-                className="fill-white"
-              >
-                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-              </svg>
-            </div>
-          </button>
-        </div>
       </Layout>
     </>
   );
