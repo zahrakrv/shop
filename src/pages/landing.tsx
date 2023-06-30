@@ -1,6 +1,9 @@
 import SideBarLanding from '@/components/SideBarLanding';
 import Layout from '@/layout/layout';
 import { useRouter } from 'next/router';
+import Typography from '@mui/material/Typography';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 import { GlobalContext } from './../pages/api/context/GlobalContext';
 import { useContext, useState, useEffect } from 'react';
 import MiniCardProduct2 from '@/components/MiniCardProduct2';
@@ -11,6 +14,9 @@ const LandingPage = () => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const router = useRouter();
   const { category, categoryId, subCategory, subCategoryId } = router.query;
+  ////pagination
+  const [page, setPage] = useState(1);
+  const perPage = 6;
 
   // useEffect(() => {
   //   if (categoryId) {
@@ -53,6 +59,16 @@ const LandingPage = () => {
     setCategoryProducts(filteredProducts);
   }, [allProducts, category, categoryId, subCategory, subCategoryId]);
 
+  ////pagination
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+  const getPaginatedData = () => {
+    const startIndex = (page - 1) * perPage;
+    const endIndex = startIndex + perPage;
+    return categoryProducts.slice(startIndex, endIndex);
+  };
+
   return (
     <>
       <Layout>
@@ -66,7 +82,8 @@ const LandingPage = () => {
             </h1>
             <div className="flex flex-wrap items-center justify-between p-6">
               <MiniCardProduct2
-                products={categoryProducts}
+                // products={categoryProducts}
+                products={getPaginatedData()}
                 useRouter={useRouter}
                 className={styles['mini-card']}
               />
@@ -77,6 +94,16 @@ const LandingPage = () => {
               <img src={product.image} alt={product.name} />
             </div>
           ))} */}
+            {/* //////pagination */}
+            <Stack spacing={2}>
+              <Typography>Page: {page}</Typography>
+              <Pagination
+                dir="ltr"
+                count={Math.ceil(categoryProducts.length / perPage)}
+                page={page}
+                onChange={handleChange}
+              />
+            </Stack>
           </div>
         </div>
       </Layout>

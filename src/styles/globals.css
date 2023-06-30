@@ -88,3 +88,11 @@ body {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
 }
+.style-picker {
+  border-radius: 6px;
+  border: 1px #9ea2ad solid;
+  padding: 4px 12px;
+  background-color: white;
+  height: 40px;
+  width: 400px;
+}
