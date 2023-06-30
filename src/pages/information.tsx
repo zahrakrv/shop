@@ -1,6 +1,7 @@
 import Layout from '@/layout/layout';
 import { request } from '@/utils/request';
 import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { GlobalContext } from './api/context/GlobalContext';
 import Link from 'next/link';
@@ -9,8 +10,15 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { FORM } from '@/redux/slice/cart';
+import DatePicker from 'react-multi-date-picker';
+import { Calendar } from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
+import { Controller, FieldErrors } from 'react-hook-form';
+import weekends from 'react-multi-date-picker/plugins/highlight_weekends';
 
 const UserInformation = () => {
+  const router = useRouter();
   ////redux toolkit
   const dispatch = useDispatch();
   const { handleFormSubmit } = useContext(GlobalContext);
@@ -19,7 +27,12 @@ const UserInformation = () => {
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm();
+    control,
+  } = useForm({
+    defaultValues: {
+      deliveryDate: '',
+    },
+  });
   const [users, setUsers] = useState([]);
   //   const [isDataLoaded, setIsDataLoaded] = useState(true);
 
@@ -64,10 +77,11 @@ const UserInformation = () => {
       // setValue('deliveryDate', data.deliveryDate);
     },
   });
-
   const onSubmit = (data) => {
-    dispatch(FORM({ deliveryDate: data.deliveryDate }));
+    dispatch(FORM({ date: data.deliveryDate * 1000, type: 'add' }));
     handleFormSubmit(data);
+    console.log(data);
+    router.push('/payment');
     // const productCart = JSON.parse(localStorage.getItem('cartItems'));
     // const orderArr = productCart.map((item) => {
     //   return {
@@ -187,7 +201,7 @@ const UserInformation = () => {
               </div>
               <label className="mb-8 ml-4">
                 تاریخ تحویل{' '}
-                <input
+                {/* <input
                   type="date"
                   className="p-3 border border-gray-200 rounded"
                   {...register('deliveryDate', {
@@ -197,16 +211,48 @@ const UserInformation = () => {
                 />
                 {errors.deliveryDate && (
                   <span>{errors.deliveryDate.message}</span>
-                )}
+                )} */}
+                <Controller
+                  control={control}
+                  name="deliveryDate"
+                  rules={{ required: true }} //optional
+                  render={({ field: { onChange, name, value } }) => (
+                    <div className="w-full">
+                      <DatePicker
+                        name={name}
+                        className="w-full "
+                        calendar={persian}
+                        locale={persian_fa}
+                        // value={value || ''}
+                        minDate={new Date().setDate(31)}
+                        inputClass="style-picker"
+                        placeholder="تاریخ تحویل را انتخاب کنید"
+                        // plugins={[weekends()]}
+                        // weekDays={weekDays}
+                        // maxDate={new Date().setDate(0)}
+                        onChange={(date) =>
+                          setValue('deliveryDate', date?.unix.toString())
+                        }
+                        // format={language === 'en' ? 'MM/DD/YYYY' : 'YYYY/MM/DD'}
+                        // {...register('deliveryDate', {
+                        //   required: 'تاریخ تحویل الزامیست',
+                        // })}
+                      />
+                      <div className="text-btnCard  h-2 pt-2 pb-2">
+                        {errors.deliveryDate?.message}
+                      </div>
+                    </div>
+                  )}
+                />
               </label>
-              <Link href="/payment">
-                <button
-                  className="bg-green-500 text-white rounded px-5 py-2"
-                  type="submit"
-                >
-                  ادامه ی پرداخت
-                </button>
-              </Link>
+              {/* <Link href="/payment"> */}
+              <button
+                className="bg-green-500 text-white rounded px-5 py-2"
+                type="submit"
+              >
+                ادامه ی پرداخت
+              </button>
+              {/* </Link> */}
             </form>
           </div>
         </div>

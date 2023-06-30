@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MyDialog from '@/components/modals/modalSuccess';
 import UnsuccessModal from '@/components/modals/modalUnSuccess';
 import { GlobalContext } from './api/context/GlobalContext';
+import {FORM} from '@/redux/slice/cart'
 
 const PaymentPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,8 +60,8 @@ const PaymentPage = () => {
     // localStorage.removeItem('cartItems');
     localStorage.setItem('cartItems', JSON.stringify([]));
     setCartItems([]);
-    dispatch({ type: 'RESET_CART' });
-    dispatch({ type: 'SET_DELIVERY_DATE', payload: null });
+    dispatch(FORM({ type: 'RESET_CART' }));
+    // dispatch({ type: 'SET_DELIVERY_DATE', payload: null });
     ///modal
     setIsOpen(true);
   };

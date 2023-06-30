@@ -13,7 +13,13 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     FORM: (state, action) => {
-      state.deliveryDate = action.payload.deliveryDate;
+      const { type, date } = action.payload;
+      console.log(action.payload);
+      if (type === 'RESET_CART') {
+        state.deliveryDate = '';
+      } else {
+        state.deliveryDate = date;
+      }
       // console.log(action.payload.deliveryDate);
     },
   },

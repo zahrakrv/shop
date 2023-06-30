@@ -151,7 +151,7 @@ const ShoppingCart = () => {
     );
 
     if (existingItem.quantity === 0) {
-      removeFromCart(productId);
+      // removeFromCart(productId);
     } else if (existingItem.quantity > 0) {
       const updatedCartItems = cartItems.map((item) => {
         if (item.product._id === productId) {
